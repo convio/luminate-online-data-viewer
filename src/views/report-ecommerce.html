@@ -35,7 +35,7 @@
                   <td>{{order.Purchaser.ConsName.LastName}}</td>
                   <td><a href="mailto:{{order.Purchaser.PrimaryEmail}}">{{order.Purchaser.PrimaryEmail}}</a></td>
                   <td>${{order.Payment.Amount}}</td>
-                  <td>{{order.Payment.PaymentDate}}</td>
+                  <td>{{order.Payment._PaymentDateFormatted}}</td>
                 </tr>
               </tbody>
             </table>

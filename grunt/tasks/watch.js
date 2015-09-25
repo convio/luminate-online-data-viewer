@@ -19,7 +19,7 @@ module.exports = {
       'src/**/*.html'
     ], 
     tasks: [
-      'html-dist'
+      'html-dist:html'
     ]
   }, 
   
@@ -31,7 +31,8 @@ module.exports = {
     ], 
     tasks: [
       'css-dist:css', 
-      'css-test:css'
+      'css-test:css', 
+      'css-clean:css'
     ]
   }, 
   
@@ -41,7 +42,8 @@ module.exports = {
     ], 
     tasks: [
       'js-dist:js', 
-      'js-test:js'
+      'js-test:js', 
+      'js-clean:js'
     ]
   }
 }

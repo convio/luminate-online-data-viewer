@@ -10,62 +10,86 @@ dataViewerControllers.controller('DonationsReportViewController', ['$scope', '$l
     }
   }, 
   
-  now = new Date(), 
-  oneMonthAgo = new Date(now - (30 * 24 * 60 * 60 * 1000)).toISOString().split('.')[0] + '+00:00';
-  
-  WebServicesService.query({
-    statement: 'select Payment.Amount, Payment.PaymentDate, Donor.ConsName, Donor.PrimaryEmail from Donation where Payment.PaymentDate >= ' + oneMonthAgo, 
-    error: function() {
-      /* TODO */
-    }, 
-    success: function(response) {
-      var $faultstring = $(response).find('faultstring');
-      
-      if($faultstring.length > 0) {
+  getDonations = function(options) {
+    var settings = $.extend({
+      page: '1'
+    }, options || {}), 
+    
+    now = new Date(), 
+    oneDayAgo = new Date(now - (24 * 60 * 60 * 1000)).toISOString().split('.')[0] + '+00:00';
+    
+    WebServicesService.query({
+      statement: 'select TransactionId, Payment.Amount, Payment.PaymentDate, Donor.ConsName, Donor.PrimaryEmail from Donation where Payment.PaymentDate >= ' + oneDayAgo, 
+      page: settings.page, 
+      error: function() {
         /* TODO */
-      }
-      else {
-        var $records = $(response).find('Record');
+      }, 
+      success: function(response) {
+        var $faultstring = $(response).find('faultstring');
         
-        $records.each(function() {
-          var $payment = $(this).find('Payment'), 
-          paymentAmount = $payment.find('Amount').text(), 
-          paymentDate = $payment.find('PaymentDate').text(), 
-          $donor = $(this).find('Donor'), 
-          $donorName = $donor.find('ConsName'), 
-          donorFirstName = $donorName.find('FirstName').text(), 
-          donorLastName = $donorName.find('LastName').text(), 
-          donorPrimaryEmail = $donor.find('PrimaryEmail').text();
+        if($faultstring.length > 0) {
+          /* TODO */
+        }
+        else {
+          var $records = $(response).find('Record');
           
-          addDonation({
-            Payment: {
-              Amount: paymentAmount, 
-              PaymentDate: paymentDate
-            }, 
-            Donor: {
-              ConsName: {
-                FirstName: donorFirstName, 
-                LastName: donorLastName
-              }, 
-              PrimaryEmail: donorPrimaryEmail
-            }
-          });
-        });
-        
-        $('.report-table').DataTable({
-          'paging': true, /* TODO: only paginate if there are more results than one page */
-          'lengthChange': false, 
-          'searching': false, 
-          'ordering': true, 
-          'order': [
-            [4, 'desc']
-          ], 
-          'info': true, 
-          'autoWidth': false
-        });
-        
-        $('.content .js--loading-overlay').addClass('hidden');
+          if($records.length === 0) {
+            /* TODO */
+          }
+          else {
+            $records.each(function() {
+              var transactionId = $(this).find('TransactionId').text(), 
+              $payment = $(this).find('Payment'), 
+              paymentAmount = $payment.find('Amount').text(), 
+              paymentDate = $payment.find('PaymentDate').text(), 
+              $donor = $(this).find('Donor'), 
+              $donorName = $donor.find('ConsName'), 
+              donorFirstName = $donorName.find('FirstName').text(), 
+              donorLastName = $donorName.find('LastName').text(), 
+              donorPrimaryEmail = $donor.find('PrimaryEmail').text();
+              
+              addDonation({
+                'TransactionId': transactionId, 
+                'Payment': {
+                  'Amount': paymentAmount, 
+                  'PaymentDate': paymentDate, 
+                  '_PaymentDateFormatted': new Intl.DateTimeFormat().format(new Date(paymentDate))
+                }, 
+                'Donor': {
+                  'ConsName': {
+                    'FirstName': donorFirstName, 
+                    'LastName': donorLastName
+                  }, 
+                  'PrimaryEmail': donorPrimaryEmail
+                }
+              });
+            });
+          }
+          
+          if($records.length === 200) {
+            getDonations({
+              page: '' + (Number(settings.page) + 1)
+            });
+          }
+          else {
+            $('.report-table').DataTable({
+              'paging': true, /* TODO: only paginate if there are more results than one page */
+              'lengthChange': false, 
+              'searching': false, 
+              'ordering': true, 
+              'order': [
+                [4, 'desc']
+              ], 
+              'info': true, 
+              'autoWidth': false
+            });
+            
+            $('.content .js--loading-overlay').addClass('hidden');
+          }
+        }
       }
-    }
-  });
+    });
+  };
+  
+  getDonations();
 }]);

@@ -54,7 +54,11 @@ module.exports = function(grunt) {
   grunt.registerTask('css-test', function(taskTarget) {
     runTargetedTask([
       'csslint'
-      /* TODO: clean */
+    ], taskTarget);
+  });
+  grunt.registerTask('css-clean', function(taskTarget) {
+    runTargetedTask([
+      'clean'
     ], taskTarget);
   });
   
@@ -67,7 +71,11 @@ module.exports = function(grunt) {
   grunt.registerTask('js-test', function(taskTarget) {
     runTargetedTask([
       'jshint'
-      /* TODO: clean */
+    ], taskTarget);
+  });
+  grunt.registerTask('js-clean', function(taskTarget) {
+    runTargetedTask([
+      'clean'
     ], taskTarget);
   });
   
@@ -75,7 +83,6 @@ module.exports = function(grunt) {
     /* TODO: clean */
     'nwjs'
   ]);
-  
   grunt.registerTask('compress-downloads', [
     'compress'
     /* TODO: clean */

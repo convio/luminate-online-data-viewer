@@ -10,7 +10,7 @@ module.exports = {
         expand: true, 
         cwd: 'download/', 
         src: [
-          '**/osx32/**'
+          'osx32/**'
         ]
       }
     ]
@@ -25,7 +25,7 @@ module.exports = {
         expand: true, 
         cwd: 'download/', 
         src: [
-          '**/osx64/**'
+          'osx64/**'
         ]
       }
     ]
@@ -40,7 +40,7 @@ module.exports = {
         expand: true, 
         cwd: 'download/', 
         src: [
-          '**/win32/**'
+          'win32/**'
         ]
       }
     ]
@@ -55,7 +55,7 @@ module.exports = {
         expand: true, 
         cwd: 'download/', 
         src: [
-          '**/win64/**'
+          'win64/**'
         ]
       }
     ]

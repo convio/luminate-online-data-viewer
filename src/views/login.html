@@ -4,7 +4,7 @@
     Data Viewer
   </div>
   <div class="login-box-body">
-    <form name="loginform" id="login-form" ng-submit="submit($event)" ng-controller="LoginFormController" novalidate>
+    <form name="loginform" id="login-form" ng-submit="submit($event)" ng-controller="LoginFormController" novalidate autocomplete="off">
       <alert ng-repeat="alert in alerts" type="{{alert.type}}">
         {{alert.message}}
       </alert>
@@ -16,14 +16,14 @@
         </span>
       </div>
       <div class="form-group has-feedback" ng-class="{ 'has-error': loginform.$submitted && loginform.username.$invalid }">
-        <input type="text" class="form-control" name="username" id="login-username" ng-model="cwslogin.username" placeholder="Username" autocomplete="off" required>
+        <input type="text" class="form-control" name="username" id="login-username" ng-model="cwslogin.username" placeholder="Username" required>
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
         <span ng-show="loginform.$submitted && loginform.username.$invalid" class="help-block">
           Username is required
         </span>
       </div>
       <div class="form-group has-feedback" ng-class="{ 'has-error': loginform.$submitted && loginform.password.$invalid }">
-        <input type="password" class="form-control" name="password" id="login-password" ng-model="cwslogin.password" placeholder="Password" autocomplete="off" required>
+        <input type="password" class="form-control" name="password" id="login-password" ng-model="cwslogin.password" placeholder="Password" required>
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
         <span ng-show="loginform.$submitted && loginform.password.$invalid" class="help-block">
           Password is required
