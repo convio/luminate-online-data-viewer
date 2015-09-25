@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html ng-app="dataViewerApp" ng-controller="MainController">
+  <head>
+    <meta charset="utf-8">
+    <title>Luminate Online Data Viewer</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.9/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="css/app.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-route.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.4/ui-bootstrap-tpls.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-slimScroll/1.3.6/jquery.slimscroll.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
+    <script src="js/app.min.js"></script>
+  </head>
+  <body class="hold-transition">
+    <div class="wrapper">
+      <header class="main-header" ng-class="{ 'hidden': $location.path() === '/login' }" main-header>
+        <span class="logo">
+          <span class="logo-lg">
+            <strong>Luminate Online</strong> Data Viewer
+          </span>
+        </span>
+        <nav class="navbar navbar-static-top" role="navigation">
+          <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only">Toggle navigation</span>
+          </a>
+        </nav>
+      </header>
+      <aside class="main-sidebar" ng-class="{ 'hidden': $location.path() === '/login' }" main-sidebar>
+        <section class="sidebar">
+          <ul class="sidebar-menu">
+            <li class="header">
+              Reports
+            </li>
+            <li ng-class="{ 'active': $location.path() === '/report-constituents' }">
+              <a ng-href="#/report-constituents">
+                <i class="fa fa-users"></i> <span>Constituents</span> <i class="fa fa-angle-right pull-right"></i>
+              </a>
+            </li>
+            <li ng-class="{ 'active': $location.path() === '/report-donations' }">
+              <a ng-href="#/report-donations">
+                <i class="fa fa-dollar"></i> <span>Donations</span> <i class="fa fa-angle-right pull-right"></i> <!-- TODO <span class="label label-success pull-right">3</span> -->
+              </a>
+            </li>
+            <li ng-class="{ 'active': $location.path() === '/report-ecommerce' }">
+              <a ng-href="#/report-ecommerce">
+                <i class="fa fa-shopping-cart"></i> <span>Ecommerce</span> <i class="fa fa-angle-right pull-right"></i>
+              </a>
+            </li>
+            <li class="header">
+              Data Viewer (Version 0.0.1)
+            </li>
+            <!-- TODO <li>
+              <a href="#">
+                <i class="fa fa-download"></i> <span>Check for Updates</span> <i class="fa fa-angle-right pull-right"></i>
+              </a>
+            </li> -->
+            <li>
+              <a class="external-link" href="http://github.com/convio/luminate-online-data-viewer">
+                <i class="fa fa-git"></i> <span>View on Github</span> <i class="fa fa-angle-right pull-right"></i>
+              </a>
+            </li>
+            <li>
+              <a ng-href="#/login">
+                <i class="fa fa-sign-out"></i> <span>Log Out</span> <i class="fa fa-angle-right pull-right"></i>
+              </a>
+            </li>
+          </ul>
+        </section>
+      </aside>
+      <div ng-view></div>
+    </div>
+    <script>
+      var gui = require('nw.gui'), 
+      win = gui.Window.get(), 
+      nativeMenuBar = new gui.Menu({
+        type: 'menubar'
+      });
+      if(nativeMenuBar.createMacBuiltin) {
+        nativeMenuBar.createMacBuiltin('Luminate Online Data Viewer', {
+          hideEdit: false, 
+          hideWindow: false
+        });
+      }
+      win.menu = nativeMenuBar;
+      
+      $('.external-link').click(function(e) {
+        e.preventDefault();
+        
+        gui.Shell.openExternal($(this).attr('href'));
+      });
+    </script>
+  </body>
+</html>

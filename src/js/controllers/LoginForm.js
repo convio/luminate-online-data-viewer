@@ -1,0 +1,60 @@
+dataViewerControllers.controller('LoginFormController', ['$scope', '$location', 'WebServicesService', 'SessionService', function($scope, $location, WebServicesService, SessionService) {
+  var requestUrl = WebServicesService.getRequestUrl();
+  
+  $scope.cwslogin = {};
+  
+  if(requestUrl) {
+    $scope.cwslogin.url = requestUrl;
+  }
+  
+  $scope.submit = function(e) {
+    $scope.alerts = [];
+    
+    $scope.addAlert = function(alert) {
+      $scope.alerts.push(alert);
+      if(!$scope.$$phase) {
+        $scope.$apply();
+      }
+    };
+    
+    var goToConstituentsReportView = function() {
+      $location.path('/report-constituents');
+      if(!$scope.$$phase) {
+        $scope.$apply();
+      }
+    };
+    
+    /* TODO: validate that web services URL looks kinda right */
+    
+    /* TODO: disable submit button while loading */
+    
+    WebServicesService.login({
+      url: $('#login-url').val(), 
+      username: $('#login-username').val(), 
+      password: $('#login-password').val(), 
+      error: function(errorThrown) {
+        var errorMessage = errorThrown;
+        
+        /* TODO: default errorMessage */
+        
+        $scope.addAlert({
+          type: 'danger', 
+          message: errorMessage
+        });
+      }, 
+      success: function(response) {
+        var $faultstring = $(response).find('faultstring');
+        
+        if($faultstring.length > 0) {
+          $scope.addAlert({
+            type: 'danger', 
+            message: $faultstring.text()
+          });
+        }
+        else {
+          goToConstituentsReportView();
+        }
+      }
+    });
+  };
+}]);

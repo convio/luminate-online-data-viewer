@@ -1,0 +1,13 @@
+{
+  "asi": true, 
+  "browser": true, 
+  "eqeqeq": false, 
+  "eqnull": true, 
+  "es3": true, 
+  "expr": true, 
+  "jquery": true, 
+  "laxbreak" : true, 
+  "laxcomma": true, 
+  "sub": true, 
+  "unused": false
+}
