@@ -107,6 +107,7 @@ dataViewerApp.factory('WebServicesService', ['WebServices', 'SessionService', fu
     query: function(options) {
       var settings = $.extend({
         page: '1', 
+        pageSize: '200', 
         error: $.noop, 
         success: $.noop
       }, options || {});
@@ -123,7 +124,9 @@ dataViewerApp.factory('WebServicesService', ['WebServices', 'SessionService', fu
                   '<Page>' + 
                     settings.page + 
                   '</Page>' + 
-                  '<PageSize>200</PageSize>' + 
+                  '<PageSize>' + 
+                    settings.pageSize + 
+                  '</PageSize>' + 
                 '</Query>', 
           error: settings.error, 
           success: settings.success

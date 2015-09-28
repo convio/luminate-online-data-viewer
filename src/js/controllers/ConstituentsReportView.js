@@ -20,6 +20,7 @@ dataViewerControllers.controller('ConstituentsReportViewController', ['$scope', 
     
     WebServicesService.query({
       statement: 'select ConsId, ConsName, CreationDate, PrimaryEmail from Constituent where CreationDate >= ' + oneDayAgo, 
+      page: settings.page, 
       error: function() {
         /* TODO */
       }, 
@@ -64,7 +65,7 @@ dataViewerControllers.controller('ConstituentsReportViewController', ['$scope', 
           }
           else {
             $('.report-table').DataTable({
-              'paging': true, /* TODO: only paginate if there are more results than one page */
+              'paging': true, 
               'lengthChange': false, 
               'searching': false, 
               'ordering': true, 

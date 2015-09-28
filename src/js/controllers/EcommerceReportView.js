@@ -19,7 +19,8 @@ dataViewerControllers.controller('EcommerceReportViewController', ['$scope', '$l
     oneDayAgo = new Date(now - (24 * 60 * 60 * 1000)).toISOString().split('.')[0] + '+00:00';
     
     WebServicesService.query({
-      statement: 'select TransactionId, Payment.Amount, Payment.PaymentDate, Purchaser.ConsName, Purchaser.PrimaryEmail from ProductOrder where Payment.PaymentDate >= ' + oneDayAgo, 
+      statement: 'select TransactionId, Payment.Amount, Payment.PaymentDate, Payment.TenderType, Payment.CreditCardType, Purchaser.ConsName, Purchaser.PrimaryEmail from ProductOrder where Payment.PaymentDate >= ' + oneDayAgo, 
+      page: settings.page, 
       error: function() {
         /* TODO */
       }, 
@@ -41,18 +42,47 @@ dataViewerControllers.controller('EcommerceReportViewController', ['$scope', '$l
               $payment = $(this).find('Payment'), 
               paymentAmount = $payment.find('Amount').text(), 
               paymentDate = $payment.find('PaymentDate').text(), 
+              paymentDateFormatted = new Intl.DateTimeFormat().format(new Date(paymentDate)), 
+              paymentTenderType = $payment.find('TenderType').text(), 
+              paymentTenderTypeFormatted = '', 
+              paymentCreditCardType = $payment.find('CreditCardType').text(), 
               $purchaser = $(this).find('Purchaser'), 
               $purchaserName = $purchaser.find('ConsName'), 
               purchaserFirstName = $purchaserName.find('FirstName').text(), 
               purchaserLastName = $purchaserName.find('LastName').text(), 
               purchaserPrimaryEmail = $purchaser.find('PrimaryEmail').text();
               
+              switch(paymentTenderType.toLowerCase()) {
+                case 'credit_card':
+                  paymentTenderTypeFormatted = 'Credit';
+                  break;
+                case 'check':
+                  paymentTenderTypeFormatted = 'Check';
+                  break;
+                case 'cash':
+                  paymentTenderTypeFormatted = 'Cash';
+                  break;
+                case 'ach':
+                  paymentTenderTypeFormatted = 'ACH';
+                  break;
+                case 'x_checkout':
+                  if(paymentCreditCardType.toLowerCase() === 'paypal') {
+                    paymentTenderTypeFormatted = 'PayPal';
+                  }
+                  else {
+                    paymentTenderTypeFormatted = 'X-Checkout';
+                  }
+                  break;
+              }
+              
               addOrder({
                 'TransactionId': transactionId, 
                 'Payment': {
                   'Amount': paymentAmount, 
                   'PaymentDate': paymentDate, 
-                  '_PaymentDateFormatted': new Intl.DateTimeFormat().format(new Date(paymentDate))
+                  '_PaymentDateFormatted': paymentDateFormatted, 
+                  'TenderType': paymentTenderType, 
+                  '_TenderTypeFormatted': paymentTenderTypeFormatted
                 }, 
                 'Purchaser': {
                   'ConsName': {
@@ -72,7 +102,7 @@ dataViewerControllers.controller('EcommerceReportViewController', ['$scope', '$l
           }
           else {
             $('.report-table').DataTable({
-              'paging': true, /* TODO: only paginate if there are more results than one page */
+              'paging': true, 
               'lengthChange': false, 
               'searching': false, 
               'ordering': true, 

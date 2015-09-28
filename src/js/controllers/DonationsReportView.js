@@ -19,7 +19,7 @@ dataViewerControllers.controller('DonationsReportViewController', ['$scope', '$l
     oneDayAgo = new Date(now - (24 * 60 * 60 * 1000)).toISOString().split('.')[0] + '+00:00';
     
     WebServicesService.query({
-      statement: 'select TransactionId, Payment.Amount, Payment.PaymentDate, Donor.ConsName, Donor.PrimaryEmail from Donation where Payment.PaymentDate >= ' + oneDayAgo, 
+      statement: 'select TransactionId, Payment.Amount, Payment.PaymentDate, Payment.TenderType, Payment.CreditCardType, Donor.ConsName, Donor.PrimaryEmail from Donation where Payment.PaymentDate >= ' + oneDayAgo, 
       page: settings.page, 
       error: function() {
         /* TODO */
@@ -42,18 +42,47 @@ dataViewerControllers.controller('DonationsReportViewController', ['$scope', '$l
               $payment = $(this).find('Payment'), 
               paymentAmount = $payment.find('Amount').text(), 
               paymentDate = $payment.find('PaymentDate').text(), 
+              paymentDateFormatted = new Intl.DateTimeFormat().format(new Date(paymentDate)), 
+              paymentTenderType = $payment.find('TenderType').text(), 
+              paymentTenderTypeFormatted = '', 
+              paymentCreditCardType = $payment.find('CreditCardType').text(), 
               $donor = $(this).find('Donor'), 
               $donorName = $donor.find('ConsName'), 
               donorFirstName = $donorName.find('FirstName').text(), 
               donorLastName = $donorName.find('LastName').text(), 
               donorPrimaryEmail = $donor.find('PrimaryEmail').text();
               
+              switch(paymentTenderType.toLowerCase()) {
+                case 'credit_card':
+                  paymentTenderTypeFormatted = 'Credit';
+                  break;
+                case 'check':
+                  paymentTenderTypeFormatted = 'Check';
+                  break;
+                case 'cash':
+                  paymentTenderTypeFormatted = 'Cash';
+                  break;
+                case 'ach':
+                  paymentTenderTypeFormatted = 'ACH';
+                  break;
+                case 'x_checkout':
+                  if(paymentCreditCardType.toLowerCase() === 'paypal') {
+                    paymentTenderTypeFormatted = 'PayPal';
+                  }
+                  else {
+                    paymentTenderTypeFormatted = 'X-Checkout';
+                  }
+                  break;
+              }
+              
               addDonation({
                 'TransactionId': transactionId, 
                 'Payment': {
                   'Amount': paymentAmount, 
                   'PaymentDate': paymentDate, 
-                  '_PaymentDateFormatted': new Intl.DateTimeFormat().format(new Date(paymentDate))
+                  '_PaymentDateFormatted': paymentDateFormatted, 
+                  'TenderType': paymentTenderType, 
+                  '_TenderTypeFormatted': paymentTenderTypeFormatted
                 }, 
                 'Donor': {
                   'ConsName': {
@@ -73,7 +102,7 @@ dataViewerControllers.controller('DonationsReportViewController', ['$scope', '$l
           }
           else {
             $('.report-table').DataTable({
-              'paging': true, /* TODO: only paginate if there are more results than one page */
+              'paging': true, 
               'lengthChange': false, 
               'searching': false, 
               'ordering': true, 
