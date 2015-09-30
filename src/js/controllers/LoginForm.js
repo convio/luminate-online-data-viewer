@@ -17,14 +17,12 @@ dataViewerControllers.controller('LoginFormController', ['$scope', '$location', 
       }
     };
     
-    var goToConstituentsReportView = function() {
-      $location.path('/report-constituents');
+    var goToConstituentSummaryReportView = function() {
+      $location.path('/report-constituents-summary');
       if(!$scope.$$phase) {
         $scope.$apply();
       }
     };
-    
-    /* TODO: validate that web services URL looks kinda right */
     
     /* TODO: disable submit button while loading */
     
@@ -52,7 +50,7 @@ dataViewerControllers.controller('LoginFormController', ['$scope', '$location', 
           });
         }
         else {
-          goToConstituentsReportView();
+          goToConstituentSummaryReportView();
         }
       }
     });

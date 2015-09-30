@@ -9,15 +9,24 @@ dataViewerApp.config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/login', {
     templateUrl: 'views/login.html', 
     controller: 'LoginViewController'
-  }).when('/report-constituents', {
-    templateUrl: 'views/report-constituents.html', 
-    controller: 'ConstituentsReportViewController'
-  }).when('/report-donations', {
-    templateUrl: 'views/report-donations.html', 
-    controller: 'DonationsReportViewController'
-  }).when('/report-ecommerce', {
-    templateUrl: 'views/report-ecommerce.html', 
-    controller: 'EcommerceReportViewController'
+  }).when('/report-constituents-summary', {
+    templateUrl: 'views/report-constituents-summary.html', 
+    controller: 'ConstituentSummaryReportViewController'
+  }).when('/report-constituents-detail', {
+    templateUrl: 'views/report-constituents-detail.html', 
+    controller: 'ConstituentDetailReportViewController'
+  }).when('/report-donations-summary', {
+    templateUrl: 'views/report-donations-summary.html', 
+    controller: 'DonationSummaryReportViewController'
+  }).when('/report-donations-detail', {
+    templateUrl: 'views/report-donations-detail.html', 
+    controller: 'DonationDetailReportViewController'
+  }).when('/report-ecommerce-summary', {
+    templateUrl: 'views/report-ecommerce-summary.html', 
+    controller: 'EcommerceSummaryReportViewController'
+  }).when('/report-ecommerce-detail', {
+    templateUrl: 'views/report-ecommerce-detail.html', 
+    controller: 'EcommerceDetailReportViewController'
   }).otherwise({
     redirectTo: '/login'
   });
