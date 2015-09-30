@@ -19,7 +19,7 @@ dataViewerControllers.controller('EcommerceDetailReportViewController', ['$scope
     oneDayAgo = new Date(now - (24 * 60 * 60 * 1000)).toISOString().split('.')[0] + '+00:00';
     
     WebServicesService.query({
-      statement: 'select TransactionId, Payment.Amount, Payment.PaymentDate, Payment.TenderType, Payment.CreditCardType, Purchaser.ConsName, Purchaser.PrimaryEmail from ProductOrder where Payment.PaymentDate >= ' + oneDayAgo, 
+      statement: 'select TransactionId, StoreId, Payment.Amount, Payment.PaymentDate, Payment.TenderType, Payment.CreditCardType, Purchaser.ConsName, Purchaser.PrimaryEmail from ProductOrder where Payment.PaymentDate >= ' + oneDayAgo, 
       page: settings.page, 
       error: function() {
         /* TODO */
@@ -39,6 +39,7 @@ dataViewerControllers.controller('EcommerceDetailReportViewController', ['$scope
           else {
             $records.each(function() {
               var transactionId = $(this).find('TransactionId').text(), 
+              storeId = $(this).find('StoreId').text(), 
               $payment = $(this).find('Payment'), 
               paymentAmount = $payment.find('Amount').text(), 
               paymentDate = $payment.find('PaymentDate').text(), 
@@ -77,6 +78,7 @@ dataViewerControllers.controller('EcommerceDetailReportViewController', ['$scope
               
               addOrder({
                 'TransactionId': transactionId, 
+                'StoreId': storeId, 
                 'Payment': {
                   'Amount': paymentAmount, 
                   'PaymentDate': paymentDate, 

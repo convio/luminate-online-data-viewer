@@ -19,7 +19,7 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
     oneDayAgo = new Date(now - (24 * 60 * 60 * 1000)).toISOString().split('.')[0] + '+00:00';
     
     WebServicesService.query({
-      statement: 'select TransactionId, Payment.Amount, Payment.PaymentDate, Payment.TenderType, Payment.CreditCardType, Donor.ConsName, Donor.PrimaryEmail from Donation where Payment.PaymentDate >= ' + oneDayAgo, 
+      statement: 'select TransactionId, CampaignId, FormId, Payment.Amount, Payment.PaymentDate, Payment.TenderType, Payment.CreditCardType, Donor.ConsName, Donor.PrimaryEmail from Donation where Payment.PaymentDate >= ' + oneDayAgo, 
       page: settings.page, 
       error: function() {
         /* TODO */
@@ -39,6 +39,8 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
           else {
             $records.each(function() {
               var transactionId = $(this).find('TransactionId').text(), 
+              campaignId = $(this).find('CampaignId').text(), 
+              formId = $(this).find('FormId').text(), 
               $payment = $(this).find('Payment'), 
               paymentAmount = $payment.find('Amount').text(), 
               paymentDate = $payment.find('PaymentDate').text(), 
@@ -77,6 +79,8 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
               
               addDonation({
                 'TransactionId': transactionId, 
+                'CampaignId': campaignId, 
+                'FormId': formId, 
                 'Payment': {
                   'Amount': paymentAmount, 
                   'PaymentDate': paymentDate, 

@@ -1,7 +1,7 @@
 {
   "name": "luminate-online-data-viewer",
   "description": "A desktop application for Windows and OS X providing realtime reporting for Luminate Online.",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "devDependencies": {
     "glob": "^5.0.14",
     "grunt": "^0.4.5",
@@ -21,7 +21,7 @@
   "dependencies": {
     "load-grunt-tasks": "~3.3.0"
   },
-  "main": "dist/index.html",
+  "main": "dist/html/index.html",
   "window": {
     "title": "Luminate Online Data Viewer",
     "toolbar": false,
