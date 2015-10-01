@@ -42,7 +42,12 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
               campaignId = $(this).find('CampaignId').text(), 
               formId = $(this).find('FormId').text(), 
               $payment = $(this).find('Payment'), 
-              paymentAmount = $payment.find('Amount').text(), 
+              paymentAmount = Number($payment.find('Amount').text()), 
+              paymentAmountFormatted = paymentAmount.toLocaleString('en', {
+                style: 'currency', 
+                currency: 'USD', 
+                minimumFractionDigits: 2
+              }), 
               paymentDate = $payment.find('PaymentDate').text(), 
               paymentDateFormatted = new Intl.DateTimeFormat().format(new Date(paymentDate)), 
               paymentTenderType = $payment.find('TenderType').text(), 
@@ -83,6 +88,7 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
                 'FormId': formId, 
                 'Payment': {
                   'Amount': paymentAmount, 
+                  '_AmountFormatted': paymentAmountFormatted, 
                   'PaymentDate': paymentDate, 
                   '_PaymentDateFormatted': paymentDateFormatted, 
                   'TenderType': paymentTenderType, 

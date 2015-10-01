@@ -8,28 +8,47 @@ dataViewerControllers.controller('EcommerceSummaryReportViewController', ['$scop
   var addorder = function(order) {
     $scope.orders.push(order);
     
-    var paymentDateHour = order.Payment.PaymentDate.split(':')[0], 
-    orderSum;
+    var paymentDate = order.Payment.PaymentDate, 
+    paymentPeriod = paymentDate.split(':')[0], 
+    paymentAmount = Number(order.Payment.Amount), 
+    orderSumIndex;
     
     $.each($scope.ordersums, function(sumIndex) {
-      if(this.period === paymentDateHour) {
-        orderSum = this;
-        
-        $scope.ordersums[sumIndex].count = $scope.ordersums[sumIndex].count + 1;
-        
-        $scope.ordersums[sumIndex].amount = Number($scope.ordersums[sumIndex].amount) + Number(order.Payment.Amount);
+      if(this.period === paymentPeriod) {
+        orderSumIndex = sumIndex;
       }
     });
     
-    if(!orderSum) {
-      ordersums = {
-        period: paymentDateHour, 
-        count: 1, 
-        amount: order.Payment.Amount
-      };
+    if(!orderSumIndex) {
+      var paymentPeriodFormatted = new Intl.DateTimeFormat('en-us', {
+        month: 'short', 
+        day: 'numeric', 
+        year: 'numeric'
+      }).format(new Date(paymentPeriod + ':00:00Z')) + ' - ' + new Intl.DateTimeFormat('en-us', {
+        hour12: true, 
+        hour: 'numeric', 
+        minute: '2-digit'
+      }).format(new Date(paymentPeriod + ':00:00Z'));
       
-      $scope.ordersums.push(ordersums);
+      $scope.ordersums.push({
+        period: paymentPeriod, 
+        periodFormatted: paymentPeriodFormatted, 
+        count: 0, 
+        amount: 0
+      });
+      
+      orderSumIndex = $scope.ordersums.length - 1;
     }
+    
+    $scope.ordersums[orderSumIndex].count = $scope.ordersums[orderSumIndex].count + 1;
+    
+    $scope.ordersums[orderSumIndex].amount = Number($scope.ordersums[orderSumIndex].amount) + paymentAmount;
+    
+    $scope.ordersums[orderSumIndex].amountFormatted = $scope.ordersums[orderSumIndex].amount.toLocaleString('en', {
+      style: 'currency', 
+      currency: 'USD', 
+      minimumFractionDigits: 2
+    });
     
     if(!$scope.$$phase) {
       $scope.$apply();

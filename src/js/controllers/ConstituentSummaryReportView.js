@@ -8,25 +8,37 @@ dataViewerControllers.controller('ConstituentSummaryReportViewController', ['$sc
   var addConstituent = function(constituent) {
     $scope.constituents.push(constituent);
     
-    var consCreationDateHour = constituent.CreationDate.split(':')[0], 
-    constituentSum;
+    var consCreationDate = constituent.CreationDate, 
+    consCreationPeriod = consCreationDate.split(':')[0], 
+    constituentSumIndex;
     
     $.each($scope.constituentsums, function(sumIndex) {
-      if(this.period === consCreationDateHour) {
-        constituentSum = this;
-        
-        $scope.constituentsums[sumIndex].count = $scope.constituentsums[sumIndex].count + 1;
+      if(this.period === consCreationPeriod) {
+        constituentSumIndex = sumIndex;
       }
     });
     
-    if(!constituentSum) {
-      constituentSum = {
-        period: consCreationDateHour, 
-        count: 1
-      };
+    if(!constituentSumIndex) {
+      var consCreationPeriodFormatted = new Intl.DateTimeFormat('en-us', {
+        month: 'short', 
+        day: 'numeric', 
+        year: 'numeric'
+      }).format(new Date(consCreationPeriod + ':00:00Z')) + ' - ' + new Intl.DateTimeFormat('en-us', {
+        hour12: true, 
+        hour: 'numeric', 
+        minute: '2-digit'
+      }).format(new Date(consCreationPeriod + ':00:00Z'));
       
-      $scope.constituentsums.push(constituentSum);
+      $scope.constituentsums.push({
+        period: consCreationPeriod, 
+        periodFormatted: consCreationPeriodFormatted, 
+        count: 0
+      });
+      
+      constituentSumIndex = $scope.constituentsums.length - 1;
     }
+    
+    $scope.constituentsums[constituentSumIndex].count = $scope.constituentsums[constituentSumIndex].count + 1;
     
     if(!$scope.$$phase) {
       $scope.$apply();

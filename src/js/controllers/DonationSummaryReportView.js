@@ -8,28 +8,47 @@ dataViewerControllers.controller('DonationSummaryReportViewController', ['$scope
   var addDonation = function(donation) {
     $scope.donations.push(donation);
     
-    var paymentDateHour = donation.Payment.PaymentDate.split(':')[0], 
-    donationSum;
+    var paymentDate = donation.Payment.PaymentDate, 
+    paymentPeriod = paymentDate.split(':')[0], 
+    paymentAmount = Number(donation.Payment.Amount), 
+    donationSumIndex;
     
     $.each($scope.donationsums, function(sumIndex) {
-      if(this.period === paymentDateHour) {
-        donationSum = this;
-        
-        $scope.donationsums[sumIndex].count = $scope.donationsums[sumIndex].count + 1;
-        
-        $scope.donationsums[sumIndex].amount = Number($scope.donationsums[sumIndex].amount) + Number(donation.Payment.Amount);
+      if(this.period === paymentPeriod) {
+        donationSumIndex = sumIndex;
       }
     });
     
-    if(!donationSum) {
-      donationsums = {
-        period: paymentDateHour, 
-        count: 1, 
-        amount: donation.Payment.Amount
-      };
+    if(!donationSumIndex) {
+      var paymentPeriodFormatted = new Intl.DateTimeFormat('en-us', {
+        month: 'short', 
+        day: 'numeric', 
+        year: 'numeric'
+      }).format(new Date(paymentPeriod + ':00:00Z')) + ' - ' + new Intl.DateTimeFormat('en-us', {
+        hour12: true, 
+        hour: 'numeric', 
+        minute: '2-digit'
+      }).format(new Date(paymentPeriod + ':00:00Z'));
       
-      $scope.donationsums.push(donationsums);
+      $scope.donationsums.push({
+        period: paymentPeriod, 
+        periodFormatted: paymentPeriodFormatted, 
+        count: 0, 
+        amount: 0
+      });
+      
+      donationSumIndex = $scope.donationsums.length - 1;
     }
+    
+    $scope.donationsums[donationSumIndex].count = $scope.donationsums[donationSumIndex].count + 1;
+    
+    $scope.donationsums[donationSumIndex].amount = Number($scope.donationsums[donationSumIndex].amount) + paymentAmount;
+    
+    $scope.donationsums[donationSumIndex].amountFormatted = $scope.donationsums[donationSumIndex].amount.toLocaleString('en', {
+      style: 'currency', 
+      currency: 'USD', 
+      minimumFractionDigits: 2
+    });
     
     if(!$scope.$$phase) {
       $scope.$apply();

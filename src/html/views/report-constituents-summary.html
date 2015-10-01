@@ -22,14 +22,23 @@
             <table class="table table-bordered table-striped report-table">
               <thead>
                 <tr>
-                  <th>Time Period</th>
-                  <th>Total Count</th>
+                  <th>
+                    Time Period
+                  </th>
+                  <th>
+                    Total Count
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 <tr ng-repeat="constituentsum in constituentsums">
-                  <td>{{constituentsum.period}}</td>
-                  <td>{{constituentsum.count}}</td>
+                  <td>
+                    <span class="hidden">{{constituentsum.period}}</span>
+                    {{constituentsum.periodFormatted}}
+                  </td>
+                  <td>
+                    {{constituentsum.count}}
+                  </td>
                 </tr>
               </tbody>
             </table>

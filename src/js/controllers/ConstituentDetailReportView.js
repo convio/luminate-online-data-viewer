@@ -43,6 +43,7 @@ dataViewerControllers.controller('ConstituentDetailReportViewController', ['$sco
               consFirstName = $consName.find('FirstName').text(), 
               consLastName = $consName.find('LastName').text(), 
               consCreationDate = $(this).find('CreationDate').text(), 
+              consCreationDateFormatted = new Intl.DateTimeFormat().format(new Date(consCreationDate)), 
               consPrimaryEmail = $(this).find('PrimaryEmail').text();
               
               addConstituent({
@@ -52,7 +53,7 @@ dataViewerControllers.controller('ConstituentDetailReportViewController', ['$sco
                   'LastName': consLastName
                 }, 
                 'CreationDate': consCreationDate, 
-                '_CreationDateFormatted': new Intl.DateTimeFormat().format(new Date(consCreationDate)), 
+                '_CreationDateFormatted': consCreationDateFormatted, 
                 'PrimaryEmail': consPrimaryEmail
               });
             });

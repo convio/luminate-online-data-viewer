@@ -22,24 +22,46 @@
             <table class="table table-bordered table-striped report-table">
               <thead>
                 <tr>
-                  <th>Time Period</th>
-                  <th>One-Time Count</th>
-                  <th>One-Time Amount</th>
-                  <th>Sustaining Count</th>
-                  <th>Sustaining Amount</th>
-                  <th>Total Count</th>
-                  <th>Total Amount</th>
+                  <th>
+                    Time Period
+                  </th>
+                  <th>
+                    One-Time Count
+                  </th>
+                  <th>
+                    One-Time Amount
+                  </th>
+                  <th>
+                    Sustaining Count
+                  </th>
+                  <th>
+                    Sustaining Amount
+                  </th>
+                  <th>
+                    Total Count
+                  </th>
+                  <th>
+                    Total Amount
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 <tr ng-repeat="donationsum in donationsums">
-                  <td>{{donationsum.period}}</td>
+                  <td>
+                    <span class="hidden">{{donationsum.period}}</span>
+                    {{donationsum.periodFormatted}}
+                  </td>
                   <td></td>
                   <td></td>
                   <td></td>
                   <td></td>
-                  <td>{{donationsum.count}}</td>
-                  <td>${{donationsum.amount}}</td>
+                  <td>
+                    {{donationsum.count}}
+                  </td>
+                  <td>
+                    <span class="hidden">{{donationsum.amount}}</span>
+                    {{donationsum.amountFormatted}}
+                  </td>
                 </tr>
               </tbody>
             </table>
