@@ -17,14 +17,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-slimScroll/1.3.6/jquery.slimscroll.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.9/js/dataTables.bootstrap.min.js"></script>
-    <script src="../js/app.min.js"></script>
-  </head>
-  <body class="hold-transition">
-    <div class="wrapper">
-      <div main-header></div>
-      <div main-sidebar></div>
-      <div ng-view></div>
-    </div>
     <script>
       var gui = require('nw.gui'), 
       win = gui.Window.get(), 
@@ -32,18 +24,29 @@
         type: 'menubar'
       });
       if(nativeMenuBar.createMacBuiltin) {
-        nativeMenuBar.createMacBuiltin('Luminate Online Data Viewer', {
+        nativeMenuBar.createMacBuiltin(gui.App.manifest.window.title, {
           hideEdit: false, 
           hideWindow: false
         });
       }
       win.menu = nativeMenuBar;
-      
+    </script>
+    <script src="../js/app.min.js"></script>
+  </head>
+  <body ng-class="$location.path() === '/login' ? 'login-page' : 'skin-blue sidebar-mini fixed'">
+    <div class="wrapper">
+      <div main-header></div>
+      <div main-sidebar></div>
+      <div ng-view></div>
+    </div>
+    <script>
       $('.external-link').click(function(e) {
         e.preventDefault();
         
         gui.Shell.openExternal($(this).attr('href'));
       });
+      
+      gui.Window.get().show();
     </script>
   </body>
 </html>

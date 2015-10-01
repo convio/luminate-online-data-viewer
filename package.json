@@ -1,7 +1,14 @@
 {
   "name": "luminate-online-data-viewer",
   "description": "A desktop application for Windows and OS X providing realtime reporting for Luminate Online.",
-  "version": "0.0.8",
+  "version": "0.0.9",
+  "repositories": [
+    {
+      "type": "git",
+      "url": "https://github.com/convio/luminate-online-data-viewer.git"
+    }
+  ],
+  "bugs": "https://github.com/convio/luminate-online-data-viewer/issues",
   "devDependencies": {
     "glob": "^5.0.14",
     "grunt": "^0.4.5",
@@ -23,8 +30,9 @@
   },
   "main": "dist/html/index.html",
   "window": {
-    "title": "Luminate Online Data Viewer",
+    "show": false,
     "toolbar": false,
+    "title": "Luminate Online Data Viewer",
     "width": 992,
     "height": 600,
     "min_width": 460,

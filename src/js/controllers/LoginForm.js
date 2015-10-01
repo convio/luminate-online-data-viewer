@@ -35,6 +35,11 @@ dataViewerControllers.controller('LoginFormController', ['$scope', '$location', 
         
         /* TODO: default errorMessage */
         
+        if(errorMessage.indexOf('expecting: /{public API version}/') !== -1 || 
+           errorMessage.indexOf('Failed to resolve site: ') !== -1) {
+          /* TODO */
+        }
+        
         $scope.addAlert({
           type: 'danger', 
           message: errorMessage

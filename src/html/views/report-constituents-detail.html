@@ -19,47 +19,49 @@
             </div>
           </div> -->
           <div class="box-body">
-            <table class="table table-bordered table-striped report-table">
-              <thead>
-                <tr>
-                  <th>
-                    Constituent ID
-                  </th>
-                  <th>
-                    First Name
-                  </th>
-                  <th>
-                    Last Name
-                  </th>
-                  <th>
-                    Email Address
-                  </th>
-                  <th>
-                    Creation Date
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr ng-repeat="constituent in constituents">
-                  <td>
-                    {{constituent.ConsId}}
-                  </td>
-                  <td>
-                    {{constituent.ConsName.FirstName}}
-                  </td>
-                  <td>
-                    {{constituent.ConsName.LastName}}
-                  </td>
-                  <td>
-                    <a href="mailto:{{constituent.PrimaryEmail}}">{{constituent.PrimaryEmail}}</a>
-                  </td>
-                  <td>
-                    <span class="hidden">{{constituent.CreationDate}}</span>
-                    {{constituent._CreationDateFormatted}}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            <div class="table-responsive">
+              <table class="table table-bordered table-striped report-table">
+                <thead>
+                  <tr>
+                    <th>
+                      Constituent ID
+                    </th>
+                    <th>
+                      First Name
+                    </th>
+                    <th>
+                      Last Name
+                    </th>
+                    <th>
+                      Email Address
+                    </th>
+                    <th>
+                      Creation Date
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="constituent in constituents">
+                    <td>
+                      {{constituent.ConsId}}
+                    </td>
+                    <td>
+                      {{constituent.ConsName.FirstName}}
+                    </td>
+                    <td>
+                      {{constituent.ConsName.LastName}}
+                    </td>
+                    <td>
+                      <a href="mailto:{{constituent.PrimaryEmail}}">{{constituent.PrimaryEmail}}</a>
+                    </td>
+                    <td>
+                      <span class="hidden">{{constituent.CreationDate}}</span>
+                      {{constituent._CreationDateFormatted}}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
           <div class="overlay js--loading-overlay">
             <i class="fa fa-refresh fa-spin"></i>
