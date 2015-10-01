@@ -19,7 +19,7 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
     oneDayAgo = new Date(now - (24 * 60 * 60 * 1000)).toISOString().split('.')[0] + '+00:00';
     
     WebServicesService.query({
-      statement: 'select TransactionId, CampaignId, FormId, Payment.Amount, Payment.PaymentDate, Payment.TenderType, Payment.CreditCardType, Donor.ConsName, Donor.PrimaryEmail from Donation where Payment.PaymentDate >= ' + oneDayAgo, 
+      statement: 'select TransactionId, CampaignId, FormId, Payment.Amount, Payment.PaymentDate, Payment.TenderType, Payment.CreditCardType, Donor.ConsName, Donor.PrimaryEmail, RecurringPayment.OriginalTransactionId from Donation where Payment.PaymentDate >= ' + oneDayAgo, 
       page: settings.page, 
       error: function() {
         /* TODO */
@@ -57,7 +57,9 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
               $donorName = $donor.find('ConsName'), 
               donorFirstName = $donorName.find('FirstName').text(), 
               donorLastName = $donorName.find('LastName').text(), 
-              donorPrimaryEmail = $donor.find('PrimaryEmail').text();
+              donorPrimaryEmail = $donor.find('PrimaryEmail').text(), 
+              $recurringPayment = $(this).find('RecurringPayment'), 
+              donationType = 'One-Time';
               
               switch(paymentTenderType.toLowerCase()) {
                 case 'credit_card':
@@ -82,7 +84,11 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
                   break;
               }
               
-              addDonation({
+              if($recurringPayment.length > 0) {
+                donationType = 'Sustaining';
+              }
+              
+              var donationData = {
                 'TransactionId': transactionId, 
                 'CampaignId': campaignId, 
                 'FormId': formId, 
@@ -100,8 +106,11 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
                     'LastName': donorLastName
                   }, 
                   'PrimaryEmail': donorPrimaryEmail
-                }
-              });
+                }, 
+                '_DonationType': donationType
+              };
+              
+              addDonation(donationData);
             });
           }
           

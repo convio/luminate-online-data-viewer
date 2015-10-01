@@ -5,13 +5,13 @@ dataViewerControllers.controller('EcommerceSummaryReportViewController', ['$scop
   
   $scope.ordersums = [];
   
-  var addorder = function(order) {
+  var addOrder = function(order) {
     $scope.orders.push(order);
     
     var paymentDate = order.Payment.PaymentDate, 
     paymentPeriod = paymentDate.split(':')[0], 
     paymentAmount = Number(order.Payment.Amount), 
-    orderSumIndex;
+    orderSumIndex = -1;
     
     $.each($scope.ordersums, function(sumIndex) {
       if(this.period === paymentPeriod) {
@@ -19,7 +19,7 @@ dataViewerControllers.controller('EcommerceSummaryReportViewController', ['$scop
       }
     });
     
-    if(!orderSumIndex) {
+    if(orderSumIndex === -1) {
       var paymentPeriodFormatted = new Intl.DateTimeFormat('en-us', {
         month: 'short', 
         day: 'numeric', 
@@ -34,16 +34,15 @@ dataViewerControllers.controller('EcommerceSummaryReportViewController', ['$scop
         period: paymentPeriod, 
         periodFormatted: paymentPeriodFormatted, 
         count: 0, 
-        amount: 0
+        amount: 0, 
+        amountFormatted: '$0.00'
       });
       
       orderSumIndex = $scope.ordersums.length - 1;
     }
     
     $scope.ordersums[orderSumIndex].count = $scope.ordersums[orderSumIndex].count + 1;
-    
     $scope.ordersums[orderSumIndex].amount = Number($scope.ordersums[orderSumIndex].amount) + paymentAmount;
-    
     $scope.ordersums[orderSumIndex].amountFormatted = $scope.ordersums[orderSumIndex].amount.toLocaleString('en', {
       style: 'currency', 
       currency: 'USD', 
@@ -88,13 +87,15 @@ dataViewerControllers.controller('EcommerceSummaryReportViewController', ['$scop
               paymentAmount = $payment.find('Amount').text(), 
               paymentDate = $payment.find('PaymentDate').text();
               
-              addOrder({
+              var orderData = {
                 'TransactionId': transactionId, 
                 'Payment': {
                   'Amount': paymentAmount, 
                   'PaymentDate': paymentDate
                 }
-              });
+              };
+              
+              addOrder(orderData);
             });
           }
           

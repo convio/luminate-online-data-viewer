@@ -70,6 +70,7 @@
                     <a href="mailto:{{order.Purchaser.PrimaryEmail}}">{{order.Purchaser.PrimaryEmail}}</a>
                   </td>
                   <td>
+                    <span class="hidden">{{order.Payment.PaymentDate}}</span>
                     {{order.Payment._PaymentDateFormatted}}
                   </td>
                   <td>

@@ -46,7 +46,7 @@ dataViewerControllers.controller('ConstituentDetailReportViewController', ['$sco
               consCreationDateFormatted = new Intl.DateTimeFormat().format(new Date(consCreationDate)), 
               consPrimaryEmail = $(this).find('PrimaryEmail').text();
               
-              addConstituent({
+              var constituentData = {
                 'ConsId': consId, 
                 'ConsName': {
                   'FirstName': consFirstName, 
@@ -55,7 +55,9 @@ dataViewerControllers.controller('ConstituentDetailReportViewController', ['$sco
                 'CreationDate': consCreationDate, 
                 '_CreationDateFormatted': consCreationDateFormatted, 
                 'PrimaryEmail': consPrimaryEmail
-              });
+              };
+              
+              addConstituent(constituentData);
             });
           }
           
@@ -71,7 +73,7 @@ dataViewerControllers.controller('ConstituentDetailReportViewController', ['$sco
               'searching': false, 
               'ordering': true, 
               'order': [
-                [3, 'desc']
+                [4, 'desc']
               ], 
               'info': true, 
               'autoWidth': false

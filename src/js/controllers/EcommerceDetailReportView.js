@@ -81,7 +81,7 @@ dataViewerControllers.controller('EcommerceDetailReportViewController', ['$scope
                   break;
               }
               
-              addOrder({
+              var orderData = {
                 'TransactionId': transactionId, 
                 'StoreId': storeId, 
                 'Payment': {
@@ -99,7 +99,9 @@ dataViewerControllers.controller('EcommerceDetailReportViewController', ['$scope
                   }, 
                   'PrimaryEmail': purchaserPrimaryEmail
                 }
-              });
+              };
+              
+              addOrder(orderData);
             });
           }
           

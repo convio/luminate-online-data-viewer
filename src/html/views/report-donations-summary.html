@@ -51,10 +51,20 @@
                     <span class="hidden">{{donationsum.period}}</span>
                     {{donationsum.periodFormatted}}
                   </td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
+                  <td>
+                    {{donationsum.oneTimeCount}}
+                  </td>
+                  <td>
+                    <span class="hidden">{{donationsum.oneTimeAmount}}</span>
+                    {{donationsum.oneTimeAmountFormatted}}
+                  </td>
+                  <td>
+                    {{donationsum.recurringCount}}
+                  </td>
+                  <td>
+                    <span class="hidden">{{donationsum.recurringAmount}}</span>
+                    {{donationsum.recurringAmountFormatted}}
+                  </td>
                   <td>
                     {{donationsum.count}}
                   </td>

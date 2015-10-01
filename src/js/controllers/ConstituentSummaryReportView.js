@@ -10,7 +10,7 @@ dataViewerControllers.controller('ConstituentSummaryReportViewController', ['$sc
     
     var consCreationDate = constituent.CreationDate, 
     consCreationPeriod = consCreationDate.split(':')[0], 
-    constituentSumIndex;
+    constituentSumIndex = -1;
     
     $.each($scope.constituentsums, function(sumIndex) {
       if(this.period === consCreationPeriod) {
@@ -18,7 +18,7 @@ dataViewerControllers.controller('ConstituentSummaryReportViewController', ['$sc
       }
     });
     
-    if(!constituentSumIndex) {
+    if(constituentSumIndex === -1) {
       var consCreationPeriodFormatted = new Intl.DateTimeFormat('en-us', {
         month: 'short', 
         day: 'numeric', 
@@ -76,10 +76,12 @@ dataViewerControllers.controller('ConstituentSummaryReportViewController', ['$sc
               var consId = $(this).find('ConsId').text(), 
               consCreationDate = $(this).find('CreationDate').text();
               
-              addConstituent({
+              var constituentData = {
                 'ConsId': consId, 
                 'CreationDate': consCreationDate
-              });
+              };
+              
+              addConstituent(constituentData);
             });
           }
           

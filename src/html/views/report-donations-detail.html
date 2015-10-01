@@ -47,6 +47,9 @@
                     Donation Date
                   </th>
                   <th>
+                    Donation Type
+                  </th>
+                  <th>
                     Payment Type
                   </th>
                 </tr>
@@ -76,7 +79,11 @@
                     <a href="mailto:{{donation.Donor.PrimaryEmail}}">{{donation.Donor.PrimaryEmail}}</a>
                   </td>
                   <td>
+                    <span class="hidden">{{donation.Payment.PaymentDate}}</span>
                     {{donation.Payment._PaymentDateFormatted}}
+                  </td>
+                  <td>
+                    {{donation._DonationType}}
                   </td>
                   <td>
                     {{donation.Payment._TenderTypeFormatted}}
