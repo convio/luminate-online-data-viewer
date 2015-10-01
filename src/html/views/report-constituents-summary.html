@@ -26,7 +26,12 @@
                   <th>Total Count</th>
                 </tr>
               </thead>
-              <tbody></tbody>
+              <tbody>
+                <tr ng-repeat="constituentsum in constituentsums">
+                  <td>{{constituentsum.period}}</td>
+                  <td>{{constituentsum.count}}</td>
+                </tr>
+              </tbody>
             </table>
           </div>
           <div class="overlay js--loading-overlay">

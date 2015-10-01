@@ -27,7 +27,13 @@
                   <th>Total Amount</th>
                 </tr>
               </thead>
-              <tbody></tbody>
+              <tbody>
+                <tr ng-repeat="ordersum in ordersums">
+                  <td>{{ordersum.period}}</td>
+                  <td>{{ordersum.count}}</td>
+                  <td>${{ordersum.amount}}</td>
+                </tr>
+              </tbody>
             </table>
           </div>
           <div class="overlay js--loading-overlay">

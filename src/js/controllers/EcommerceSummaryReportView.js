@@ -1,17 +1,108 @@
 dataViewerControllers.controller('EcommerceSummaryReportViewController', ['$scope', '$location', 'WebServicesService', function($scope, $location, WebServicesService) {
   $.AdminLTE.layout.fix();
   
-  $('.report-table').DataTable({
-    'paging': true, 
-    'lengthChange': false, 
-    'searching': false, 
-    'ordering': true, 
-    'order': [
-      [0, 'desc']
-    ], 
-    'info': true, 
-    'autoWidth': false
-  });
+  $scope.orders = [];
   
-  $('.content .js--loading-overlay').addClass('hidden');
+  $scope.ordersums = [];
+  
+  var addorder = function(order) {
+    $scope.orders.push(order);
+    
+    var paymentDateHour = order.Payment.PaymentDate.split(':')[0], 
+    orderSum;
+    
+    $.each($scope.ordersums, function(sumIndex) {
+      if(this.period === paymentDateHour) {
+        orderSum = this;
+        
+        $scope.ordersums[sumIndex].count = $scope.ordersums[sumIndex].count + 1;
+        
+        $scope.ordersums[sumIndex].amount = Number($scope.ordersums[sumIndex].amount) + Number(order.Payment.Amount);
+      }
+    });
+    
+    if(!orderSum) {
+      ordersums = {
+        period: paymentDateHour, 
+        count: 1, 
+        amount: order.Payment.Amount
+      };
+      
+      $scope.ordersums.push(ordersums);
+    }
+    
+    if(!$scope.$$phase) {
+      $scope.$apply();
+    }
+  }, 
+  
+  getOrderSums = function(options) {
+    var settings = $.extend({
+      page: '1'
+    }, options || {}), 
+    
+    now = new Date(), 
+    oneDayAgo = new Date(now - (24 * 60 * 60 * 1000)).toISOString().split('.')[0] + '+00:00';
+    
+    WebServicesService.query({
+      statement: 'select TransactionId, Payment.Amount, Payment.PaymentDate from ProductOrder where Payment.PaymentDate >= ' + oneDayAgo, 
+      page: settings.page, 
+      error: function() {
+        /* TODO */
+      }, 
+      success: function(response) {
+        var $faultstring = $(response).find('faultstring');
+        
+        if($faultstring.length > 0) {
+          /* TODO */
+        }
+        else {
+          var $records = $(response).find('Record');
+          
+          if($records.length === 0) {
+            /* TODO */
+          }
+          else {
+            $records.each(function() {
+              var transactionId = $(this).find('TransactionId').text(), 
+              $payment = $(this).find('Payment'), 
+              paymentAmount = $payment.find('Amount').text(), 
+              paymentDate = $payment.find('PaymentDate').text();
+              
+              addOrder({
+                'TransactionId': transactionId, 
+                'Payment': {
+                  'Amount': paymentAmount, 
+                  'PaymentDate': paymentDate
+                }
+              });
+            });
+          }
+          
+          if($records.length === 200) {
+            getOrderSums({
+              page: '' + (Number(settings.page) + 1)
+            });
+          }
+          else {
+            $('.report-table').DataTable({
+              'paging': true, 
+              'lengthChange': false, 
+              'searching': false, 
+              'ordering': true, 
+              'order': [
+                [0, 'desc']
+              ], 
+              'info': true, 
+              'autoWidth': false
+            });
+            
+            $('.content .js--loading-overlay').addClass('hidden');
+          }
+        }
+      }
+    });
+  };
+  
+  getOrderSums();
 }]);

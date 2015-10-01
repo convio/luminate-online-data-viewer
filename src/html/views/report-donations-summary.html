@@ -31,7 +31,17 @@
                   <th>Total Amount</th>
                 </tr>
               </thead>
-              <tbody></tbody>
+              <tbody>
+                <tr ng-repeat="donationsum in donationsums">
+                  <td>{{donationsum.period}}</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td>{{donationsum.count}}</td>
+                  <td>${{donationsum.amount}}</td>
+                </tr>
+              </tbody>
             </table>
           </div>
           <div class="overlay js--loading-overlay">
