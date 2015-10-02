@@ -1,4 +1,4 @@
-dataViewerControllers.controller('EcommerceDetailReportViewController', ['$scope', '$location', 'WebServicesService', function($scope, $location, WebServicesService) {
+dataViewerControllers.controller('EcommerceDetailReportViewController', ['$scope', 'WebServicesService', function($scope, WebServicesService) {
   $.AdminLTE.layout.fix();
   
   $scope.orders = [];

@@ -1,4 +1,4 @@
-dataViewerControllers.controller('ConstituentSummaryReportViewController', ['$scope', '$location', 'WebServicesService', function($scope, $location, WebServicesService) {
+dataViewerControllers.controller('ConstituentSummaryReportViewController', ['$scope', 'WebServicesService', function($scope, WebServicesService) {
   $.AdminLTE.layout.fix();
   
   $scope.constituents = [];

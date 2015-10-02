@@ -1,6 +1,6 @@
 dataViewerApp.value('WebServices', {});
 
-dataViewerApp.factory('WebServicesService', ['WebServices', 'SessionService', function(WebServices, SessionService) {
+dataViewerApp.factory('WebServicesService', ['SessionService', 'WebServices', function(SessionService, WebServices) {
   return {
     setRequestUrl: function(requestUrl) {
       dataViewerApp.value('WebServices', $.extend(WebServices, {
@@ -53,7 +53,7 @@ dataViewerApp.factory('WebServicesService', ['WebServices', 'SessionService', fu
             var $faultcode = $(response).find('faultcode');
             
             if($faultcode.length > 0 && $faultcode.text() === 'fns:SESSION') {
-              /* TODO: redirect to login */
+              $('.js--view-change-shim').attr('href', '#/login').click();
             }
             else {
               settings.success(response);

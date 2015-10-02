@@ -1,3 +1,3 @@
-dataViewerControllers.controller('LoginViewController', ['$scope', '$location', 'WebServicesService', function($scope, $location, WebServicesService) {
+dataViewerControllers.controller('LoginViewController', ['$scope', function($scope) {
   /* TODO */
 }]);

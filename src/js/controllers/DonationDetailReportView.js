@@ -1,4 +1,4 @@
-dataViewerControllers.controller('DonationDetailReportViewController', ['$scope', '$location', 'WebServicesService', function($scope, $location, WebServicesService) {
+dataViewerControllers.controller('DonationDetailReportViewController', ['$scope', 'WebServicesService', function($scope, WebServicesService) {
   $.AdminLTE.layout.fix();
   
   $scope.donations = [];
