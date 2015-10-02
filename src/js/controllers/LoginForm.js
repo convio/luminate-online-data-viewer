@@ -17,47 +17,71 @@ dataViewerControllers.controller('LoginFormController', ['$scope', '$location', 
       }
     };
     
-    var goToConstituentSummaryReportView = function() {
-      $location.path('/report-constituents-summary');
-      if(!$scope.$$phase) {
-        $scope.$apply();
-      }
-    };
+    $scope.loginform.url.$setValidity('validUrl', true);
     
-    /* TODO: disable submit button while loading */
+    var loginUrl = $.trim($('#login-url').val()), 
+    loginUsername = $.trim($('#login-username').val()), 
+    loginPassword = $.trim($('#login-password').val());
     
-    WebServicesService.login({
-      url: $('#login-url').val(), 
-      username: $('#login-username').val(), 
-      password: $('#login-password').val(), 
-      error: function(errorThrown) {
-        var errorMessage = errorThrown;
-        
-        /* TODO: default errorMessage */
-        
-        if(errorMessage.indexOf('expecting: /{public API version}/') !== -1 || 
-           errorMessage.indexOf('Failed to resolve site: ') !== -1) {
-          /* TODO */
-        }
-        
-        $scope.addAlert({
-          type: 'danger', 
-          message: errorMessage
-        });
-      }, 
-      success: function(response) {
-        var $faultstring = $(response).find('faultstring');
-        
-        if($faultstring.length > 0) {
+    if(loginUrl === '' || 
+       loginUsername === '' || 
+       loginPassword === '') {
+      /* TODO */
+    }
+    else if(loginUrl.toLowerCase().indexOf('http') !== 0) {
+      $scope.loginform.url.$setValidity('validUrl', false);
+    }
+    else {
+      /* TODO: disable submit button while loading */
+      
+      WebServicesService.login({
+        url: loginUrl, 
+        username: loginUsername, 
+        password: loginPassword, 
+        error: function(errorThrown) {
+          var errorMessage = errorThrown;
+          
+          if(!errorMessage || errorMessage === '') {
+            errorMessage = 'Error processing request. Please try again.';
+          }
+          
           $scope.addAlert({
             type: 'danger', 
-            message: $faultstring.text()
+            message: errorMessage
           });
+          
+          if(errorMessage.indexOf('expecting: /{public API version}/') !== -1 || 
+             errorMessage.indexOf('Failed to resolve site: ') !== -1) {
+            $scope.loginform.url.$setValidity('validUrl', false);
+            if(!$scope.$$phase) {
+              $scope.$apply();
+            }
+          }
+        }, 
+        success: function(response) {
+          var $faultstring = $(response).find('faultstring');
+          
+          if($faultstring.length > 0) {
+            $scope.addAlert({
+              type: 'danger', 
+              message: $faultstring.text()
+            });
+          }
+          else {
+            var sessionId = SessionService.getSessionId();
+            
+            if(!sessionId) {
+              /* TODO */
+            }
+            else {
+              $location.path('/report-constituents-summary');
+              if(!$scope.$$phase) {
+                $scope.$apply();
+              }
+            }
+          }
         }
-        else {
-          goToConstituentSummaryReportView();
-        }
-      }
-    });
+      });
+    }
   };
 }]);

@@ -71,15 +71,14 @@ dataViewerApp.factory('WebServicesService', ['WebServices', 'SessionService', fu
       
       this.setRequestUrl(settings.url);
       
-      if(!settings.url) {
-        /* TODO */
-      }
-      else if(!settings.username || !settings.password) {
+      SessionService.reset();
+      
+      if(!settings.url || settings.url === '' || 
+         !settings.username || settings.username === '' || 
+         !settings.password || settings.password === '') {
         /* TODO */
       }
       else {
-        SessionService.reset();
-        
         this.request({
           includeSessionId: false, 
           body: '<Login xmlns=\'urn:soap.convio.com\'>' + 
