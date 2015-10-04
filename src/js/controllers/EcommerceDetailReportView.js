@@ -18,7 +18,7 @@ dataViewerControllers.controller('EcommerceDetailReportViewController', ['$scope
     oneDayAgo = new Date(now - (24 * 60 * 60 * 1000)).toISOString().split('.')[0] + '+00:00';
     
     WebServicesService.query({
-      statement: 'select TransactionId, StoreId, Payment.Amount, Payment.PaymentDate, Payment.TenderType, Payment.CreditCardType, Purchaser.ConsName, Purchaser.PrimaryEmail from ProductOrder where Payment.PaymentDate >= ' + oneDayAgo, 
+      statement: 'select TransactionId, StoreId, Payment.Amount, Payment.PaymentDate, Purchaser.ConsName, Purchaser.PrimaryEmail from ProductOrder where Payment.PaymentDate >= ' + oneDayAgo, 
       page: settings.page, 
       error: function() {
         /* TODO */
@@ -48,37 +48,11 @@ dataViewerControllers.controller('EcommerceDetailReportViewController', ['$scope
               }), 
               paymentDate = $payment.find('PaymentDate').text(), 
               paymentDateFormatted = new Intl.DateTimeFormat().format(new Date(paymentDate)), 
-              paymentTenderType = $payment.find('TenderType').text(), 
-              paymentTenderTypeFormatted = '', 
-              paymentCreditCardType = $payment.find('CreditCardType').text(), 
               $purchaser = $(this).find('Purchaser'), 
               $purchaserName = $purchaser.find('ConsName'), 
               purchaserFirstName = $purchaserName.find('FirstName').text(), 
               purchaserLastName = $purchaserName.find('LastName').text(), 
               purchaserPrimaryEmail = $purchaser.find('PrimaryEmail').text();
-              
-              switch(paymentTenderType.toLowerCase()) {
-                case 'credit_card':
-                  paymentTenderTypeFormatted = 'Credit';
-                  break;
-                case 'check':
-                  paymentTenderTypeFormatted = 'Check';
-                  break;
-                case 'cash':
-                  paymentTenderTypeFormatted = 'Cash';
-                  break;
-                case 'ach':
-                  paymentTenderTypeFormatted = 'ACH';
-                  break;
-                case 'x_checkout':
-                  if(paymentCreditCardType.toLowerCase() === 'paypal') {
-                    paymentTenderTypeFormatted = 'PayPal';
-                  }
-                  else {
-                    paymentTenderTypeFormatted = 'X-Checkout';
-                  }
-                  break;
-              }
               
               var orderData = {
                 'TransactionId': transactionId, 
@@ -87,9 +61,7 @@ dataViewerControllers.controller('EcommerceDetailReportViewController', ['$scope
                   'Amount': paymentAmount, 
                   '_AmountFormatted': paymentAmountFormatted, 
                   'PaymentDate': paymentDate, 
-                  '_PaymentDateFormatted': paymentDateFormatted, 
-                  'TenderType': paymentTenderType, 
-                  '_TenderTypeFormatted': paymentTenderTypeFormatted
+                  '_PaymentDateFormatted': paymentDateFormatted
                 }, 
                 'Purchaser': {
                   'ConsName': {
@@ -130,4 +102,26 @@ dataViewerControllers.controller('EcommerceDetailReportViewController', ['$scope
   };
   
   getOrders();
+  
+  $scope.download = function() {
+    var csvData = 'Transaction ID,Store ID,Order Amount,First Name,Last Name,Email Address,Order Date';
+    $.each($scope.orders, function() {
+      csvData += '\n' + 
+                 this.TransactionId + ',' + 
+                 this.StoreId + ',' + 
+                 this.Payment._AmountFormatted + ',' + 
+                 '"' + this.Purchaser.ConsName.FirstName.replace(/"/g, '""') + '",' + 
+                 '"' + this.Purchaser.ConsName.LastName.replace(/"/g, '""') + '",' + 
+                 this.Purchaser.PrimaryEmail + ',' + 
+                 this.Payment._PaymentDateFormatted;
+    });
+    
+    $('.js--report-save-as').off('change').on('change', function() {
+      require('fs').writeFile($(this).val(), csvData, function(error) {
+        if(error) {
+          /* TODO */
+        }
+      });
+    }).click();  
+  };
 }]);

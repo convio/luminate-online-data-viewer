@@ -263,4 +263,29 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
   };
   
   getDonations();
+  
+  $scope.download = function() {
+    var csvData = 'Transaction ID,Campaign,Form,Donation Amount,First Name,Last Name,Email Address,Donation Date,Donation Type,Payment Type';
+    $.each($scope.donations, function() {
+      csvData += '\n' + 
+                 this.TransactionId + ',' + 
+                 this.CampaignId + ',' + 
+                 this.FormId + ',' + 
+                 this.Payment._AmountFormatted + ',' + 
+                 '"' + this.Donor.ConsName.FirstName.replace(/"/g, '""') + '",' + 
+                 '"' + this.Donor.ConsName.LastName.replace(/"/g, '""') + '",' + 
+                 this.Donor.PrimaryEmail + ',' + 
+                 this.Payment._PaymentDateFormatted + ',' + 
+                 this._DonationType + ',' + 
+                 this.Payment._TenderTypeFormatted;
+    });
+    
+    $('.js--report-save-as').off('change').on('change', function() {
+      require('fs').writeFile($(this).val(), csvData, function(error) {
+        if(error) {
+          /* TODO */
+        }
+      });
+    }).click();  
+  };
 }]);

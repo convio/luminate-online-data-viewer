@@ -16,10 +16,10 @@
               <button type="button" class="btn btn-box-tool" data-toggle="modal" data-target="#report-config-modal">
                 <i class="fa fa-wrench"></i>
               </button> 
-              <button type="button" class="btn btn-box-tool">
+              <button type="button" class="btn btn-box-tool" ng-click="download()">
                 <i class="fa fa-floppy-o"></li>
               </button>
-              <input type="file" class="hidden" nwsaveas="constituents-detail.csv">
+              <input type="file" class="hidden js--report-save-as" nwsaveas="constituents-detail.csv">
             </div>
           </div>
           <div class="box-body">

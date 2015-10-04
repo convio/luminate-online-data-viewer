@@ -283,4 +283,26 @@ dataViewerControllers.controller('DonationSummaryReportViewController', ['$scope
   };
   
   getDonationSums();
+  
+  $scope.download = function() {
+    var csvData = 'Time Period,One-Time Count,One-Time Amount,Sustaining Count,Sustaining Amount,Total Count,Total Amount';
+    $.each($scope.donationsums, function() {
+      csvData += '\n' + 
+                 '"' + this.periodFormatted + '",' + 
+                 this.oneTimeCount + ',' + 
+                 this.oneTimeAmountFormatted + ',' + 
+                 this.recurringCount + ',' + 
+                 this.recurringAmountFormatted + ',' + 
+                 this.count + ',' + 
+                 this.amountFormatted;
+    });
+    
+    $('.js--report-save-as').off('change').on('change', function() {
+      require('fs').writeFile($(this).val(), csvData, function(error) {
+        if(error) {
+          /* TODO */
+        }
+      });
+    }).click();  
+  };
 }]);

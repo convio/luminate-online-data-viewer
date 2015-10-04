@@ -86,4 +86,24 @@ dataViewerControllers.controller('ConstituentDetailReportViewController', ['$sco
   };
   
   getConstituents();
+  
+  $scope.download = function() {
+    var csvData = 'Constituent ID,First Name,Last Name,Email Address,Creation Date';
+    $.each($scope.constituents, function() {
+      csvData += '\n' + 
+                 this.ConsId + ',' + 
+                 '"' + this.ConsName.FirstName.replace(/"/g, '""') + '",' + 
+                 '"' + this.ConsName.LastName.replace(/"/g, '""') + '",' + 
+                 this.PrimaryEmail + ',' + 
+                 this._CreationDateFormatted;
+    });
+    
+    $('.js--report-save-as').off('change').on('change', function() {
+      require('fs').writeFile($(this).val(), csvData, function(error) {
+        if(error) {
+          /* TODO */
+        }
+      });
+    }).click();  
+  };
 }]);

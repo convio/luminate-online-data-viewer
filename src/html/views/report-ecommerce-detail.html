@@ -16,10 +16,10 @@
               <button type="button" class="btn btn-box-tool" data-toggle="modal" data-target="#report-config-modal">
                 <i class="fa fa-wrench"></i>
               </button> 
-              <button type="button" class="btn btn-box-tool">
+              <button type="button" class="btn btn-box-tool" ng-click="download()">
                 <i class="fa fa-floppy-o"></li>
               </button>
-              <input type="file" class="hidden" nwsaveas="ecommerce-detail.csv">
+              <input type="file" class="hidden js--report-save-as" nwsaveas="ecommerce-detail.csv">
             </div>
           </div>
           <div class="box-body">
@@ -48,9 +48,6 @@
                     <th>
                       Order Date
                     </th>
-                    <th>
-                      Payment Type
-                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -77,9 +74,6 @@
                     <td>
                       <span class="hidden">{{order.Payment.PaymentDate}}</span>
                       {{order.Payment._PaymentDateFormatted}}
-                    </td>
-                    <td>
-                      {{order.Payment._TenderTypeFormatted}}
                     </td>
                   </tr>
                 </tbody>

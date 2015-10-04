@@ -110,4 +110,21 @@ dataViewerControllers.controller('ConstituentSummaryReportViewController', ['$sc
   };
   
   getConstituentSums();
+  
+  $scope.download = function() {
+    var csvData = 'Time Period,Total Count';
+    $.each($scope.constituentsums, function() {
+      csvData += '\n' + 
+                 '"' + this.periodFormatted + '",' + 
+                 this.count;
+    });
+    
+    $('.js--report-save-as').off('change').on('change', function() {
+      require('fs').writeFile($(this).val(), csvData, function(error) {
+        if(error) {
+          /* TODO */
+        }
+      });
+    }).click();  
+  };
 }]);
