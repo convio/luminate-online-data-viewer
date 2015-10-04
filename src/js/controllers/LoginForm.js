@@ -20,9 +20,9 @@ dataViewerControllers.controller('LoginFormController', ['$scope', 'WebServicesS
       
       $scope.loginform.url.$setValidity('validUrl', true);
       
-      var loginUrl = $.trim($('#login-url').val()), 
-      loginUsername = $.trim($('#login-username').val()), 
-      loginPassword = $.trim($('#login-password').val());
+      var loginUrl = $.trim($scope.cwslogin.url), 
+      loginUsername = $.trim($scope.cwslogin.username), 
+      loginPassword = $.trim($scope.cwslogin.password);
       
       if(loginUrl === '' || 
          loginUsername === '' || 

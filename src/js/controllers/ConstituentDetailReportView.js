@@ -14,7 +14,6 @@ dataViewerControllers.controller('ConstituentDetailReportViewController', ['$sco
     var settings = $.extend({
       page: '1'
     }, options || {}), 
-    
     now = new Date(), 
     oneDayAgo = new Date(now - (24 * 60 * 60 * 1000)).toISOString().split('.')[0] + '+00:00';
     

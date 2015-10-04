@@ -12,11 +12,15 @@
             <h3 class="box-title">
               Past 24 Hours
             </h3>
-            <!-- TODO <div class="box-tools pull-right">
-              <button type="button" class="btn btn-box-tool">
+            <div class="box-tools pull-right">
+              <button type="button" class="btn btn-box-tool" data-toggle="modal" data-target="#report-config-modal">
                 <i class="fa fa-wrench"></i>
+              </button> 
+              <button type="button" class="btn btn-box-tool">
+                <i class="fa fa-floppy-o"></li>
               </button>
-            </div> -->
+              <input type="file" class="hidden" nwsaveas="ecommerce-summary.csv">
+            </div>
           </div>
           <div class="box-body">
             <div class="table-responsive">
@@ -59,4 +63,32 @@
       </div>
     </div>
   </section>
+</div>
+
+<div class="modal fade" id="report-config-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form id="report-config-form">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">
+            <span>&times;</span>
+          </button>
+          <h4 class="modal-title">
+            Report Settings
+          </h4>
+        </div>
+        <div class="modal-body">
+          <!-- TODO -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">
+            Close
+          </button>
+          <button type="submit" class="btn btn-primary">
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
