@@ -163,6 +163,8 @@ dataViewerControllers.controller('ConstituentSummaryReportViewController', ['$sc
           /* TODO */
         }
         else {
+          $('.report-table').DataTable().destroy();
+          
           var $records = $(response).find('Record');
           
           if($records.length === 0) {
@@ -182,24 +184,24 @@ dataViewerControllers.controller('ConstituentSummaryReportViewController', ['$sc
             });
           }
           
+          $('.report-table').DataTable({
+            'paging': true, 
+            'lengthChange': false, 
+            'searching': false, 
+            'ordering': true, 
+            'order': [
+              [0, 'desc']
+            ], 
+            'info': true, 
+            'autoWidth': false
+          });
+          
           if($records.length === 200) {
             getConstituentSums({
               page: '' + (Number(settings.page) + 1)
             });
           }
           else {
-            $('.report-table').DataTable({
-              'paging': true, 
-              'lengthChange': false, 
-              'searching': false, 
-              'ordering': true, 
-              'order': [
-                [0, 'desc']
-              ], 
-              'info': true, 
-              'autoWidth': false
-            });
-            
             $('.content .js--loading-overlay').addClass('hidden');
           }
         }

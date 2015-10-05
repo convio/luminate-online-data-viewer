@@ -226,6 +226,8 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
         /* TODO */
       }, 
       success: function(response) {
+        $('.report-table').DataTable().destroy();
+        
         var $faultstring = $(response).find('faultstring');
         
         if($faultstring.length > 0) {
@@ -315,25 +317,24 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
             });
           }
           
+          $('.report-table').DataTable({
+            'paging': true, 
+            'lengthChange': false, 
+            'searching': false, 
+            'ordering': true, 
+            'order': [
+              [7, 'desc']
+            ], 
+            'info': true, 
+            'autoWidth': false
+          });
+          
           if($records.length === 200) {
             getDonations({
               page: '' + (Number(settings.page) + 1)
             });
           }
           else {
-            $('.report-table').DataTable().destroy();
-            $('.report-table').DataTable({
-              'paging': true, 
-              'lengthChange': false, 
-              'searching': false, 
-              'ordering': true, 
-              'order': [
-                [7, 'desc']
-              ], 
-              'info': true, 
-              'autoWidth': false
-            });
-            
             $('.content .js--loading-overlay').addClass('hidden');
           }
         }

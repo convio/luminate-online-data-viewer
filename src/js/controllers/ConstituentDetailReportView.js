@@ -95,6 +95,8 @@ dataViewerControllers.controller('ConstituentDetailReportViewController', ['$sco
           /* TODO */
         }
         else {
+          $('.report-table').DataTable().destroy();
+          
           var $records = $(response).find('Record');
           
           if($records.length === 0) {
@@ -125,24 +127,24 @@ dataViewerControllers.controller('ConstituentDetailReportViewController', ['$sco
             });
           }
           
+          $('.report-table').DataTable({
+            'paging': true, 
+            'lengthChange': false, 
+            'searching': false, 
+            'ordering': true, 
+            'order': [
+              [4, 'desc']
+            ], 
+            'info': true, 
+            'autoWidth': false
+          });
+          
           if($records.length === 200) {
             getConstituents({
               page: '' + (Number(settings.page) + 1)
             });
           }
           else {
-            $('.report-table').DataTable({
-              'paging': true, 
-              'lengthChange': false, 
-              'searching': false, 
-              'ordering': true, 
-              'order': [
-                [4, 'desc']
-              ], 
-              'info': true, 
-              'autoWidth': false
-            });
-            
             $('.content .js--loading-overlay').addClass('hidden');
           }
         }

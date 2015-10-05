@@ -166,6 +166,8 @@ dataViewerControllers.controller('EcommerceSummaryReportViewController', ['$scop
         /* TODO */
       }, 
       success: function(response) {
+        $('.report-table').DataTable().destroy();
+        
         var $faultstring = $(response).find('faultstring');
         
         if($faultstring.length > 0) {
@@ -196,24 +198,24 @@ dataViewerControllers.controller('EcommerceSummaryReportViewController', ['$scop
             });
           }
           
+          $('.report-table').DataTable({
+            'paging': true, 
+            'lengthChange': false, 
+            'searching': false, 
+            'ordering': true, 
+            'order': [
+              [0, 'desc']
+            ], 
+            'info': true, 
+            'autoWidth': false
+          });
+          
           if($records.length === 200) {
             getOrderSums({
               page: '' + (Number(settings.page) + 1)
             });
           }
           else {
-            $('.report-table').DataTable({
-              'paging': true, 
-              'lengthChange': false, 
-              'searching': false, 
-              'ordering': true, 
-              'order': [
-                [0, 'desc']
-              ], 
-              'info': true, 
-              'autoWidth': false
-            });
-            
             $('.content .js--loading-overlay').addClass('hidden');
           }
         }
