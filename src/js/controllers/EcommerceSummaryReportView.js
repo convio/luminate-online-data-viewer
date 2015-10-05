@@ -10,12 +10,12 @@ dataViewerControllers.controller('EcommerceSummaryReportViewController', ['$scop
         moment()
       ], 
       'Today': [
-        moment(), 
+        moment().startOf('day'), 
         moment()
       ], 
       'Yesterday': [
-        moment().subtract(1, 'days'), 
-        moment().subtract(1, 'days')
+        moment().subtract(1, 'days').startOf('day'), 
+        moment().subtract(1, 'days').endOf('day')
       ], 
       'Last 7 Days': [
         moment().subtract(6, 'days'), 
@@ -48,7 +48,8 @@ dataViewerControllers.controller('EcommerceSummaryReportViewController', ['$scop
   $scope.reportconfig = $.extend({
     datelabel: 'Last 24 Hours', 
     startdate: '', 
-    enddate: ''
+    enddate: '', 
+    summaryinterval: 'hourly'
   }, CacheService.getCachedReportConfig('report_ecommerce_summary'));
   
   $scope.orders = [];
@@ -59,9 +60,22 @@ dataViewerControllers.controller('EcommerceSummaryReportViewController', ['$scop
     $scope.orders.push(order);
     
     var paymentDate = order.Payment.PaymentDate, 
-    paymentPeriod = paymentDate.split(':')[0], 
+    paymentHour = paymentDate.split(':')[0], 
+    paymentPeriod = paymentHour, 
     paymentAmount = Number(order.Payment.Amount), 
     orderSumIndex = -1;
+    
+    switch($scope.reportconfig.summaryinterval) {
+      case 'daily':
+        paymentPeriod = paymentPeriod.split('T')[0];
+        break;
+      case 'weekly':
+        /* TODO */
+        break;
+      case 'monthly':
+        paymentPeriod = paymentPeriod.split('T')[0].split('-')[0] + paymentPeriod.split('T')[0].split('-')[1];
+        break;
+    }
     
     $.each($scope.ordersums, function(sumIndex) {
       if(this.period === paymentPeriod) {
@@ -74,11 +88,30 @@ dataViewerControllers.controller('EcommerceSummaryReportViewController', ['$scop
         month: 'short', 
         day: 'numeric', 
         year: 'numeric'
-      }).format(new Date(paymentPeriod + ':00:00Z')) + ' - ' + new Intl.DateTimeFormat('en-us', {
+      }).format(new Date(paymentHour + ':00:00Z')) + ' - ' + new Intl.DateTimeFormat('en-us', {
         hour12: true, 
         hour: 'numeric', 
         minute: '2-digit'
-      }).format(new Date(paymentPeriod + ':00:00Z'));
+      }).format(new Date(paymentHour + ':00:00Z'));
+      
+      switch($scope.reportconfig.summaryinterval) {
+        case 'daily':
+          paymentPeriodFormatted = Intl.DateTimeFormat('en-us', {
+            month: 'short', 
+            day: 'numeric', 
+            year: 'numeric'
+          }).format(new Date(paymentHour + ':00:00Z'));
+          break;
+        case 'weekly':
+          /* TODO */
+          break;
+        case 'monthly':
+          paymentPeriodFormatted = Intl.DateTimeFormat('en-us', {
+            month: 'short', 
+            year: 'numeric'
+          }).format(new Date(paymentHour + ':00:00Z'));
+          break;
+      }
       
       $scope.ordersums.push({
         period: paymentPeriod, 

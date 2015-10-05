@@ -10,12 +10,12 @@ dataViewerControllers.controller('ConstituentSummaryReportViewController', ['$sc
         moment()
       ], 
       'Today': [
-        moment(), 
+        moment().startOf('day'), 
         moment()
       ], 
       'Yesterday': [
-        moment().subtract(1, 'days'), 
-        moment().subtract(1, 'days')
+        moment().subtract(1, 'days').startOf('day'), 
+        moment().subtract(1, 'days').endOf('day')
       ], 
       'Last 7 Days': [
         moment().subtract(6, 'days'), 
@@ -48,7 +48,8 @@ dataViewerControllers.controller('ConstituentSummaryReportViewController', ['$sc
   $scope.reportconfig = $.extend({
     datelabel: 'Last 24 Hours', 
     startdate: '', 
-    enddate: ''
+    enddate: '', 
+    summaryinterval: 'hourly'
   }, CacheService.getCachedReportConfig('report_constituents_summary'));
   
   $scope.constituents = [];
@@ -59,8 +60,21 @@ dataViewerControllers.controller('ConstituentSummaryReportViewController', ['$sc
     $scope.constituents.push(constituent);
     
     var consCreationDate = constituent.CreationDate, 
-    consCreationPeriod = consCreationDate.split(':')[0], 
+    consCreationHour = consCreationDate.split(':')[0], 
+    consCreationPeriod = consCreationHour, 
     constituentSumIndex = -1;
+    
+    switch($scope.reportconfig.summaryinterval) {
+      case 'daily':
+        consCreationPeriod = consCreationPeriod.split('T')[0];
+        break;
+      case 'weekly':
+        /* TODO */
+        break;
+      case 'monthly':
+        consCreationPeriod = consCreationPeriod.split('T')[0].split('-')[0] + consCreationPeriod.split('T')[0].split('-')[1];
+        break;
+    }
     
     $.each($scope.constituentsums, function(sumIndex) {
       if(this.period === consCreationPeriod) {
@@ -73,11 +87,30 @@ dataViewerControllers.controller('ConstituentSummaryReportViewController', ['$sc
         month: 'short', 
         day: 'numeric', 
         year: 'numeric'
-      }).format(new Date(consCreationPeriod + ':00:00Z')) + ' - ' + new Intl.DateTimeFormat('en-us', {
+      }).format(new Date(consCreationHour + ':00:00Z')) + ' - ' + new Intl.DateTimeFormat('en-us', {
         hour12: true, 
         hour: 'numeric', 
         minute: '2-digit'
-      }).format(new Date(consCreationPeriod + ':00:00Z'));
+      }).format(new Date(consCreationHour + ':00:00Z'));
+      
+      switch($scope.reportconfig.summaryinterval) {
+        case 'daily':
+          consCreationPeriodFormatted = Intl.DateTimeFormat('en-us', {
+            month: 'short', 
+            day: 'numeric', 
+            year: 'numeric'
+          }).format(new Date(consCreationHour + ':00:00Z'));
+          break;
+        case 'weekly':
+          /* TODO */
+          break;
+        case 'monthly':
+          consCreationPeriodFormatted = Intl.DateTimeFormat('en-us', {
+            month: 'short', 
+            year: 'numeric'
+          }).format(new Date(consCreationHour + ':00:00Z'));
+          break;
+      }
       
       $scope.constituentsums.push({
         period: consCreationPeriod, 

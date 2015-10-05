@@ -10,12 +10,12 @@ dataViewerControllers.controller('DonationSummaryReportViewController', ['$scope
         moment()
       ], 
       'Today': [
-        moment(), 
+        moment().startOf('day'), 
         moment()
       ], 
       'Yesterday': [
-        moment().subtract(1, 'days'), 
-        moment().subtract(1, 'days')
+        moment().subtract(1, 'days').startOf('day'), 
+        moment().subtract(1, 'days').endOf('day')
       ], 
       'Last 7 Days': [
         moment().subtract(6, 'days'), 
@@ -48,6 +48,7 @@ dataViewerControllers.controller('DonationSummaryReportViewController', ['$scope
   $scope.reportconfig = $.extend({
     startdate: '', 
     enddate: '', 
+    summaryinterval: 'hourly', 
     donationcampaign: '', 
     donationform: ''
   }, CacheService.getCachedReportConfig('report_donations_summary'));
@@ -184,10 +185,23 @@ dataViewerControllers.controller('DonationSummaryReportViewController', ['$scope
     $scope.donations.push(donation);
     
     var paymentDate = donation.Payment.PaymentDate, 
-    paymentPeriod = paymentDate.split(':')[0], 
+    paymentHour = paymentDate.split(':')[0], 
+    paymentPeriod = paymentHour, 
     paymentAmount = Number(donation.Payment.Amount), 
     isRecurringPayment = donation.RecurringPayment ? true : false, 
     donationSumIndex = -1;
+    
+    switch($scope.reportconfig.summaryinterval) {
+      case 'daily':
+        paymentPeriod = paymentPeriod.split('T')[0];
+        break;
+      case 'weekly':
+        /* TODO */
+        break;
+      case 'monthly':
+        paymentPeriod = paymentPeriod.split('T')[0].split('-')[0] + paymentPeriod.split('T')[0].split('-')[1];
+        break;
+    }
     
     $.each($scope.donationsums, function(sumIndex) {
       if(this.period === paymentPeriod) {
@@ -200,11 +214,30 @@ dataViewerControllers.controller('DonationSummaryReportViewController', ['$scope
         month: 'short', 
         day: 'numeric', 
         year: 'numeric'
-      }).format(new Date(paymentPeriod + ':00:00Z')) + ' - ' + new Intl.DateTimeFormat('en-us', {
+      }).format(new Date(paymentHour + ':00:00Z')) + ' - ' + new Intl.DateTimeFormat('en-us', {
         hour12: true, 
         hour: 'numeric', 
         minute: '2-digit'
-      }).format(new Date(paymentPeriod + ':00:00Z'));
+      }).format(new Date(paymentHour + ':00:00Z'));
+      
+      switch($scope.reportconfig.summaryinterval) {
+        case 'daily':
+          paymentPeriodFormatted = Intl.DateTimeFormat('en-us', {
+            month: 'short', 
+            day: 'numeric', 
+            year: 'numeric'
+          }).format(new Date(paymentHour + ':00:00Z'));
+          break;
+        case 'weekly':
+          /* TODO */
+          break;
+        case 'monthly':
+          paymentPeriodFormatted = Intl.DateTimeFormat('en-us', {
+            month: 'short', 
+            year: 'numeric'
+          }).format(new Date(paymentHour + ':00:00Z'));
+          break;
+      }
       
       $scope.donationsums.push({
         period: paymentPeriod, 

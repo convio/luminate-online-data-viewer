@@ -10,12 +10,12 @@ dataViewerControllers.controller('EcommerceDetailReportViewController', ['$scope
         moment()
       ], 
       'Today': [
-        moment(), 
+        moment().startOf('day'), 
         moment()
       ], 
       'Yesterday': [
-        moment().subtract(1, 'days'), 
-        moment().subtract(1, 'days')
+        moment().subtract(1, 'days').startOf('day'), 
+        moment().subtract(1, 'days').endOf('day')
       ], 
       'Last 7 Days': [
         moment().subtract(6, 'days'), 
