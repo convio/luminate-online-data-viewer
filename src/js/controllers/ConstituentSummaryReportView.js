@@ -211,11 +211,7 @@ dataViewerControllers.controller('ConstituentSummaryReportViewController', ['$sc
   
   getConstituentSums();
   
-  $scope.updateReportConfig = function() {
-    $('#report-config-modal').modal('hide');
-    
-    CacheService.cacheReportConfig('report_constituents_summary', $scope.reportconfig);
-    
+  $scope.refreshReport = function() {
     $scope.constituents = [];
     
     $scope.constituentsums = [];
@@ -225,6 +221,14 @@ dataViewerControllers.controller('ConstituentSummaryReportViewController', ['$sc
     $('.content .js--loading-overlay').removeClass('hidden');
     
     getConstituentSums();
+  };
+  
+  $scope.updateReportConfig = function(e) {
+    $('#report-config-modal').modal('hide');
+    
+    CacheService.cacheReportConfig('report_constituents_summary', $scope.reportconfig);
+    
+    $scope.refreshReport();
   };
   
   $scope.download = function() {

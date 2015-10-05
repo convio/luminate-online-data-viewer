@@ -154,11 +154,7 @@ dataViewerControllers.controller('ConstituentDetailReportViewController', ['$sco
   
   getConstituents();
   
-  $scope.updateReportConfig = function() {
-    $('#report-config-modal').modal('hide');
-    
-    CacheService.cacheReportConfig('report_constituents_detail', $scope.reportconfig);
-    
+  $scope.refreshReport = function() {
     $scope.constituents = [];
     
     $('.report-table').DataTable().destroy();
@@ -166,6 +162,14 @@ dataViewerControllers.controller('ConstituentDetailReportViewController', ['$sco
     $('.content .js--loading-overlay').removeClass('hidden');
     
     getConstituents();
+  };
+  
+  $scope.updateReportConfig = function(e) {
+    $('#report-config-modal').modal('hide');
+    
+    CacheService.cacheReportConfig('report_constituents_detail', $scope.reportconfig);
+    
+    $scope.refreshReport();
   };
   
   $scope.download = function() {

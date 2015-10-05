@@ -80,12 +80,9 @@ module.exports = function(grunt) {
   });
   
   grunt.registerTask('build-downloads', [
-    /* TODO: clean */
-    'nwjs'
-  ]);
-  grunt.registerTask('compress-downloads', [
+    'clean:downloads', 
+    'nwjs', 
     'compress'
-    /* TODO: clean */
   ]);
   
   grunt.registerTask('default', [

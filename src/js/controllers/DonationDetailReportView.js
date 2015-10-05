@@ -344,11 +344,7 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
   
   getDonations();
   
-  $scope.updateReportConfig = function() {
-    $('#report-config-modal').modal('hide');
-    
-    CacheService.cacheReportConfig('report_donations_detail', $scope.reportconfig);
-    
+  $scope.refreshReport = function() {
     $scope.donations = [];
     
     $('.report-table').DataTable().destroy();
@@ -356,6 +352,14 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
     $('.content .js--loading-overlay').removeClass('hidden');
     
     getDonations();
+  };
+  
+  $scope.updateReportConfig = function(e) {
+    $('#report-config-modal').modal('hide');
+    
+    CacheService.cacheReportConfig('report_donations_detail', $scope.reportconfig);
+    
+    $scope.refreshReport();
   };
   
   $scope.download = function() {

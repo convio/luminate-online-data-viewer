@@ -170,11 +170,7 @@ dataViewerControllers.controller('EcommerceDetailReportViewController', ['$scope
   
   getOrders();
   
-  $scope.updateReportConfig = function() {
-    $('#report-config-modal').modal('hide');
-    
-    CacheService.cacheReportConfig('report_ecommerce_detail', $scope.reportconfig);
-    
+  $scope.refreshReport = function() {
     $scope.orders = [];
     
     $('.report-table').DataTable().destroy();
@@ -182,6 +178,14 @@ dataViewerControllers.controller('EcommerceDetailReportViewController', ['$scope
     $('.content .js--loading-overlay').removeClass('hidden');
     
     getOrders();
+  };
+  
+  $scope.updateReportConfig = function(e) {
+    $('#report-config-modal').modal('hide');
+    
+    CacheService.cacheReportConfig('report_ecommerce_detail', $scope.reportconfig);
+    
+    $scope.refreshReport();
   };
   
   $scope.download = function() {

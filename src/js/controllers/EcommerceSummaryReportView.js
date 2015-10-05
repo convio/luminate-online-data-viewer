@@ -225,11 +225,7 @@ dataViewerControllers.controller('EcommerceSummaryReportViewController', ['$scop
   
   getOrderSums();
   
-  $scope.updateReportConfig = function() {
-    $('#report-config-modal').modal('hide');
-    
-    CacheService.cacheReportConfig('report_ecommerce_summary', $scope.reportconfig);
-    
+  $scope.refreshReport = function() {
     $scope.orders = [];
     
     $scope.ordersums = [];
@@ -239,6 +235,14 @@ dataViewerControllers.controller('EcommerceSummaryReportViewController', ['$scop
     $('.content .js--loading-overlay').removeClass('hidden');
     
     getOrderSums();
+  };
+  
+  $scope.updateReportConfig = function(e) {
+    $('#report-config-modal').modal('hide');
+    
+    CacheService.cacheReportConfig('report_ecommerce_summary', $scope.reportconfig);
+    
+    $scope.refreshReport();
   };
   
   $scope.download = function() {
