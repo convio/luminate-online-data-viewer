@@ -10,8 +10,6 @@ The Luminate Online Data Viewer allows organizations to gain insight into the pe
 their online marketing campaigns with up-to-the-minute reporting using 
 [Luminate Online Web Services](http://open.convio.com/webservices/).
 
-![Example Donations Report](screenshot-donation-report.png)
-
 Download
 --------
 
@@ -26,8 +24,6 @@ Logging In
 ----------
 
 Each time you use the app, you'll need to login to Luminate Online Web Services.
-
-![Login Screen](screenshot-login.png)
 
 To login, you'll need a few pieces of information:
 
