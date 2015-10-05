@@ -1,6 +1,51 @@
 dataViewerControllers.controller('EcommerceDetailReportViewController', ['$scope', 'WebServicesService', function($scope, WebServicesService) {
   $.AdminLTE.layout.fix();
   
+  $('#report-config-datepicker').daterangepicker({
+    startDate: moment().subtract(1, 'days'), 
+    endDate: moment(), 
+    ranges: {
+      'Last 24 Hours': [
+        moment().subtract(1, 'days'), 
+        moment()
+      ], 
+      'Today': [
+        moment(), 
+        moment()
+      ], 
+      'Yesterday': [
+        moment().subtract(1, 'days'), 
+        moment().subtract(1, 'days')
+      ], 
+      'Last 7 Days': [
+        moment().subtract(6, 'days'), 
+        moment()
+      ], 
+      'Last 30 Days': [
+        moment().subtract(29, 'days'), 
+        moment()
+      ], 
+      'This Month': [
+        moment().startOf('month'), 
+        moment().endOf('month')
+      ], 
+      'Last Month': [
+        moment().subtract(1, 'month').startOf('month'), 
+        moment().subtract(1, 'month').endOf('month')
+      ]
+    }, 
+    timePicker: true
+  }, function (start, end, label) {
+    $('.js--report-config-date-selected').text(label);
+    $scope.reportconfig.startdate = start.format('YYYY-MM-DDThh:mm:00');
+    $scope.reportconfig.enddate = end.format('YYYY-MM-DDThh:mm:00');
+  });
+  
+  $scope.reportconfig = {
+    startdate: '', 
+    enddate: ''
+  };
+  
   $scope.orders = [];
   
   var addOrder = function(order) {
@@ -15,10 +60,25 @@ dataViewerControllers.controller('EcommerceDetailReportViewController', ['$scope
       page: '1'
     }, options || {}), 
     now = new Date(), 
-    oneDayAgo = new Date(now - (24 * 60 * 60 * 1000)).toISOString().split('.')[0] + '+00:00';
+    startDate = new Date(now - (24 * 60 * 60 * 1000)).toISOString().split('.')[0], 
+    endDate = now.toISOString().split('.')[0];
+    
+    if($scope.reportconfig.startdate !== '') {
+      startDate = $scope.reportconfig.startdate;
+      
+      if($scope.reportconfig.enddate !== '') {
+        endDate = $scope.reportconfig.enddate;
+      }
+    }
+    else if($scope.reportconfig.enddate !== '') {
+      startDate = '1969-12-31T00:00:00';
+      endDate = $scope.reportconfig.enddate;
+    }
     
     WebServicesService.query({
-      statement: 'select TransactionId, StoreId, Payment.Amount, Payment.PaymentDate, Purchaser.ConsName, Purchaser.PrimaryEmail from ProductOrder where Payment.PaymentDate >= ' + oneDayAgo, 
+      statement: 'select TransactionId, StoreId, Payment.Amount, Payment.PaymentDate, Purchaser.ConsName, Purchaser.PrimaryEmail' + 
+                 ' from ProductOrder' + 
+                 ' where Payment.PaymentDate &gt; ' + startDate + ' and Payment.PaymentDate &gt; ' + endDate, 
       page: settings.page, 
       error: function() {
         /* TODO */
@@ -102,6 +162,18 @@ dataViewerControllers.controller('EcommerceDetailReportViewController', ['$scope
   };
   
   getOrders();
+  
+  $scope.updateReportConfig = function() {
+    $('#report-config-modal').modal('hide');
+    
+    $scope.orders = [];
+    
+    $('.report-table').DataTable().destroy();
+    
+    $('.content .js--loading-overlay').removeClass('hidden');
+    
+    getOrders();
+  };
   
   $scope.download = function() {
     var csvData = 'Transaction ID,Store ID,Order Amount,First Name,Last Name,Email Address,Order Date';

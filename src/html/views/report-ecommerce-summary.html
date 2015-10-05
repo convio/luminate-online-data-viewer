@@ -9,11 +9,9 @@
       <div class="col-xs-12">
         <div class="box">
           <div class="box-header">
-            <h3 class="box-title">
-              Past 24 Hours
-            </h3>
+            <h3 class="box-title"></h3>
             <div class="box-tools pull-right">
-              <button type="button" class="btn btn-box-tool" data-toggle="modal" data-target="#report-config-modal">
+              <button type="button" class="btn btn-box-tool" data-toggle="modal" data-target="#report-config-modal" data-backdrop="static">
                 <i class="fa fa-wrench"></i>
               </button> 
               <button type="button" class="btn btn-box-tool" ng-click="download()">
@@ -68,7 +66,7 @@
 <div class="modal fade" id="report-config-modal">
   <div class="modal-dialog">
     <div class="modal-content">
-      <form id="report-config-form">
+      <form name="reportconfigform" id="report-config-form" ng-submit="updateReportConfig($event)">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">
             <span>&times;</span>
@@ -79,6 +77,18 @@
         </div>
         <div class="modal-body">
           <!-- TODO -->
+          <div class="form-group">
+            <label>
+              Date Range:
+            </label>
+            <div class="input-group input-group-full">
+              <button type="button" class="btn btn-default btn-full text-left" id="report-config-datepicker">
+                <i class="fa fa-calendar"></i> <span class="js--report-config-date-selected">Last 24 Hours</span> <i class="fa fa-caret-down pull-right"></i>
+              </button>
+            </div>
+            <input type="hidden" name="startdate" id="report-config-startdate" ng-model="reportconfig.startdate">
+            <input type="hidden" name="enddate" id="report-config-enddate" ng-model="reportconfig.enddate">
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">

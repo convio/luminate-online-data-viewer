@@ -9,7 +9,7 @@
         {{alert.message}}
       </alert>
       <div class="form-group has-feedback" ng-class="{ 'has-error': loginform.$submitted && loginform.url.$invalid }">
-        <input type="text" class="form-control" name="url" id="login-url" ng-model="cwslogin.url" placeholder="Web Services URL" required>
+        <input type="url" class="form-control" name="url" id="login-url" ng-model="cwslogin.url" placeholder="Web Services URL" required>
         <span class="glyphicon glyphicon-globe form-control-feedback"></span>
         <span ng-show="loginform.$submitted && loginform.url.$invalid && !loginform.url.$error.validUrl" class="help-block">
           Web Services URL is required
