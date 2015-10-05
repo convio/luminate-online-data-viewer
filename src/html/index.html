@@ -43,8 +43,59 @@
       <div ng-view></div>
     </div>
     <a class="hidden js--view-change-shim" href="#/login"></a>
+    <div class="modal fade" id="no-new-version-modal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">
+              <span>&times;</span>
+            </button>
+            <h4 class="modal-title">
+              No Updates Available
+            </h4>
+          </div>
+          <div class="modal-body">
+            You are using the most recent version of the Luminate Online Data Viewer.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="new-version-modal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">
+              <span>&times;</span>
+            </button>
+            <h4 class="modal-title">
+              New Version Available
+            </h4>
+          </div>
+          <div class="modal-body">
+            A new version of the Luminate Online Data Viewer is available.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+              Close
+            </button> 
+            <a class="btn btn-primary external-link" href="https://github.com/convio/luminate-online-data-viewer/tree/master/download">
+              Download
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
     <script>
-      $('.external-link').click(function(e) {
+      $('body').on('click', 'a[href="#"]', function(e) {
+        e.preventDefault();
+      });
+      
+      $('body').on('click', '.external-link', function(e) {
         e.preventDefault();
         
         gui.Shell.openExternal($(this).attr('href'));
