@@ -1,4 +1,4 @@
-dataViewerControllers.controller('ConstituentSummaryReportViewController', ['$scope', 'WebServicesService', function($scope, WebServicesService) {
+dataViewerControllers.controller('ConstituentSummaryReportViewController', ['$scope', 'CacheService', 'WebServicesService', function($scope, CacheService, WebServicesService) {
   $.AdminLTE.layout.fix();
   
   $('#report-config-datepicker').daterangepicker({
@@ -36,15 +36,20 @@ dataViewerControllers.controller('ConstituentSummaryReportViewController', ['$sc
     }, 
     timePicker: true
   }, function (start, end, label) {
-    $('.js--report-config-date-selected').text(label);
+    $scope.reportconfig.datelabel = label;
     $scope.reportconfig.startdate = start.format('YYYY-MM-DDThh:mm:00');
     $scope.reportconfig.enddate = end.format('YYYY-MM-DDThh:mm:00');
+    
+    if(!$scope.$$phase) {
+      $scope.$apply();
+    }
   });
   
-  $scope.reportconfig = {
+  $scope.reportconfig = $.extend({
+    datelabel: 'Last 24 Hours', 
     startdate: '', 
     enddate: ''
-  };
+  }, CacheService.getCachedReportConfig('report_constituents_summary'));
   
   $scope.constituents = [];
   
@@ -113,7 +118,7 @@ dataViewerControllers.controller('ConstituentSummaryReportViewController', ['$sc
     WebServicesService.query({
       statement: 'select ConsId, CreationDate' + 
                  ' from Constituent' + 
-                 ' where CreationDate &gt; ' + startDate + ' and CreationDate &lt; ' + endDate, 
+                 ' where CreationDate &gt;= ' + startDate + ' and CreationDate &lt;= ' + endDate, 
       page: settings.page, 
       error: function() {
         /* TODO */
@@ -173,6 +178,8 @@ dataViewerControllers.controller('ConstituentSummaryReportViewController', ['$sc
   
   $scope.updateReportConfig = function() {
     $('#report-config-modal').modal('hide');
+    
+    CacheService.cacheReportConfig('report_constituents_summary', $scope.reportconfig);
     
     $scope.constituents = [];
     

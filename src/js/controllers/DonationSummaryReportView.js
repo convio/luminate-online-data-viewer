@@ -1,4 +1,4 @@
-dataViewerControllers.controller('DonationSummaryReportViewController', ['$scope', 'WebServicesService', function($scope, WebServicesService) {
+dataViewerControllers.controller('DonationSummaryReportViewController', ['$scope', 'CacheService', 'WebServicesService', function($scope, CacheService, WebServicesService) {
   $.AdminLTE.layout.fix();
   
   $('#report-config-datepicker').daterangepicker({
@@ -36,17 +36,21 @@ dataViewerControllers.controller('DonationSummaryReportViewController', ['$scope
     }, 
     timePicker: true
   }, function (start, end, label) {
-    $('.js--report-config-date-selected').text(label);
+    $scope.reportconfig.datelabel = label;
     $scope.reportconfig.startdate = start.format('YYYY-MM-DDThh:mm:00');
     $scope.reportconfig.enddate = end.format('YYYY-MM-DDThh:mm:00');
+    
+    if(!$scope.$$phase) {
+      $scope.$apply();
+    }
   });
   
-  $scope.reportconfig = {
+  $scope.reportconfig = $.extend({
     startdate: '', 
     enddate: '', 
     donationcampaign: '', 
     donationform: ''
-  };
+  }, CacheService.getCachedReportConfig('report_donations_summary'));
   
   $scope.donationcampaigns = [];
   
@@ -284,7 +288,7 @@ dataViewerControllers.controller('DonationSummaryReportViewController', ['$scope
     WebServicesService.query({
       statement: 'select TransactionId, Payment.Amount, Payment.PaymentDate, RecurringPayment.OriginalTransactionId' + 
                  ' from Donation' + 
-                 ' where Payment.PaymentDate &gt; ' + startDate + ' and Payment.PaymentDate &lt; ' + endDate + 
+                 ' where Payment.PaymentDate &gt;= ' + startDate + ' and Payment.PaymentDate &lt;= ' + endDate + 
                  (campaignId ? (' and CampaignId = ' + campaignId) : '') + 
                  (formId ? (' and FormId = ' + formId) : ''), 
       page: settings.page, 
@@ -360,6 +364,8 @@ dataViewerControllers.controller('DonationSummaryReportViewController', ['$scope
   
   $scope.updateReportConfig = function() {
     $('#report-config-modal').modal('hide');
+    
+    CacheService.cacheReportConfig('report_donations_summary', $scope.reportconfig);
     
     $scope.donations = [];
     

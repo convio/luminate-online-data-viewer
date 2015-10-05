@@ -1,4 +1,4 @@
-dataViewerControllers.controller('DonationDetailReportViewController', ['$scope', 'WebServicesService', function($scope, WebServicesService) {
+dataViewerControllers.controller('DonationDetailReportViewController', ['$scope', 'CacheService', 'WebServicesService', function($scope, CacheService, WebServicesService) {
   $.AdminLTE.layout.fix();
   
   $('#report-config-datepicker').daterangepicker({
@@ -36,17 +36,21 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
     }, 
     timePicker: true
   }, function (start, end, label) {
-    $('.js--report-config-date-selected').text(label);
+    $scope.reportconfig.datelabel = label;
     $scope.reportconfig.startdate = start.format('YYYY-MM-DDThh:mm:00');
     $scope.reportconfig.enddate = end.format('YYYY-MM-DDThh:mm:00');
+    
+    if(!$scope.$$phase) {
+      $scope.$apply();
+    }
   });
   
-  $scope.reportconfig = {
+  $scope.reportconfig = $.extend({
     startdate: '', 
     enddate: '', 
     donationcampaign: '', 
     donationform: ''
-  };
+  }, CacheService.getCachedReportConfig('report_donations_detail'));
   
   $scope.donationcampaigns = [];
   
@@ -214,7 +218,7 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
     WebServicesService.query({
       statement: 'select TransactionId, CampaignId, FormId, Payment.Amount, Payment.PaymentDate, Payment.TenderType, Payment.CreditCardType, Donor.ConsName, Donor.PrimaryEmail, RecurringPayment.OriginalTransactionId' + 
                  ' from Donation' + 
-                 ' where Payment.PaymentDate &gt; ' + startDate + ' and Payment.PaymentDate &lt;' + endDate + 
+                 ' where Payment.PaymentDate &gt;= ' + startDate + ' and Payment.PaymentDate &lt;=' + endDate + 
                  (campaignId ? (' and CampaignId = ' + campaignId) : '') + 
                  (formId ? (' and FormId = ' + formId) : ''), 
       page: settings.page, 
@@ -324,7 +328,7 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
               'searching': false, 
               'ordering': true, 
               'order': [
-                [4, 'desc']
+                [7, 'desc']
               ], 
               'info': true, 
               'autoWidth': false
@@ -341,6 +345,8 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
   
   $scope.updateReportConfig = function() {
     $('#report-config-modal').modal('hide');
+    
+    CacheService.cacheReportConfig('report_donations_detail', $scope.reportconfig);
     
     $scope.donations = [];
     

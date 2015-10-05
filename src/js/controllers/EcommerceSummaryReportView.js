@@ -1,4 +1,4 @@
-dataViewerControllers.controller('EcommerceSummaryReportViewController', ['$scope', 'WebServicesService', function($scope, WebServicesService) {
+dataViewerControllers.controller('EcommerceSummaryReportViewController', ['$scope', 'CacheService', 'WebServicesService', function($scope, CacheService, WebServicesService) {
   $.AdminLTE.layout.fix();
   
   $('#report-config-datepicker').daterangepicker({
@@ -36,15 +36,20 @@ dataViewerControllers.controller('EcommerceSummaryReportViewController', ['$scop
     }, 
     timePicker: true
   }, function (start, end, label) {
-    $('.js--report-config-date-selected').text(label);
+    $scope.reportconfig.datelabel = label;
     $scope.reportconfig.startdate = start.format('YYYY-MM-DDThh:mm:00');
     $scope.reportconfig.enddate = end.format('YYYY-MM-DDThh:mm:00');
+    
+    if(!$scope.$$phase) {
+      $scope.$apply();
+    }
   });
   
-  $scope.reportconfig = {
+  $scope.reportconfig = $.extend({
+    datelabel: 'Last 24 Hours', 
     startdate: '', 
     enddate: ''
-  };
+  }, CacheService.getCachedReportConfig('report_ecommerce_summary'));
   
   $scope.orders = [];
   
@@ -122,7 +127,7 @@ dataViewerControllers.controller('EcommerceSummaryReportViewController', ['$scop
     WebServicesService.query({
       statement: 'select TransactionId, Payment.Amount, Payment.PaymentDate' + 
                  ' from ProductOrder' + 
-                 ' where Payment.PaymentDate &gt; ' + startDate + ' and Payment.PaymentDate &lt; ' + endDate, 
+                 ' where Payment.PaymentDate &gt;= ' + startDate + ' and Payment.PaymentDate &lt;= ' + endDate, 
       page: settings.page, 
       error: function() {
         /* TODO */
@@ -187,6 +192,8 @@ dataViewerControllers.controller('EcommerceSummaryReportViewController', ['$scop
   
   $scope.updateReportConfig = function() {
     $('#report-config-modal').modal('hide');
+    
+    CacheService.cacheReportConfig('report_ecommerce_summary', $scope.reportconfig);
     
     $scope.orders = [];
     

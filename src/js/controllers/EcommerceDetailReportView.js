@@ -1,4 +1,4 @@
-dataViewerControllers.controller('EcommerceDetailReportViewController', ['$scope', 'WebServicesService', function($scope, WebServicesService) {
+dataViewerControllers.controller('EcommerceDetailReportViewController', ['$scope', 'CacheService', 'WebServicesService', function($scope, CacheService, WebServicesService) {
   $.AdminLTE.layout.fix();
   
   $('#report-config-datepicker').daterangepicker({
@@ -36,15 +36,20 @@ dataViewerControllers.controller('EcommerceDetailReportViewController', ['$scope
     }, 
     timePicker: true
   }, function (start, end, label) {
-    $('.js--report-config-date-selected').text(label);
+    $scope.reportconfig.datelabel = label;
     $scope.reportconfig.startdate = start.format('YYYY-MM-DDThh:mm:00');
     $scope.reportconfig.enddate = end.format('YYYY-MM-DDThh:mm:00');
+    
+    if(!$scope.$$phase) {
+      $scope.$apply();
+    }
   });
   
-  $scope.reportconfig = {
+  $scope.reportconfig = $.extend({
+    datelabel: 'Last 24 Hours', 
     startdate: '', 
     enddate: ''
-  };
+  }, CacheService.getCachedReportConfig('report_ecommerce_detail'));
   
   $scope.orders = [];
   
@@ -78,7 +83,7 @@ dataViewerControllers.controller('EcommerceDetailReportViewController', ['$scope
     WebServicesService.query({
       statement: 'select TransactionId, StoreId, Payment.Amount, Payment.PaymentDate, Purchaser.ConsName, Purchaser.PrimaryEmail' + 
                  ' from ProductOrder' + 
-                 ' where Payment.PaymentDate &gt; ' + startDate + ' and Payment.PaymentDate &gt; ' + endDate, 
+                 ' where Payment.PaymentDate &gt;= ' + startDate + ' and Payment.PaymentDate &lt;= ' + endDate, 
       page: settings.page, 
       error: function() {
         /* TODO */
@@ -148,7 +153,7 @@ dataViewerControllers.controller('EcommerceDetailReportViewController', ['$scope
               'searching': false, 
               'ordering': true, 
               'order': [
-                [4, 'desc']
+                [6, 'desc']
               ], 
               'info': true, 
               'autoWidth': false
@@ -165,6 +170,8 @@ dataViewerControllers.controller('EcommerceDetailReportViewController', ['$scope
   
   $scope.updateReportConfig = function() {
     $('#report-config-modal').modal('hide');
+    
+    CacheService.cacheReportConfig('report_ecommerce_detail', $scope.reportconfig);
     
     $scope.orders = [];
     

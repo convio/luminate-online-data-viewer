@@ -124,11 +124,12 @@
             </label>
             <div class="input-group input-group-full">
               <button type="button" class="btn btn-default btn-full text-left" id="report-config-datepicker">
-                <i class="fa fa-calendar"></i> <span class="js--report-config-date-selected">Last 24 Hours</span> <i class="fa fa-caret-down pull-right"></i>
+                <i class="fa fa-calendar"></i> <span class="js--report-config-date-selected">{{reportconfig.datelabel}}</span> <i class="fa fa-caret-down pull-right"></i>
               </button>
             </div>
-            <input type="hidden" name="startdate" id="report-config-startdate" ng-model="reportconfig.startdate">
-            <input type="hidden" name="enddate" id="report-config-enddate" ng-model="reportconfig.enddate">
+            <input type="hidden" name="datelabel" ng-model="reportconfig.datelabel">
+            <input type="hidden" name="startdate" ng-model="reportconfig.startdate">
+            <input type="hidden" name="enddate" ng-model="reportconfig.enddate">
           </div>
           <div class="form-group">
             <label>
