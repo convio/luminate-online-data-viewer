@@ -81,7 +81,7 @@ dataViewerControllers.controller('ConstituentDetailReportViewController', ['$sco
     }
     
     WebServicesService.query({
-      statement: 'select ConsId, ConsName, CreationDate, PrimaryEmail' + 
+      statement: 'select ConsId, ConsName.FirstName, ConsName.LastName, CreationDate, PrimaryEmail, HomeAddress.City, HomeAddress.State' + 
                  ' from Constituent' + 
                  ' where CreationDate &gt;= ' + startDate + ' and CreationDate &lt;= ' + endDate, 
       page: settings.page, 
@@ -110,7 +110,10 @@ dataViewerControllers.controller('ConstituentDetailReportViewController', ['$sco
               consLastName = $consName.find('LastName').text(), 
               consCreationDate = $(this).find('CreationDate').text(), 
               consCreationDateFormatted = new Intl.DateTimeFormat().format(new Date(consCreationDate)), 
-              consPrimaryEmail = $(this).find('PrimaryEmail').text();
+              consPrimaryEmail = $(this).find('PrimaryEmail').text(), 
+              $consHomeAddress = $(this).find('HomeAddress'), 
+              consHomeCity = $consHomeAddress.find('City').text(), 
+              consHomeState = $consHomeAddress.find('State').text();
               
               var constituentData = {
                 'ConsId': consId, 
@@ -120,7 +123,11 @@ dataViewerControllers.controller('ConstituentDetailReportViewController', ['$sco
                 }, 
                 'CreationDate': consCreationDate, 
                 '_CreationDateFormatted': consCreationDateFormatted, 
-                'PrimaryEmail': consPrimaryEmail
+                'PrimaryEmail': consPrimaryEmail, 
+                'HomeAddress': {
+                  'City': consHomeCity, 
+                  'State': consHomeState
+                }
               };
               
               addConstituent(constituentData);
@@ -133,7 +140,7 @@ dataViewerControllers.controller('ConstituentDetailReportViewController', ['$sco
             'searching': false, 
             'ordering': true, 
             'order': [
-              [4, 'desc']
+              [6, 'desc']
             ], 
             'info': true, 
             'autoWidth': false
@@ -173,13 +180,15 @@ dataViewerControllers.controller('ConstituentDetailReportViewController', ['$sco
   };
   
   $scope.download = function() {
-    var csvData = 'Constituent ID,First Name,Last Name,Email Address,Creation Date';
+    var csvData = 'Constituent ID,First Name,Last Name,Email Address,City,State,Creation Date';
     $.each($scope.constituents, function() {
       csvData += '\n' + 
                  this.ConsId + ',' + 
                  '"' + this.ConsName.FirstName.replace(/"/g, '""') + '",' + 
                  '"' + this.ConsName.LastName.replace(/"/g, '""') + '",' + 
                  this.PrimaryEmail + ',' + 
+                 this.HomeAddress.City + ',' + 
+                 this.HomeAddress.State + ',' + 
                  this._CreationDateFormatted;
     });
     

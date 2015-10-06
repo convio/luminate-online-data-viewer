@@ -46,6 +46,7 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
   });
   
   $scope.reportconfig = $.extend({
+    datelabel: 'Last 24 Hours', 
     startdate: '', 
     enddate: '', 
     donationcampaign: '', 
@@ -216,7 +217,10 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
     }
     
     WebServicesService.query({
-      statement: 'select TransactionId, CampaignId, FormId, Payment.Amount, Payment.PaymentDate, Payment.TenderType, Payment.CreditCardType, Donor.ConsName, Donor.PrimaryEmail, RecurringPayment.OriginalTransactionId' + 
+      statement: 'select TransactionId, CampaignId, FormId,' + 
+                 ' Payment.Amount, Payment.PaymentDate, Payment.TenderType, Payment.CreditCardType,' + 
+                 ' Donor.ConsName.FirstName, Donor.ConsName.LastName, Donor.PrimaryEmail, Donor.HomeAddress.City, Donor.HomeAddress.State,' + 
+                 ' RecurringPayment.OriginalTransactionId' + 
                  ' from Donation' + 
                  ' where Payment.PaymentDate &gt;= ' + startDate + ' and Payment.PaymentDate &lt;=' + endDate + 
                  (campaignId ? (' and CampaignId = ' + campaignId) : '') + 
@@ -261,6 +265,9 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
               donorFirstName = $donorName.find('FirstName').text(), 
               donorLastName = $donorName.find('LastName').text(), 
               donorPrimaryEmail = $donor.find('PrimaryEmail').text(), 
+              $donorHomeAddress = $(this).find('HomeAddress'), 
+              donorHomeCity = $donorHomeAddress.find('City').text(), 
+              donorHomeState = $donorHomeAddress.find('State').text(), 
               $recurringPayment = $(this).find('RecurringPayment'), 
               donationType = 'One-Time';
               
@@ -308,7 +315,11 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
                     'FirstName': donorFirstName, 
                     'LastName': donorLastName
                   }, 
-                  'PrimaryEmail': donorPrimaryEmail
+                  'PrimaryEmail': donorPrimaryEmail, 
+                  'HomeAddress': {
+                    'City': donorHomeCity, 
+                    'State': donorHomeState
+                  }
                 }, 
                 '_DonationType': donationType
               };
@@ -323,7 +334,7 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
             'searching': false, 
             'ordering': true, 
             'order': [
-              [7, 'desc']
+              [9, 'desc']
             ], 
             'info': true, 
             'autoWidth': false
@@ -363,7 +374,7 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
   };
   
   $scope.download = function() {
-    var csvData = 'Transaction ID,Campaign,Form,Donation Amount,First Name,Last Name,Email Address,Donation Date,Donation Type,Payment Type';
+    var csvData = 'Transaction ID,Campaign,Form,Donation Amount,First Name,Last Name,Email Address,City,State,Donation Date,Donation Type,Payment Type';
     $.each($scope.donations, function() {
       csvData += '\n' + 
                  this.TransactionId + ',' + 
@@ -373,6 +384,8 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
                  '"' + this.Donor.ConsName.FirstName.replace(/"/g, '""') + '",' + 
                  '"' + this.Donor.ConsName.LastName.replace(/"/g, '""') + '",' + 
                  this.Donor.PrimaryEmail + ',' + 
+                 this.Donor.HomeAddress.City + ',' + 
+                 this.Donor.HomeAddress.State + ',' + 
                  this.Payment._PaymentDateFormatted + ',' + 
                  this._DonationType + ',' + 
                  this.Payment._TenderTypeFormatted;

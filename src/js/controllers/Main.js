@@ -6,7 +6,7 @@ dataViewerControllers.controller('MainController', ['$scope', '$route', '$locati
   
   var checkForUpdates = function(showNoNewModal) {
     $.ajax({
-      url: 'https://raw.githubusercontent.com/convio/luminate-online-data-viewer/master/package.json', 
+      url: $scope.manifest.manifestUrl, 
       dataType: 'json', 
       error: function() {
         /* TODO */

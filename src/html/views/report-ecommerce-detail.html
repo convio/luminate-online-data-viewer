@@ -47,6 +47,12 @@
                       Email Address
                     </th>
                     <th>
+                      City
+                    </th>
+                    <th>
+                      State
+                    </th>
+                    <th>
                       Order Date
                     </th>
                   </tr>
@@ -71,6 +77,12 @@
                     </td>
                     <td>
                       <a href="mailto:{{order.Purchaser.PrimaryEmail}}">{{order.Purchaser.PrimaryEmail}}</a>
+                    </td>
+                    <td>
+                      {{order.Purchaser.HomeAddress.City}}
+                    </td>
+                    <td>
+                      {{order.Purchaser.HomeAddress.State}}
                     </td>
                     <td>
                       <span class="hidden">{{order.Payment.PaymentDate}}</span>
@@ -108,7 +120,7 @@
               Date Range:
             </label>
             <div class="input-group input-group-full">
-              <button type="button" class="btn btn-default btn-full text-left" id="report-config-datepicker">
+              <button type="button" class="btn btn-default btn-white btn-full text-left" id="report-config-datepicker">
                 <i class="fa fa-calendar"></i> {{reportconfig.datelabel}} <i class="fa fa-caret-down pull-right"></i>
               </button>
             </div>

@@ -81,7 +81,9 @@ dataViewerControllers.controller('EcommerceDetailReportViewController', ['$scope
     }
     
     WebServicesService.query({
-      statement: 'select TransactionId, StoreId, Payment.Amount, Payment.PaymentDate, Purchaser.ConsName, Purchaser.PrimaryEmail' + 
+      statement: 'select TransactionId, StoreId,' + 
+                 ' Payment.Amount, Payment.PaymentDate,' + 
+                 ' Purchaser.ConsName.FirstName, Purchaser.ConsName.LastName, Purchaser.PrimaryEmail, Purchaser.HomeAddress.City, Purchaser.HomeAddress.State,' + 
                  ' from ProductOrder' + 
                  ' where Payment.PaymentDate &gt;= ' + startDate + ' and Payment.PaymentDate &lt;= ' + endDate, 
       page: settings.page, 
@@ -119,7 +121,10 @@ dataViewerControllers.controller('EcommerceDetailReportViewController', ['$scope
               $purchaserName = $purchaser.find('ConsName'), 
               purchaserFirstName = $purchaserName.find('FirstName').text(), 
               purchaserLastName = $purchaserName.find('LastName').text(), 
-              purchaserPrimaryEmail = $purchaser.find('PrimaryEmail').text();
+              purchaserPrimaryEmail = $purchaser.find('PrimaryEmail').text(), 
+              $purchaserHomeAddress = $(this).find('HomeAddress'), 
+              purchaserHomeCity = $purchaserHomeAddress.find('City').text(), 
+              purchaserHomeState = $purchaserHomeAddress.find('State').text();
               
               var orderData = {
                 'TransactionId': transactionId, 
@@ -135,7 +140,11 @@ dataViewerControllers.controller('EcommerceDetailReportViewController', ['$scope
                     'FirstName': purchaserFirstName, 
                     'LastName': purchaserLastName
                   }, 
-                  'PrimaryEmail': purchaserPrimaryEmail
+                  'PrimaryEmail': purchaserPrimaryEmail, 
+                  'HomeAddress': {
+                    'City': purchaserHomeCity, 
+                    'State': purchaserHomeState
+                  }
                 }
               };
               
@@ -149,7 +158,7 @@ dataViewerControllers.controller('EcommerceDetailReportViewController', ['$scope
             'searching': false, 
             'ordering': true, 
             'order': [
-              [6, 'desc']
+              [8, 'desc']
             ], 
             'info': true, 
             'autoWidth': false
@@ -189,7 +198,7 @@ dataViewerControllers.controller('EcommerceDetailReportViewController', ['$scope
   };
   
   $scope.download = function() {
-    var csvData = 'Transaction ID,Store ID,Order Amount,First Name,Last Name,Email Address,Order Date';
+    var csvData = 'Transaction ID,Store ID,Order Amount,First Name,Last Name,Email Address,City,State,Order Date';
     $.each($scope.orders, function() {
       csvData += '\n' + 
                  this.TransactionId + ',' + 
@@ -198,6 +207,8 @@ dataViewerControllers.controller('EcommerceDetailReportViewController', ['$scope
                  '"' + this.Purchaser.ConsName.FirstName.replace(/"/g, '""') + '",' + 
                  '"' + this.Purchaser.ConsName.LastName.replace(/"/g, '""') + '",' + 
                  this.Purchaser.PrimaryEmail + ',' + 
+                 this.Purchaser.HomeAddress.City + ',' + 
+                 this.Purchaser.HomeAddress.State + ',' + 
                  this.Payment._PaymentDateFormatted;
     });
     

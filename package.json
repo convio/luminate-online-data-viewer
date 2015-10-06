@@ -1,13 +1,15 @@
 {
+  "version": "0.0.20",
   "name": "luminate-online-data-viewer",
   "description": "A desktop application for Windows and OS X providing realtime reporting for Luminate Online.",
-  "version": "0.0.19",
+  "homepage": "http://convio.github.io/luminate-online-data-viewer/",
   "repositories": [
     {
       "type": "git",
       "url": "https://github.com/convio/luminate-online-data-viewer.git"
     }
   ],
+  "manifestUrl": "https://raw.githubusercontent.com/convio/luminate-online-data-viewer/master/package.json",
   "bugs": "https://github.com/convio/luminate-online-data-viewer/issues",
   "devDependencies": {
     "glob": "^5.0.14",

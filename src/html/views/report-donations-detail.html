@@ -50,6 +50,12 @@
                       Email Address
                     </th>
                     <th>
+                      City
+                    </th>
+                    <th>
+                      State
+                    </th>
+                    <th>
                       Donation Date
                     </th>
                     <th>
@@ -83,6 +89,12 @@
                     </td>
                     <td>
                       <a href="mailto:{{donation.Donor.PrimaryEmail}}">{{donation.Donor.PrimaryEmail}}</a>
+                    </td>
+                    <td>
+                      {{donation.Donor.HomeAddress.City}}
+                    </td>
+                    <td>
+                      {{donation.Donor.HomeAddress.State}}
                     </td>
                     <td>
                       <span class="hidden">{{donation.Payment.PaymentDate}}</span>
@@ -126,7 +138,7 @@
               Date Range:
             </label>
             <div class="input-group input-group-full">
-              <button type="button" class="btn btn-default btn-full text-left" id="report-config-datepicker">
+              <button type="button" class="btn btn-default btn-white btn-full text-left" id="report-config-datepicker">
                 <i class="fa fa-calendar"></i> {{reportconfig.datelabel}} <i class="fa fa-caret-down pull-right"></i>
               </button>
             </div>

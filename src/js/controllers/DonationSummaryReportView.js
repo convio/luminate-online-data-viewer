@@ -46,6 +46,7 @@ dataViewerControllers.controller('DonationSummaryReportViewController', ['$scope
   });
   
   $scope.reportconfig = $.extend({
+    datelabel: 'Last 24 Hours', 
     startdate: '', 
     enddate: '', 
     summaryinterval: 'hourly', 

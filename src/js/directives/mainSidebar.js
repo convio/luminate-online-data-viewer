@@ -4,8 +4,6 @@ dataViewerApp.directive('mainSidebar', function() {
     restrict: 'A', 
     replace: true, 
     controller: function() {
-      $.AdminLTE.tree('.sidebar');
-      
       $.AdminLTE.layout.fix();
       
       $.AdminLTE.layout.fixSidebar();
