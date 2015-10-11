@@ -1,4 +1,9 @@
-cache
+# Node.js files
 node_modules
+
+# nw-builder cache files
+cache
+
+# Download files other than the packaged ZIP files
 download/*
 !download/*.zip
