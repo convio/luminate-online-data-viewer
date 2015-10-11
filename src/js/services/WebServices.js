@@ -1,6 +1,6 @@
 dataViewerApp.value('WebServices', {});
 
-dataViewerApp.factory('WebServicesService', ['SessionService', 'WebServices', function(SessionService, WebServices) {
+dataViewerApp.factory('WebServicesService', ['SessionService', 'StorageService', 'WebServices', function(SessionService, StorageService, WebServices) {
   return {
     setRequestUrl: function(requestUrl) {
       dataViewerApp.value('WebServices', $.extend(WebServices, {
@@ -94,6 +94,11 @@ dataViewerApp.factory('WebServicesService', ['SessionService', 'WebServices', fu
             var $faultstring = $(response).find('faultstring');
             
             if($faultstring.length === 0) {
+              StorageService.storeData('cwslogin', {
+                url: settings.url, 
+                username: settings.username
+              });
+              
               SessionService.setSessionId($(response).find('SessionId').text());
             }
             

@@ -1,11 +1,9 @@
-dataViewerControllers.controller('LoginFormController', ['$scope', 'WebServicesService', 'SessionService', function($scope, WebServicesService, SessionService) {
-  var requestUrl = WebServicesService.getRequestUrl();
-  
-  $scope.cwslogin = {};
-  
-  if(requestUrl) {
-    $scope.cwslogin.url = requestUrl;
-  }
+dataViewerControllers.controller('LoginFormController', ['$scope', 'WebServicesService', 'StorageService', 'SessionService', function($scope, WebServicesService, StorageService, SessionService) {
+  $scope.cwslogin = $.extend({
+    url: '', 
+    username: '', 
+    password: ''
+  }, StorageService.getStoredData('cwslogin') || {});
   
   $scope.submit = function(e) {
     if($('.js--login-form-submit[disabled]').length === 0) {
