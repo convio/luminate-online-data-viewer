@@ -1,4 +1,4 @@
-dataViewerControllers.controller('EcommerceDetailReportViewController', ['$scope', 'CacheService', 'WebServicesService', function($scope, CacheService, WebServicesService) {
+dataViewerControllers.controller('EcommerceDetailReportViewController', ['$scope', 'StorageService', 'WebServicesService', function($scope, StorageService, WebServicesService) {
   $.AdminLTE.layout.fix();
   
   $('#report-config-datepicker').daterangepicker({
@@ -49,7 +49,7 @@ dataViewerControllers.controller('EcommerceDetailReportViewController', ['$scope
     datelabel: 'Last 24 Hours', 
     startdate: '', 
     enddate: ''
-  }, CacheService.getCachedReportConfig('report_ecommerce_detail'));
+  }, StorageService.getStoredData('reportconfig_ecommerce_detail') || {});
   
   $scope.orders = [];
   
@@ -192,7 +192,7 @@ dataViewerControllers.controller('EcommerceDetailReportViewController', ['$scope
   $scope.updateReportConfig = function(e) {
     $('#report-config-modal').modal('hide');
     
-    CacheService.cacheReportConfig('report_ecommerce_detail', $scope.reportconfig);
+    StorageService.storeData('reportconfig_ecommerce_detail', $scope.reportconfig, true);
     
     $scope.refreshReport();
   };

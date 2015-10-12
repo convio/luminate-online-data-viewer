@@ -1,4 +1,4 @@
-dataViewerControllers.controller('EcommerceSummaryReportViewController', ['$scope', 'CacheService', 'WebServicesService', function($scope, CacheService, WebServicesService) {
+dataViewerControllers.controller('EcommerceSummaryReportViewController', ['$scope', 'StorageService', 'WebServicesService', function($scope, StorageService, WebServicesService) {
   $.AdminLTE.layout.fix();
   
   $('#report-config-datepicker').daterangepicker({
@@ -50,7 +50,7 @@ dataViewerControllers.controller('EcommerceSummaryReportViewController', ['$scop
     startdate: '', 
     enddate: '', 
     summaryinterval: 'hourly'
-  }, CacheService.getCachedReportConfig('report_ecommerce_summary'));
+  }, StorageService.getStoredData('reportconfig_ecommerce_summary') || {});
   
   $scope.orders = [];
   
@@ -240,7 +240,7 @@ dataViewerControllers.controller('EcommerceSummaryReportViewController', ['$scop
   $scope.updateReportConfig = function(e) {
     $('#report-config-modal').modal('hide');
     
-    CacheService.cacheReportConfig('report_ecommerce_summary', $scope.reportconfig);
+    StorageService.storeData('reportconfig_ecommerce_summary', $scope.reportconfig, true);
     
     $scope.refreshReport();
   };

@@ -1,4 +1,4 @@
-dataViewerControllers.controller('DonationDetailReportViewController', ['$scope', 'CacheService', 'WebServicesService', function($scope, CacheService, WebServicesService) {
+dataViewerControllers.controller('DonationDetailReportViewController', ['$scope', 'StorageService', 'WebServicesService', function($scope, StorageService, WebServicesService) {
   $.AdminLTE.layout.fix();
   
   $('#report-config-datepicker').daterangepicker({
@@ -51,7 +51,7 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
     enddate: '', 
     donationcampaign: '', 
     donationform: ''
-  }, CacheService.getCachedReportConfig('report_donations_detail'));
+  }, StorageService.getStoredData('reportconfig_donations_detail') || {});
   
   $scope.donationcampaigns = [];
   
@@ -368,7 +368,7 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
   $scope.updateReportConfig = function(e) {
     $('#report-config-modal').modal('hide');
     
-    CacheService.cacheReportConfig('report_donations_detail', $scope.reportconfig);
+    StorageService.storeData('reportconfig_donations_detail', $scope.reportconfig, true);
     
     $scope.refreshReport();
   };

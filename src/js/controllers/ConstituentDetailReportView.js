@@ -1,4 +1,4 @@
-dataViewerControllers.controller('ConstituentDetailReportViewController', ['$scope', 'CacheService', 'WebServicesService', function($scope, CacheService, WebServicesService) {
+dataViewerControllers.controller('ConstituentDetailReportViewController', ['$scope', 'StorageService', 'WebServicesService', function($scope, StorageService, WebServicesService) {
   $.AdminLTE.layout.fix();
   
   $('#report-config-datepicker').daterangepicker({
@@ -49,7 +49,7 @@ dataViewerControllers.controller('ConstituentDetailReportViewController', ['$sco
     datelabel: 'Last 24 Hours', 
     startdate: '', 
     enddate: ''
-  }, CacheService.getCachedReportConfig('report_constituents_detail'));
+  }, StorageService.getStoredData('reportconfig_constituents_detail') || {});
   
   $scope.constituents = [];
   
@@ -174,7 +174,7 @@ dataViewerControllers.controller('ConstituentDetailReportViewController', ['$sco
   $scope.updateReportConfig = function(e) {
     $('#report-config-modal').modal('hide');
     
-    CacheService.cacheReportConfig('report_constituents_detail', $scope.reportconfig);
+    StorageService.storeData('reportconfig_constituents_detail', $scope.reportconfig, true);
     
     $scope.refreshReport();
   };
