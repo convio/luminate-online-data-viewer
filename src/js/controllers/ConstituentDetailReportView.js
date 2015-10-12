@@ -18,16 +18,16 @@ dataViewerControllers.controller('ConstituentDetailReportViewController', ['$sco
         moment().subtract(1, 'days').endOf('day')
       ], 
       'Last 7 Days': [
-        moment().subtract(6, 'days'), 
+        moment().subtract(6, 'days').startOf('day'), 
         moment()
       ], 
       'Last 30 Days': [
-        moment().subtract(29, 'days'), 
+        moment().subtract(29, 'days').startOf('day'), 
         moment()
       ], 
       'This Month': [
         moment().startOf('month'), 
-        moment().endOf('month')
+        moment()
       ], 
       'Last Month': [
         moment().subtract(1, 'month').startOf('month'), 
@@ -37,8 +37,8 @@ dataViewerControllers.controller('ConstituentDetailReportViewController', ['$sco
     timePicker: true
   }, function (start, end, label) {
     $scope.reportconfig.datelabel = label;
-    $scope.reportconfig.startdate = start.format('YYYY-MM-DDThh:mm:00');
-    $scope.reportconfig.enddate = end.format('YYYY-MM-DDThh:mm:00');
+    $scope.reportconfig.startdate = start.format('YYYY-MM-DD[T]HH:mm:ssZ');
+    $scope.reportconfig.enddate = end.format('YYYY-MM-DD[T]HH:mm:ssZ');
     
     if(!$scope.$$phase) {
       $scope.$apply();
@@ -64,9 +64,8 @@ dataViewerControllers.controller('ConstituentDetailReportViewController', ['$sco
     var settings = $.extend({
       page: '1'
     }, options || {}), 
-    now = new Date(), 
-    startDate = new Date(now - (24 * 60 * 60 * 1000)).toISOString().split('.')[0], 
-    endDate = now.toISOString().split('.')[0];
+    startDate = moment().subtract(1, 'days').format('YYYY-MM-DD[T]HH:mm:ssZ'), 
+    endDate = moment().format('YYYY-MM-DD[T]HH:mm:ssZ');
     
     if($scope.reportconfig.startdate !== '') {
       startDate = $scope.reportconfig.startdate;
@@ -109,7 +108,7 @@ dataViewerControllers.controller('ConstituentDetailReportViewController', ['$sco
               consFirstName = $consName.find('FirstName').text(), 
               consLastName = $consName.find('LastName').text(), 
               consCreationDate = $(this).find('CreationDate').text(), 
-              consCreationDateFormatted = new Intl.DateTimeFormat().format(new Date(consCreationDate)), 
+              consCreationDateFormatted = moment(consCreationDate).format('MM/DD/YYYY h:mma'), 
               consPrimaryEmail = $(this).find('PrimaryEmail').text(), 
               $consHomeAddress = $(this).find('HomeAddress'), 
               consHomeCity = $consHomeAddress.find('City').text(), 

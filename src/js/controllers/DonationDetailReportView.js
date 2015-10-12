@@ -18,16 +18,16 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
         moment().subtract(1, 'days').endOf('day')
       ], 
       'Last 7 Days': [
-        moment().subtract(6, 'days'), 
+        moment().subtract(6, 'days').startOf('day'), 
         moment()
       ], 
       'Last 30 Days': [
-        moment().subtract(29, 'days'), 
+        moment().subtract(29, 'days').startOf('day'), 
         moment()
       ], 
       'This Month': [
         moment().startOf('month'), 
-        moment().endOf('month')
+        moment()
       ], 
       'Last Month': [
         moment().subtract(1, 'month').startOf('month'), 
@@ -37,8 +37,8 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
     timePicker: true
   }, function (start, end, label) {
     $scope.reportconfig.datelabel = label;
-    $scope.reportconfig.startdate = start.format('YYYY-MM-DDThh:mm:00');
-    $scope.reportconfig.enddate = end.format('YYYY-MM-DDThh:mm:00');
+    $scope.reportconfig.startdate = start.format('YYYY-MM-DD[T]HH:mm:ssZ');
+    $scope.reportconfig.enddate = end.format('YYYY-MM-DD[T]HH:mm:ssZ');
     
     if(!$scope.$$phase) {
       $scope.$apply();
@@ -190,9 +190,8 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
     var settings = $.extend({
       page: '1'
     }, options || {}), 
-    now = new Date(), 
-    startDate = new Date(now - (24 * 60 * 60 * 1000)).toISOString().split('.')[0], 
-    endDate = now.toISOString().split('.')[0], 
+    startDate = moment().subtract(1, 'days').format('YYYY-MM-DD[T]HH:mm:ssZ'), 
+    endDate = moment().format('YYYY-MM-DD[T]HH:mm:ssZ'), 
     campaignId, 
     formId;
     
@@ -256,7 +255,7 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
                 minimumFractionDigits: 2
               }), 
               paymentDate = $payment.find('PaymentDate').text(), 
-              paymentDateFormatted = new Intl.DateTimeFormat().format(new Date(paymentDate)), 
+              paymentDateFormatted = moment(paymentDate).format('MM/DD/YYYY h:mma'), 
               paymentTenderType = $payment.find('TenderType').text(), 
               paymentTenderTypeFormatted = '', 
               paymentCreditCardType = $payment.find('CreditCardType').text(), 
