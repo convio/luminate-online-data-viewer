@@ -1,4 +1,4 @@
-dataViewerControllers.controller('LoginFormController', ['$scope', 'WebServicesService', 'StorageService', 'SessionService', function($scope, WebServicesService, StorageService, SessionService) {
+dataViewerControllers.controller('LoginFormController', ['$scope', 'WebServicesService', 'StorageService', function($scope, WebServicesService, StorageService) {
   $scope.cwslogin = $.extend({
     url: '', 
     username: '', 
@@ -71,7 +71,7 @@ dataViewerControllers.controller('LoginFormController', ['$scope', 'WebServicesS
               $('.js--login-form-submit').removeAttr('disabled');
             }
             else {
-              var sessionId = SessionService.getSessionId();
+              var sessionId = StorageService.getStoredData('SessionId');
               
               if(!sessionId) {
                 /* TODO */

@@ -13,6 +13,15 @@ dataViewerApp.factory('StorageService', [function() {
       }
     }, 
     
+    deleteStoredData: function(propertyName) {
+      if(sessionStorage['dv__' + propertyName]) {
+        delete sessionStorage['dv__' + propertyName];
+      }
+      if(localStorage['dv__' + propertyName]) {
+        delete localStorage['dv__' + propertyName];
+      }
+    }, 
+    
     getStoredData: function(propertyName) {
       var propertyValue;
       

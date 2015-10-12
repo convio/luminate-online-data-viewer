@@ -1,15 +1,14 @@
-dataViewerApp.value('WebServices', {});
-
-dataViewerApp.factory('WebServicesService', ['SessionService', 'StorageService', 'WebServices', function(SessionService, StorageService, WebServices) {
+dataViewerApp.factory('WebServicesService', ['StorageService', function(StorageService) {
   return {
-    setRequestUrl: function(requestUrl) {
-      dataViewerApp.value('WebServices', $.extend(WebServices, {
-        url: requestUrl
-      }));
-    }, 
-    
     getRequestUrl: function() {
-      return WebServices.url;
+      var cwslogin = StorageService.getStoredData('cwslogin'), 
+      requestUrl;
+      
+      if(cwslogin && cwslogin.url) {
+        requestUrl = cwslogin.url;
+      }
+      
+      return requestUrl;
     }, 
     
     request: function(options) {
@@ -27,7 +26,7 @@ dataViewerApp.factory('WebServicesService', ['SessionService', 'StorageService',
         var sessionId;
         
         if(settings.includeSessionId) {
-          sessionId = SessionService.getSessionId();
+          sessionId = StorageService.getStoredData('SessionId');
         }
         
         $.ajax({
@@ -69,9 +68,14 @@ dataViewerApp.factory('WebServicesService', ['SessionService', 'StorageService',
         success: $.noop
       }, options || {});
       
-      this.setRequestUrl(settings.url);
+      StorageService.deleteStoredData('cwslogin');
+      if(settings.url) {
+        StorageService.storeData('cwslogin', {
+          url: settings.url
+        });
+      }
       
-      SessionService.reset();
+      StorageService.deleteStoredData('SessionId');
       
       if(!settings.url || settings.url === '' || 
          !settings.username || settings.username === '' || 
@@ -99,7 +103,7 @@ dataViewerApp.factory('WebServicesService', ['SessionService', 'StorageService',
                 username: settings.username
               });
               
-              SessionService.setSessionId($(response).find('SessionId').text());
+              StorageService.storeData('SessionId', $(response).find('SessionId').text(), true);
             }
             
             settings.success(response);
