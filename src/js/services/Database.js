@@ -1,4 +1,4 @@
-dataViewerApp.factory('DatabaseService', [function() {
+dataViewerApp.factory('DatabaseService', ['WebServicesService', function(WebServicesService) {
   return {
     version: 1, 
     
@@ -19,8 +19,12 @@ dataViewerApp.factory('DatabaseService', [function() {
         var constituentObjectStore = reportResultsDB.createObjectStore('Constituent', {
           keyPath: 'ConsId'
         });
-        constituentObjectStore.createIndex('CreationDate', 'CreationDate', {
-          unique: false
+        
+        var constituentFields = ['ConsName', 'CreationDate', 'PrimaryEmail', 'HomeAddress'];
+        $.each(constituentFields, function(key, val) {
+          constituentObjectStore.createIndex(val, val, {
+            unique: false
+          });
         });
       };
       reportResultsDBRequest.onsuccess = function(e) {
@@ -86,7 +90,7 @@ dataViewerApp.factory('DatabaseService', [function() {
               var cursor = e.target.result;
               if(cursor) {
                 selectResults.push(cursor.value);
-                cursor.continue();
+                cursor['continue']();
               }
               else {
                 settings.success(selectResults);
