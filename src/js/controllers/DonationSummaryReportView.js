@@ -371,6 +371,7 @@ dataViewerControllers.controller('DonationSummaryReportViewController', ['$scope
           }
           
           $('.report-table').DataTable({
+            'scrollX': true, 
             'paging': true, 
             'lengthChange': false, 
             'searching': false, 

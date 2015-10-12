@@ -134,6 +134,7 @@ dataViewerControllers.controller('ConstituentDetailReportViewController', ['$sco
           }
           
           $('.report-table').DataTable({
+            'scrollX': true, 
             'paging': true, 
             'lengthChange': false, 
             'searching': false, 

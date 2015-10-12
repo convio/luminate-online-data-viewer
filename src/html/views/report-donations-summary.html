@@ -24,64 +24,62 @@
             </div>
           </div>
           <div class="box-body">
-            <div class="table-responsive">
-              <table class="table table-bordered table-striped report-table">
-                <thead>
-                  <tr>
-                    <th>
-                      Time Period
-                    </th>
-                    <th>
-                      One-Time Count
-                    </th>
-                    <th>
-                      One-Time Amount
-                    </th>
-                    <th>
-                      Sustaining Count
-                    </th>
-                    <th>
-                      Sustaining Amount
-                    </th>
-                    <th>
-                      Total Count
-                    </th>
-                    <th>
-                      Total Amount
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr ng-repeat="donationsum in donationsums">
-                    <td>
-                      <span class="hidden">{{donationsum.period}}</span>
-                      {{donationsum.periodFormatted}}
-                    </td>
-                    <td>
-                      {{donationsum.oneTimeCount}}
-                    </td>
-                    <td>
-                      <span class="hidden">{{donationsum.oneTimeAmount}}</span>
-                      {{donationsum.oneTimeAmountFormatted}}
-                    </td>
-                    <td>
-                      {{donationsum.recurringCount}}
-                    </td>
-                    <td>
-                      <span class="hidden">{{donationsum.recurringAmount}}</span>
-                      {{donationsum.recurringAmountFormatted}}
-                    </td>
-                    <td>
-                      {{donationsum.count}}
-                    </td>
-                    <td>
-                      <span class="hidden">{{donationsum.amount}}</span>
-                      {{donationsum.amountFormatted}}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+            <table class="table table-bordered table-striped report-table">
+              <thead>
+                <tr>
+                  <th>
+                    Time Period
+                  </th>
+                  <th>
+                    One-Time Count
+                  </th>
+                  <th>
+                    One-Time Amount
+                  </th>
+                  <th>
+                    Sustaining Count
+                  </th>
+                  <th>
+                    Sustaining Amount
+                  </th>
+                  <th>
+                    Total Count
+                  </th>
+                  <th>
+                    Total Amount
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="donationsum in donationsums">
+                  <td>
+                    <span class="hidden">{{donationsum.period}}</span>
+                    {{donationsum.periodFormatted}}
+                  </td>
+                  <td>
+                    {{donationsum.oneTimeCount}}
+                  </td>
+                  <td>
+                    <span class="hidden">{{donationsum.oneTimeAmount}}</span>
+                    {{donationsum.oneTimeAmountFormatted}}
+                  </td>
+                  <td>
+                    {{donationsum.recurringCount}}
+                  </td>
+                  <td>
+                    <span class="hidden">{{donationsum.recurringAmount}}</span>
+                    {{donationsum.recurringAmountFormatted}}
+                  </td>
+                  <td>
+                    {{donationsum.count}}
+                  </td>
+                  <td>
+                    <span class="hidden">{{donationsum.amount}}</span>
+                    {{donationsum.amountFormatted}}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
           <div class="overlay js--loading-overlay">
             <i class="fa fa-refresh fa-spin"></i>

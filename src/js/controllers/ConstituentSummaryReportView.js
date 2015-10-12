@@ -184,6 +184,7 @@ dataViewerControllers.controller('ConstituentSummaryReportViewController', ['$sc
           }
           
           $('.report-table').DataTable({
+            'scrollX': true, 
             'paging': true, 
             'lengthChange': false, 
             'searching': false, 

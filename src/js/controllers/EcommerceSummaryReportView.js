@@ -198,6 +198,7 @@ dataViewerControllers.controller('EcommerceSummaryReportViewController', ['$scop
           }
           
           $('.report-table').DataTable({
+            'scrollX': true, 
             'paging': true, 
             'lengthChange': false, 
             'searching': false, 
