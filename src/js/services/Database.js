@@ -18,11 +18,30 @@ dataViewerApp.factory('DatabaseService', ['WebServicesService', function(WebServ
         
         var constituentObjectStore = reportResultsDB.createObjectStore('Constituent', {
           keyPath: 'ConsId'
-        });
-        
-        var constituentFields = ['ConsName', 'CreationDate', 'PrimaryEmail', 'HomeAddress'];
+        }), 
+        constituentFields = ['ConsName', 'CreationDate', 'PrimaryEmail', 'HomeAddress'];
         $.each(constituentFields, function(key, val) {
           constituentObjectStore.createIndex(val, val, {
+            unique: false
+          });
+        });
+        
+        var donationObjectStore = reportResultsDB.createObjectStore('Donation', {
+          keyPath: 'TransactionId'
+        }), 
+        donationFields = ['TransactionId', 'CampaignId', 'FormId', 'Payment', 'Donor', 'RecurringPayment'];
+        $.each(donationFields, function(key, val) {
+          donationObjectStore.createIndex(val, val, {
+            unique: false
+          });
+        });
+        
+        var productOrderObjectStore = reportResultsDB.createObjectStore('ProductOrder', {
+          keyPath: 'TransactionId'
+        }), 
+        productOrderFields = ['TransactionId', 'StoreId', 'Payment', 'Purchaser'];
+        $.each(productOrderFields, function(key, val) {
+          productOrderObjectStore.createIndex(val, val, {
             unique: false
           });
         });
