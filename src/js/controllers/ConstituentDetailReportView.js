@@ -134,16 +134,16 @@ dataViewerControllers.controller('ConstituentDetailReportViewController', ['$sco
           }
           
           $('.report-table').DataTable({
-            'scrollX': true, 
+            'searching': false, 
+            'info': true, 
             'paging': true, 
             'lengthChange': false, 
-            'searching': false, 
             'ordering': true, 
             'order': [
               [6, 'desc']
             ], 
-            'info': true, 
-            'autoWidth': false
+            'autoWidth': false, 
+            'dom': '<".table-responsive"t>ip'
           });
           
           if($records.length === 200) {

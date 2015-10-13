@@ -371,16 +371,16 @@ dataViewerControllers.controller('DonationSummaryReportViewController', ['$scope
           }
           
           $('.report-table').DataTable({
-            'scrollX': true, 
+            'searching': false, 
+            'info': true, 
             'paging': true, 
             'lengthChange': false, 
-            'searching': false, 
             'ordering': true, 
             'order': [
               [0, 'desc']
             ], 
-            'info': true, 
-            'autoWidth': false
+            'autoWidth': false, 
+            'dom': '<".table-responsive"t>ip'
           });
           
           if($records.length === 200) {
