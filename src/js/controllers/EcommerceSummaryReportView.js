@@ -1,6 +1,8 @@
 dataViewerControllers.controller('EcommerceSummaryReportViewController', ['$scope', 'StorageService', 'WebServicesService', function($scope, StorageService, WebServicesService) {
   $.AdminLTE.layout.fix();
   
+  $('.daterangepicker').remove();
+  
   $('#report-config-datepicker').daterangepicker({
     startDate: moment().subtract(1, 'days'), 
     endDate: moment(), 
@@ -233,6 +235,8 @@ dataViewerControllers.controller('EcommerceSummaryReportViewController', ['$scop
     $('.report-table').DataTable().destroy();
     
     $('.content .js--loading-overlay').removeClass('hidden');
+    
+    $('.daterangepicker .applyBtn').click();
     
     getOrderSums();
   };

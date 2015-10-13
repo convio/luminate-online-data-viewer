@@ -1,6 +1,8 @@
 dataViewerControllers.controller('DonationDetailReportViewController', ['$scope', 'StorageService', 'WebServicesService', function($scope, StorageService, WebServicesService) {
   $.AdminLTE.layout.fix();
   
+  $('.daterangepicker').remove();
+  
   $('#report-config-datepicker').daterangepicker({
     startDate: moment().subtract(1, 'days'), 
     endDate: moment(), 
@@ -362,6 +364,8 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
     
     $('.content .js--loading-overlay').removeClass('hidden');
     
+    $('.daterangepicker .applyBtn').click();
+
     getDonations();
   };
   

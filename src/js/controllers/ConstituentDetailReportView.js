@@ -1,6 +1,8 @@
 dataViewerControllers.controller('ConstituentDetailReportViewController', ['$scope', 'StorageService', 'WebServicesService', function($scope, StorageService, WebServicesService) {
   $.AdminLTE.layout.fix();
   
+  $('.daterangepicker').remove();
+  
   $('#report-config-datepicker').daterangepicker({
     startDate: moment().subtract(1, 'days'), 
     endDate: moment(), 
@@ -168,6 +170,8 @@ dataViewerControllers.controller('ConstituentDetailReportViewController', ['$sco
     
     $('.content .js--loading-overlay').removeClass('hidden');
     
+    $('.daterangepicker .applyBtn').click();
+
     getConstituents();
   };
   
