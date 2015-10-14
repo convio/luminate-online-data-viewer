@@ -70,7 +70,7 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
     }, options || {});
     
     WebServicesService.query({
-      statement: 'select CampaignId, Title from DonationCampaign', 
+      statement: 'select CampaignId, Title, IsArchived from DonationCampaign', 
       page: settings.page, 
       error: function() {
         /* TODO */
@@ -90,11 +90,13 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
           else {
             $records.each(function() {
               var campaignId = $(this).find('CampaignId').text(), 
-              campaignTitle = $(this).find('Title').text();
+              campaignTitle = $(this).find('Title').text(), 
+              campaignIsArchived = $(this).find('IsArchived').text() === 'true';
               
               var campaignData = {
                 'CampaignId': campaignId, 
-                'Title': campaignTitle
+                'Title': campaignTitle, 
+                'IsArchived': campaignIsArchived
               };
               
               addDonationCampaign(campaignData);
@@ -106,9 +108,6 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
               page: '' + (Number(settings.page) + 1)
             });
           }
-          else {
-            /* TODO */
-          }
         }
       }
     });
@@ -116,6 +115,12 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
   
   getDonationCampaigns();
   
+  $scope.$watch('reportconfig.donationcampaign', function(newValue) {
+    if(newValue !== '') {
+      $scope.reportconfig.donationform = '';
+    }
+  });
+
   $scope.donationforms = [];
   
   var addDonationForm = function(donationForm) {
@@ -131,7 +136,7 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
     }, options || {});
     
     WebServicesService.query({
-      statement: 'select FormId, CampaignId, Title from DonationForm', 
+      statement: 'select FormId, CampaignId, Title, IsPublished, IsArchived from DonationForm', 
       page: settings.page, 
       error: function() {
         /* TODO */
@@ -152,12 +157,16 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
             $records.each(function() {
               var formId = $(this).find('FormId').text(), 
               campaignId = $(this).find('CampaignId').text(), 
-              formTitle = $(this).find('Title').text();
+              formTitle = $(this).find('Title').text(), 
+              formIsPublished = $(this).find('IsPublished').text() === 'true', 
+              formIsArchived = $(this).find('IsArchived').text() === 'true';
               
               var formData = {
                 'FormId': formId, 
                 'CampaignId': campaignId, 
-                'Title': formTitle
+                'Title': formTitle, 
+                'IsPublished': formIsPublished, 
+                'IsArchived': formIsArchived
               };
               
               addDonationForm(formData);
@@ -168,9 +177,6 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
             getDonationForms({
               page: '' + (Number(settings.page) + 1)
             });
-          }
-          else {
-            /* TODO */
           }
         }
       }
@@ -221,7 +227,7 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
       statement: 'select TransactionId, CampaignId, FormId,' + 
                  ' Payment.Amount, Payment.PaymentDate, Payment.TenderType, Payment.CreditCardType,' + 
                  ' Donor.ConsName.FirstName, Donor.ConsName.LastName, Donor.PrimaryEmail, Donor.HomeAddress.City, Donor.HomeAddress.State,' + 
-                 ' RecurringPayment.OriginalTransactionId' + 
+                 ' RecurringPayment.OriginalTransactionId, RecurringPayment.Duration, RecurringPayment.NumberOfPayments' + 
                  ' from Donation' + 
                  ' where Payment.PaymentDate &gt;= ' + startDate + ' and Payment.PaymentDate &lt;=' + endDate + 
                  (campaignId ? (' and CampaignId = ' + campaignId) : '') + 
@@ -270,6 +276,9 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
               donorHomeCity = $donorHomeAddress.find('City').text(), 
               donorHomeState = $donorHomeAddress.find('State').text(), 
               $recurringPayment = $(this).find('RecurringPayment'), 
+              originalTransactionId = transactionId, 
+              paymentDuration = 1, 
+              numberOfPayments = 1, 
               donationType = 'One-Time';
               
               switch(paymentTenderType.toLowerCase()) {
@@ -325,7 +334,27 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
                 '_DonationType': donationType
               };
               
-              addDonation(donationData);
+              if($recurringPayment.length > 0) {
+                originalTransactionId = $recurringPayment.find('OriginalTransactionId').text();
+                paymentDuration = Number($recurringPayment.find('Duration').text());
+                numberOfPayments = Number($recurringPayment.find('NumberOfPayments').text());
+                
+                donationData.RecurringPayment = {
+                  'OriginalTransactionId': originalTransactionId, 
+                  'Duration': paymentDuration
+                };
+              }
+              
+              if(transactionId === originalTransactionId) {
+                if(paymentDuration === 0) {
+                  donationData.Payment.Amount = Number(paymentAmount) * numberOfPayments;
+                }
+                else if(paymentDuration > 1) {
+                  donationData.Payment.Amount = Number(paymentAmount) * paymentDuration;
+                }
+                
+                addDonation(donationData);
+              }
             });
           }
           
