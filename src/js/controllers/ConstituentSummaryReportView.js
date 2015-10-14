@@ -1,4 +1,4 @@
-dataViewerControllers.controller('ConstituentSummaryReportViewController', ['$scope', 'DateRangePickerService', 'StorageService', 'WebServicesService', function($scope, DateRangePickerService, StorageService, WebServicesService) {
+dataViewerControllers.controller('ConstituentSummaryReportViewController', ['$scope', 'StorageService', 'ConstituentService', 'DateRangePickerService', 'DataTableService', function($scope, StorageService, ConstituentService, DateRangePickerService, DataTableService) {
   $.AdminLTE.layout.fix();
   
   $('.daterangepicker').remove();
@@ -24,7 +24,28 @@ dataViewerControllers.controller('ConstituentSummaryReportViewController', ['$sc
   
   $scope.constituentsums = [];
   
-  var addConstituent = function(constituent) {
+  var getConstituentSums = function() {
+    ConstituentService.getConstituents({
+      startDate: $scope.reportconfig.startdate, 
+      endDate: $scope.reportconfig.enddate, 
+      success: function(constituents) {
+        DataTableService.destroy('.report-table');
+        
+        if(constituents.length > 0) {
+          $.each(constituents, function() {
+            addConstituent(this);
+          });
+        }
+        
+        DataTableService.init('.report-table');
+      }, 
+      complete: function() {
+        $('.content .js--loading-overlay').addClass('hidden');
+      }
+    });
+  }, 
+  
+  addConstituent = function(constituent) {
     $scope.constituents.push(constituent);
     
     var consCreationDate = constituent.CreationDate, 
@@ -94,84 +115,6 @@ dataViewerControllers.controller('ConstituentSummaryReportViewController', ['$sc
     if(!$scope.$$phase) {
       $scope.$apply();
     }
-  }, 
-  
-  getConstituentSums = function(options) {
-    var settings = $.extend({
-      page: '1'
-    }, options || {}), 
-    startDate = moment().subtract(1, 'days').format('YYYY-MM-DD[T]HH:mm:ssZ'), 
-    endDate = moment().format('YYYY-MM-DD[T]HH:mm:ssZ');
-    
-    if($scope.reportconfig.startdate !== '') {
-      startDate = $scope.reportconfig.startdate;
-      
-      if($scope.reportconfig.enddate !== '') {
-        endDate = $scope.reportconfig.enddate;
-      }
-    }
-    else if($scope.reportconfig.enddate !== '') {
-      startDate = '1969-12-31T00:00:00';
-      endDate = $scope.reportconfig.enddate;
-    }
-    
-    WebServicesService.query({
-      statement: 'select ConsId, CreationDate' + 
-                 ' from Constituent' + 
-                 ' where CreationDate &gt;= ' + startDate + ' and CreationDate &lt;= ' + endDate, 
-      page: settings.page, 
-      error: function() {
-        /* TODO */
-      }, 
-      success: function(response) {
-        var $faultstring = $(response).find('faultstring');
-        
-        if($faultstring.length > 0) {
-          /* TODO */
-        }
-        else {
-          $('.report-table').DataTable().destroy();
-          
-          var $records = $(response).find('Record');
-          
-          if($records.length !== 0) {
-            $records.each(function() {
-              var consId = $(this).find('ConsId').text(), 
-              consCreationDate = $(this).find('CreationDate').text();
-              
-              var constituentData = {
-                'ConsId': consId, 
-                'CreationDate': consCreationDate
-              };
-              
-              addConstituent(constituentData);
-            });
-          }
-          
-          $('.report-table').DataTable({
-            'searching': false, 
-            'info': true, 
-            'paging': true, 
-            'lengthChange': false, 
-            'ordering': true, 
-            'order': [
-              [0, 'desc']
-            ], 
-            'autoWidth': false, 
-            'dom': '<".table-responsive"t>ip'
-          });
-          
-          if($records.length === 200) {
-            getConstituentSums({
-              page: '' + (Number(settings.page) + 1)
-            });
-          }
-          else {
-            $('.content .js--loading-overlay').addClass('hidden');
-          }
-        }
-      }
-    });
   };
   
   getConstituentSums();
@@ -181,7 +124,7 @@ dataViewerControllers.controller('ConstituentSummaryReportViewController', ['$sc
     
     $scope.constituentsums = [];
     
-    $('.report-table').DataTable().destroy();
+    DataTableService.destroy('.report-table');
     
     $('.content .js--loading-overlay').removeClass('hidden');
     
@@ -189,6 +132,8 @@ dataViewerControllers.controller('ConstituentSummaryReportViewController', ['$sc
     
     getConstituentSums();
   };
+  
+  /* TODO: resetReportConfig */
   
   $scope.updateReportConfig = function(e) {
     $('#report-config-modal').modal('hide');
