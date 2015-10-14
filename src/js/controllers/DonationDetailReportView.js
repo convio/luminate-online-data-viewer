@@ -1,43 +1,9 @@
-dataViewerControllers.controller('DonationDetailReportViewController', ['$scope', 'StorageService', 'WebServicesService', function($scope, StorageService, WebServicesService) {
+dataViewerControllers.controller('DonationDetailReportViewController', ['$scope', 'DateRangePickerService', 'StorageService', 'WebServicesService', function($scope, DateRangePickerService, StorageService, WebServicesService) {
   $.AdminLTE.layout.fix();
   
   $('.daterangepicker').remove();
   
-  $('#report-config-datepicker').daterangepicker({
-    startDate: moment().subtract(1, 'days'), 
-    endDate: moment(), 
-    ranges: {
-      'Last 24 Hours': [
-        moment().subtract(1, 'days'), 
-        moment()
-      ], 
-      'Today': [
-        moment().startOf('day'), 
-        moment()
-      ], 
-      'Yesterday': [
-        moment().subtract(1, 'days').startOf('day'), 
-        moment().subtract(1, 'days').endOf('day')
-      ], 
-      'Last 7 Days': [
-        moment().subtract(6, 'days').startOf('day'), 
-        moment()
-      ], 
-      'Last 30 Days': [
-        moment().subtract(29, 'days').startOf('day'), 
-        moment()
-      ], 
-      'This Month': [
-        moment().startOf('month'), 
-        moment()
-      ], 
-      'Last Month': [
-        moment().subtract(1, 'month').startOf('month'), 
-        moment().subtract(1, 'month').endOf('month')
-      ]
-    }, 
-    timePicker: true
-  }, function (start, end, label) {
+  DateRangePickerService.init('#report-config-datepicker', function (start, end, label) {
     $scope.reportconfig.datelabel = label;
     $scope.reportconfig.startdate = start.format('YYYY-MM-DD[T]HH:mm:ssZ');
     $scope.reportconfig.enddate = end.format('YYYY-MM-DD[T]HH:mm:ssZ');
@@ -227,7 +193,7 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
       statement: 'select TransactionId, CampaignId, FormId,' + 
                  ' Payment.Amount, Payment.PaymentDate, Payment.TenderType, Payment.CreditCardType,' + 
                  ' Donor.ConsName.FirstName, Donor.ConsName.LastName, Donor.PrimaryEmail, Donor.HomeAddress.City, Donor.HomeAddress.State,' + 
-                 ' RecurringPayment.OriginalTransactionId, RecurringPayment.Duration, RecurringPayment.NumberOfPayments' + 
+                 ' RecurringPayment.OriginalTransactionId, RecurringPayment.Duration' + 
                  ' from Donation' + 
                  ' where Payment.PaymentDate &gt;= ' + startDate + ' and Payment.PaymentDate &lt;=' + endDate + 
                  (campaignId ? (' and CampaignId = ' + campaignId) : '') + 
@@ -247,10 +213,7 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
         else {
           var $records = $(response).find('Record');
           
-          if($records.length === 0) {
-            /* TODO */
-          }
-          else {
+          if($records.length !== 0) {
             $records.each(function() {
               var transactionId = $(this).find('TransactionId').text(), 
               campaignId = $(this).find('CampaignId').text(), 
@@ -278,7 +241,6 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
               $recurringPayment = $(this).find('RecurringPayment'), 
               originalTransactionId = transactionId, 
               paymentDuration = 1, 
-              numberOfPayments = 1, 
               donationType = 'One-Time';
               
               switch(paymentTenderType.toLowerCase()) {
@@ -337,7 +299,6 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
               if($recurringPayment.length > 0) {
                 originalTransactionId = $recurringPayment.find('OriginalTransactionId').text();
                 paymentDuration = Number($recurringPayment.find('Duration').text());
-                numberOfPayments = Number($recurringPayment.find('NumberOfPayments').text());
                 
                 donationData.RecurringPayment = {
                   'OriginalTransactionId': originalTransactionId, 
@@ -345,16 +306,7 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
                 };
               }
               
-              if(transactionId === originalTransactionId) {
-                if(paymentDuration === 0) {
-                  donationData.Payment.Amount = Number(paymentAmount) * numberOfPayments;
-                }
-                else if(paymentDuration > 1) {
-                  donationData.Payment.Amount = Number(paymentAmount) * paymentDuration;
-                }
-                
-                addDonation(donationData);
-              }
+              addDonation(donationData);
             });
           }
           

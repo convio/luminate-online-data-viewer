@@ -1,43 +1,9 @@
-dataViewerControllers.controller('ConstituentDetailReportViewController', ['$scope', 'StorageService', 'WebServicesService', function($scope, StorageService, WebServicesService) {
+dataViewerControllers.controller('ConstituentDetailReportViewController', ['$scope', 'DateRangePickerService', 'StorageService', 'WebServicesService', function($scope, DateRangePickerService, StorageService, WebServicesService) {
   $.AdminLTE.layout.fix();
   
   $('.daterangepicker').remove();
   
-  $('#report-config-datepicker').daterangepicker({
-    startDate: moment().subtract(1, 'days'), 
-    endDate: moment(), 
-    ranges: {
-      'Last 24 Hours': [
-        moment().subtract(1, 'days'), 
-        moment()
-      ], 
-      'Today': [
-        moment().startOf('day'), 
-        moment()
-      ], 
-      'Yesterday': [
-        moment().subtract(1, 'days').startOf('day'), 
-        moment().subtract(1, 'days').endOf('day')
-      ], 
-      'Last 7 Days': [
-        moment().subtract(6, 'days').startOf('day'), 
-        moment()
-      ], 
-      'Last 30 Days': [
-        moment().subtract(29, 'days').startOf('day'), 
-        moment()
-      ], 
-      'This Month': [
-        moment().startOf('month'), 
-        moment()
-      ], 
-      'Last Month': [
-        moment().subtract(1, 'month').startOf('month'), 
-        moment().subtract(1, 'month').endOf('month')
-      ]
-    }, 
-    timePicker: true
-  }, function (start, end, label) {
+  DateRangePickerService.init('#report-config-datepicker', function (start, end, label) {
     $scope.reportconfig.datelabel = label;
     $scope.reportconfig.startdate = start.format('YYYY-MM-DD[T]HH:mm:ssZ');
     $scope.reportconfig.enddate = end.format('YYYY-MM-DD[T]HH:mm:ssZ');
@@ -100,10 +66,7 @@ dataViewerControllers.controller('ConstituentDetailReportViewController', ['$sco
           
           var $records = $(response).find('Record');
           
-          if($records.length === 0) {
-            /* TODO */
-          }
-          else {
+          if($records.length !== 0) {
             $records.each(function() {
               var consId = $(this).find('ConsId').text(), 
               $consName = $(this).find('ConsName'), 
