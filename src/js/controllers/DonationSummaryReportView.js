@@ -28,8 +28,6 @@ dataViewerControllers.controller('DonationSummaryReportViewController', ['$scope
   
   var getDonationCampaigns = function() {
     DonationCampaignService.getDonationCampaigns({
-      startDate: $scope.reportconfig.startdate, 
-      endDate: $scope.reportconfig.enddate, 
       campaignId: $scope.reportconfig.donationcampaign, 
       formId: $scope.reportconfig.donationform, 
       success: function(donationCampaigns) {
@@ -86,6 +84,8 @@ dataViewerControllers.controller('DonationSummaryReportViewController', ['$scope
   
   var getDonationSums = function(options) {
     DonationService.getDonations({
+      startDate: $scope.reportconfig.startdate, 
+      endDate: $scope.reportconfig.enddate, 
       success: function(donations) {
         DataTableService.destroy('.report-table');
         
@@ -107,7 +107,7 @@ dataViewerControllers.controller('DonationSummaryReportViewController', ['$scope
     $scope.donations.push(donation);
     
     var paymentDate = donation.Payment.PaymentDate, 
-    paymentHour = paymentDate.split(':')[0], 
+    paymentHour = moment(paymentDate).format('YYYY-MM-DD[T]HH'), 
     paymentPeriod = paymentHour, 
     paymentAmount = Number(donation.Payment.Amount), 
     isRecurringPayment = donation.RecurringPayment ? true : false, 
@@ -115,13 +115,13 @@ dataViewerControllers.controller('DonationSummaryReportViewController', ['$scope
     
     switch($scope.reportconfig.summaryinterval) {
       case 'daily':
-        paymentPeriod = paymentPeriod.split('T')[0];
+        paymentPeriod = moment(paymentDate).format('YYYY-MM-DD');
         break;
       case 'weekly':
-        /* TODO */
+        paymentPeriod = moment(paymentDate).startOf('week').format('YYYY-MM-DD');
         break;
       case 'monthly':
-        paymentPeriod = paymentPeriod.split('T')[0].split('-')[0] + paymentPeriod.split('T')[0].split('-')[1];
+        paymentPeriod = moment(paymentDate).format('YYYY-MM');
         break;
     }
     
@@ -132,32 +132,17 @@ dataViewerControllers.controller('DonationSummaryReportViewController', ['$scope
     });
     
     if(donationSumIndex === -1) {
-      var paymentPeriodFormatted = new Intl.DateTimeFormat('en-us', {
-        month: 'short', 
-        day: 'numeric', 
-        year: 'numeric'
-      }).format(new Date(paymentHour + ':00:00Z')) + ' - ' + new Intl.DateTimeFormat('en-us', {
-        hour12: true, 
-        hour: 'numeric', 
-        minute: '2-digit'
-      }).format(new Date(paymentHour + ':00:00Z'));
+      var paymentPeriodFormatted = moment(paymentDate).format('MMM D, YYYY - h:00a');
       
       switch($scope.reportconfig.summaryinterval) {
         case 'daily':
-          paymentPeriodFormatted = Intl.DateTimeFormat('en-us', {
-            month: 'short', 
-            day: 'numeric', 
-            year: 'numeric'
-          }).format(new Date(paymentHour + ':00:00Z'));
+          paymentPeriodFormatted = moment(paymentDate).format('MMM D, YYYY');
           break;
         case 'weekly':
-          /* TODO */
+          paymentPeriodFormatted = moment(paymentDate).startOf('week').format('[Week of] MMM D, YYYY');
           break;
         case 'monthly':
-          paymentPeriodFormatted = Intl.DateTimeFormat('en-us', {
-            month: 'short', 
-            year: 'numeric'
-          }).format(new Date(paymentHour + ':00:00Z'));
+          paymentPeriodFormatted = moment(paymentDate).format('MMM YYYY');
           break;
       }
       
@@ -228,8 +213,6 @@ dataViewerControllers.controller('DonationSummaryReportViewController', ['$scope
     
     getDonationSums();
   };
-  
-  /* TODO: resetReportConfig */
   
   $scope.updateReportConfig = function(e) {
     $('#report-config-modal').modal('hide');

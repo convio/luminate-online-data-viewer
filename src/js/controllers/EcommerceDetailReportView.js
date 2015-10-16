@@ -64,15 +64,13 @@ dataViewerControllers.controller('EcommerceDetailReportViewController', ['$scope
       $scope.reportconfig.startdate = start.format('YYYY-MM-DD[T]HH:mm:ssZ');
       $scope.reportconfig.enddate = end.format('YYYY-MM-DD[T]HH:mm:ssZ');
     });
-
+    
     DataTableService.destroy('.report-table');
     
     $('.content .js--loading-overlay').removeClass('hidden');
     
     getOrders();
   };
-  
-  /* TODO: resetReportConfig */
   
   $scope.updateReportConfig = function(e) {
     $('#report-config-modal').modal('hide');

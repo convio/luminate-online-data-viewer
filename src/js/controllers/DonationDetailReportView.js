@@ -27,8 +27,6 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
   
   var getDonationCampaigns = function() {
     DonationCampaignService.getDonationCampaigns({
-      startDate: $scope.reportconfig.startdate, 
-      endDate: $scope.reportconfig.enddate, 
       campaignId: $scope.reportconfig.donationcampaign, 
       formId: $scope.reportconfig.donationform, 
       success: function(donationCampaigns) {
@@ -83,6 +81,8 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
   
   var getDonations = function(options) {
     DonationService.getDonations({
+      startDate: $scope.reportconfig.startdate, 
+      endDate: $scope.reportconfig.enddate, 
       success: function(donations) {
         DataTableService.destroy('.report-table');
         
@@ -127,8 +127,6 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
     
     getDonations();
   };
-  
-  /* TODO: resetReportConfig */
   
   $scope.updateReportConfig = function(e) {
     $('#report-config-modal').modal('hide');

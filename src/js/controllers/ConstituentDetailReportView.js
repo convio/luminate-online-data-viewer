@@ -72,8 +72,6 @@ dataViewerControllers.controller('ConstituentDetailReportViewController', ['$sco
     getConstituents();
   };
   
-  /* TODO: resetReportConfig */
-  
   $scope.updateReportConfig = function(e) {
     $('#report-config-modal').modal('hide');
     
