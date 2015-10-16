@@ -1,10 +1,31 @@
 dataViewerControllers.controller('EcommerceSummaryReportViewController', ['$scope', 'StorageService', 'ProductOrderService', 'DateRangePickerService', 'DataTableService', function($scope, StorageService, ProductOrderService, DateRangePickerService, DataTableService) {
   $.AdminLTE.layout.fix();
   
+  $scope.updateTime = '';
+  
+  var refreshUpdateTime = function() {
+    $scope.updateTime = 'Updated ' + moment().format('M/D/YYYY h:mma');
+    
+    if(!$scope.$$phase) {
+      $scope.$apply();
+    }
+  };
+  
+  $scope.reportconfig = $.extend({
+    datelabel: 'Last 24 Hours', 
+    startdate: '', 
+    enddate: '', 
+    summaryinterval: 'hourly'
+  }, StorageService.getStoredData('reportconfig_ecommerce_summary') || {});
+  
   $('.daterangepicker').remove();
   
   DateRangePickerService.init('#report-config-datepicker', function (start, end, label) {
     $scope.reportconfig.datelabel = label;
+    updateDateRange(label);
+  });
+  
+  var updateDateRange = function(label) {
     DateRangePickerService.getDatesForRange(label, function(start, end) {
       $scope.reportconfig.startdate = start.format('YYYY-MM-DD[T]HH:mm:ssZ');
       $scope.reportconfig.enddate = end.format('YYYY-MM-DD[T]HH:mm:ssZ');
@@ -13,14 +34,7 @@ dataViewerControllers.controller('EcommerceSummaryReportViewController', ['$scop
     if(!$scope.$$phase) {
       $scope.$apply();
     }
-  });
-  
-  $scope.reportconfig = $.extend({
-    datelabel: 'Last 24 Hours', 
-    startdate: '', 
-    enddate: '', 
-    summaryinterval: 'hourly'
-  }, StorageService.getStoredData('reportconfig_ecommerce_summary') || {});
+  };
   
   $scope.orders = [];
   
@@ -42,6 +56,8 @@ dataViewerControllers.controller('EcommerceSummaryReportViewController', ['$scop
         DataTableService.init('.report-table');
       }, 
       complete: function() {
+        refreshUpdateTime();
+        
         $('.content .js--loading-overlay').addClass('hidden');
       }
     });
@@ -120,10 +136,7 @@ dataViewerControllers.controller('EcommerceSummaryReportViewController', ['$scop
     
     $scope.ordersums = [];
     
-    DateRangePickerService.getDatesForRange($scope.reportconfig.datelabel, function(start, end) {
-      $scope.reportconfig.startdate = start.format('YYYY-MM-DD[T]HH:mm:ssZ');
-      $scope.reportconfig.enddate = end.format('YYYY-MM-DD[T]HH:mm:ssZ');
-    });
+    updateDateRange($scope.reportconfig.datelabel);
     
     DataTableService.destroy('.report-table');
     

@@ -1,10 +1,31 @@
 dataViewerControllers.controller('ConstituentSummaryReportViewController', ['$scope', 'StorageService', 'ConstituentService', 'DateRangePickerService', 'DataTableService', function($scope, StorageService, ConstituentService, DateRangePickerService, DataTableService) {
   $.AdminLTE.layout.fix();
   
+  $scope.updateTime = '';
+  
+  var refreshUpdateTime = function() {
+    $scope.updateTime = 'Updated ' + moment().format('M/D/YYYY h:mma');
+    
+    if(!$scope.$$phase) {
+      $scope.$apply();
+    }
+  };
+  
+  $scope.reportconfig = $.extend({
+    datelabel: 'Last 24 Hours', 
+    startdate: '', 
+    enddate: '', 
+    summaryinterval: 'hourly'
+  }, StorageService.getStoredData('reportconfig_constituents_summary') || {});
+  
   $('.daterangepicker').remove();
   
   DateRangePickerService.init('#report-config-datepicker', function (start, end, label) {
     $scope.reportconfig.datelabel = label;
+    updateDateRange(label);
+  });
+  
+  var updateDateRange = function(label) {
     DateRangePickerService.getDatesForRange(label, function(start, end) {
       $scope.reportconfig.startdate = start.format('YYYY-MM-DD[T]HH:mm:ssZ');
       $scope.reportconfig.enddate = end.format('YYYY-MM-DD[T]HH:mm:ssZ');
@@ -13,14 +34,7 @@ dataViewerControllers.controller('ConstituentSummaryReportViewController', ['$sc
     if(!$scope.$$phase) {
       $scope.$apply();
     }
-  });
-  
-  $scope.reportconfig = $.extend({
-    datelabel: 'Last 24 Hours', 
-    startdate: '', 
-    enddate: '', 
-    summaryinterval: 'hourly'
-  }, StorageService.getStoredData('reportconfig_constituents_summary') || {});
+  };
   
   $scope.constituents = [];
   
@@ -42,6 +56,8 @@ dataViewerControllers.controller('ConstituentSummaryReportViewController', ['$sc
         DataTableService.init('.report-table');
       }, 
       complete: function() {
+        refreshUpdateTime();
+        
         $('.content .js--loading-overlay').addClass('hidden');
       }
     });
@@ -107,14 +123,11 @@ dataViewerControllers.controller('ConstituentSummaryReportViewController', ['$sc
   getConstituentSums();
   
   $scope.refreshReport = function() {
+    updateDateRange($scope.reportconfig.datelabel);
+    
     $scope.constituents = [];
     
     $scope.constituentsums = [];
-    
-    DateRangePickerService.getDatesForRange($scope.reportconfig.datelabel, function(start, end) {
-      $scope.reportconfig.startdate = start.format('YYYY-MM-DD[T]HH:mm:ssZ');
-      $scope.reportconfig.enddate = end.format('YYYY-MM-DD[T]HH:mm:ssZ');
-    });
     
     DataTableService.destroy('.report-table');
     

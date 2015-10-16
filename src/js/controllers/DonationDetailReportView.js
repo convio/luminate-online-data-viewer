@@ -1,19 +1,15 @@
 dataViewerControllers.controller('DonationDetailReportViewController', ['$scope', 'StorageService', 'DonationCampaignService', 'DonationFormService', 'DonationService', 'DateRangePickerService', 'DataTableService', function($scope, StorageService, DonationCampaignService, DonationFormService, DonationService, DateRangePickerService, DataTableService) {
   $.AdminLTE.layout.fix();
   
-  $('.daterangepicker').remove();
+  $scope.updateTime = '';
   
-  DateRangePickerService.init('#report-config-datepicker', function (start, end, label) {
-    $scope.reportconfig.datelabel = label;
-    DateRangePickerService.getDatesForRange(label, function(start, end) {
-      $scope.reportconfig.startdate = start.format('YYYY-MM-DD[T]HH:mm:ssZ');
-      $scope.reportconfig.enddate = end.format('YYYY-MM-DD[T]HH:mm:ssZ');
-    });
+  var refreshUpdateTime = function() {
+    $scope.updateTime = 'Updated ' + moment().format('M/D/YYYY h:mma');
     
     if(!$scope.$$phase) {
       $scope.$apply();
     }
-  });
+  };
   
   $scope.reportconfig = $.extend({
     datelabel: 'Last 24 Hours', 
@@ -22,6 +18,24 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
     donationcampaign: '', 
     donationform: ''
   }, StorageService.getStoredData('reportconfig_donations_detail') || {});
+  
+  $('.daterangepicker').remove();
+  
+  DateRangePickerService.init('#report-config-datepicker', function (start, end, label) {
+    $scope.reportconfig.datelabel = label;
+    updateDateRange(label);
+  });
+  
+  var updateDateRange = function(label) {
+    DateRangePickerService.getDatesForRange(label, function(start, end) {
+      $scope.reportconfig.startdate = start.format('YYYY-MM-DD[T]HH:mm:ssZ');
+      $scope.reportconfig.enddate = end.format('YYYY-MM-DD[T]HH:mm:ssZ');
+    });
+    
+    if(!$scope.$$phase) {
+      $scope.$apply();
+    }
+  };
   
   $scope.donationcampaigns = [];
   
@@ -99,6 +113,8 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
         });
       }, 
       complete: function() {
+        refreshUpdateTime();
+        
         $('.content .js--loading-overlay').addClass('hidden');
       }
     });
@@ -116,10 +132,7 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
   $scope.refreshReport = function() {
     $scope.donations = [];
     
-    DateRangePickerService.getDatesForRange($scope.reportconfig.datelabel, function(start, end) {
-      $scope.reportconfig.startdate = start.format('YYYY-MM-DD[T]HH:mm:ssZ');
-      $scope.reportconfig.enddate = end.format('YYYY-MM-DD[T]HH:mm:ssZ');
-    });
+    updateDateRange($scope.reportconfig.datelabel);
     
     DataTableService.destroy('.report-table');
     
