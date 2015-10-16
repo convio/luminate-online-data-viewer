@@ -5,8 +5,10 @@ dataViewerControllers.controller('ConstituentSummaryReportViewController', ['$sc
   
   DateRangePickerService.init('#report-config-datepicker', function (start, end, label) {
     $scope.reportconfig.datelabel = label;
-    $scope.reportconfig.startdate = start.format('YYYY-MM-DD[T]HH:mm:ssZ');
-    $scope.reportconfig.enddate = end.format('YYYY-MM-DD[T]HH:mm:ssZ');
+    DateRangePickerService.getDatesForRange(label, function(start, end) {
+      $scope.reportconfig.startdate = start.format('YYYY-MM-DD[T]HH:mm:ssZ');
+      $scope.reportconfig.enddate = end.format('YYYY-MM-DD[T]HH:mm:ssZ');
+    });
     
     if(!$scope.$$phase) {
       $scope.$apply();
@@ -124,11 +126,14 @@ dataViewerControllers.controller('ConstituentSummaryReportViewController', ['$sc
     
     $scope.constituentsums = [];
     
+    DateRangePickerService.getDatesForRange($scope.reportconfig.datelabel, function(start, end) {
+      $scope.reportconfig.startdate = start.format('YYYY-MM-DD[T]HH:mm:ssZ');
+      $scope.reportconfig.enddate = end.format('YYYY-MM-DD[T]HH:mm:ssZ');
+    });
+    
     DataTableService.destroy('.report-table');
     
     $('.content .js--loading-overlay').removeClass('hidden');
-    
-    $('.daterangepicker .applyBtn').click();
     
     getConstituentSums();
   };
