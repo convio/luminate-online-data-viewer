@@ -42,24 +42,28 @@ dataViewerControllers.controller('ConstituentDetailReportViewController', ['$sco
       startDate: $scope.reportconfig.startdate, 
       endDate: $scope.reportconfig.enddate, 
       success: function(constituents) {
-        DataTableService.destroy('.report-table');
-        
-        if(constituents.length > 0) {
-          $.each(constituents, function() {
-            addConstituent(this);
+        if($scope.$location.path() === '/report-constituents-detail') {
+          DataTableService.destroy('.report-table');
+          
+          if(constituents.length > 0) {
+            $.each(constituents, function() {
+              addConstituent(this);
+            });
+          }
+          
+          DataTableService.init('.report-table', {
+            'order': [
+              [6, 'desc']
+            ]
           });
         }
-        
-        DataTableService.init('.report-table', {
-          'order': [
-            [6, 'desc']
-          ]
-        });
       }, 
       complete: function() {
-        refreshUpdateTime();
-        
-        $('.content .js--loading-overlay').addClass('hidden');
+        if($scope.$location.path() === '/report-constituents-detail') {
+          refreshUpdateTime();
+          
+          $('.content .js--loading-overlay').addClass('hidden');
+        }
       }
     });
   }, 

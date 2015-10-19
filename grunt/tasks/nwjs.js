@@ -2,7 +2,7 @@
 
 module.exports = {
   options: {
-    appName: 'Luminate Online Data Viewer', 
+    appName: '<%= pkg.window.title %>', 
     version: '0.12.3', 
     platforms: [
       'win', 

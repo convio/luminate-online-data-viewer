@@ -98,24 +98,28 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
       startDate: $scope.reportconfig.startdate, 
       endDate: $scope.reportconfig.enddate, 
       success: function(donations) {
-        DataTableService.destroy('.report-table');
-        
-        if(donations.length > 0) {
-          $.each(donations, function() {
-            addDonation(this);
+        if($scope.$location.path() === '/report-donations-detail') {
+          DataTableService.destroy('.report-table');
+          
+          if(donations.length > 0) {
+            $.each(donations, function() {
+              addDonation(this);
+            });
+          }
+          
+          DataTableService.init('.report-table', {
+            'order': [
+              [9, 'desc']
+            ]
           });
         }
-        
-        DataTableService.init('.report-table', {
-          'order': [
-            [9, 'desc']
-          ]
-        });
       }, 
       complete: function() {
-        refreshUpdateTime();
-        
-        $('.content .js--loading-overlay').addClass('hidden');
+        if($scope.$location.path() === '/report-donations-detail') {
+          refreshUpdateTime();
+          
+          $('.content .js--loading-overlay').addClass('hidden');
+        }
       }
     });
   }, 

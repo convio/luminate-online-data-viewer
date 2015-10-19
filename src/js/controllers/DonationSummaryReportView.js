@@ -101,20 +101,24 @@ dataViewerControllers.controller('DonationSummaryReportViewController', ['$scope
       startDate: $scope.reportconfig.startdate, 
       endDate: $scope.reportconfig.enddate, 
       success: function(donations) {
-        DataTableService.destroy('.report-table');
-        
-        if(donations.length > 0) {
-          $.each(donations, function() {
-            addDonation(this);
-          });
+        if($scope.$location.path() === '/report-donations-summary') {
+          DataTableService.destroy('.report-table');
+          
+          if(donations.length > 0) {
+            $.each(donations, function() {
+              addDonation(this);
+            });
+          }
+          
+          DataTableService.init('.report-table');
         }
-        
-        DataTableService.init('.report-table');
       }, 
       complete: function() {
-        refreshUpdateTime();
-        
-        $('.content .js--loading-overlay').addClass('hidden');
+        if($scope.$location.path() === '/report-donations-summary') {
+          refreshUpdateTime();
+          
+          $('.content .js--loading-overlay').addClass('hidden');
+        }
       }
     });
   }, 

@@ -42,24 +42,28 @@ dataViewerControllers.controller('EcommerceDetailReportViewController', ['$scope
       startDate: $scope.reportconfig.startdate, 
       endDate: $scope.reportconfig.enddate, 
       success: function(productOrders) {
-        DataTableService.destroy('.report-table');
-        
-        if(productOrders.length > 0) {
-          $.each(productOrders, function() {
-            addOrder(this);
+        if($scope.$location.path() === '/report-ecommerce-detail') {
+          DataTableService.destroy('.report-table');
+          
+          if(productOrders.length > 0) {
+            $.each(productOrders, function() {
+              addOrder(this);
+            });
+          }
+          
+          DataTableService.init('.report-table', {
+            'order': [
+              [8, 'desc']
+            ]
           });
         }
-        
-        DataTableService.init('.report-table', {
-          'order': [
-            [8, 'desc']
-          ]
-        });
       }, 
       complete: function() {
-        refreshUpdateTime();
-        
-        $('.content .js--loading-overlay').addClass('hidden');
+        if($scope.$location.path() === '/report-ecommerce-detail') {
+          refreshUpdateTime();
+          
+          $('.content .js--loading-overlay').addClass('hidden');
+        }
       }
     });
   }, 
