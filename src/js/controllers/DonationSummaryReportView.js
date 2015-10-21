@@ -42,8 +42,6 @@ dataViewerControllers.controller('DonationSummaryReportViewController', ['$scope
   
   var getDonationCampaigns = function() {
     DonationCampaignService.getDonationCampaigns({
-      campaignId: $scope.reportconfig.donationcampaign, 
-      formId: $scope.reportconfig.donationform, 
       success: function(donationCampaigns) {
         if(donationCampaigns.length > 0) {
           $.each(donationCampaigns, function() {
@@ -100,6 +98,8 @@ dataViewerControllers.controller('DonationSummaryReportViewController', ['$scope
     DonationService.getDonations({
       startDate: $scope.reportconfig.startdate, 
       endDate: $scope.reportconfig.enddate, 
+      campaignId: $scope.reportconfig.donationcampaign, 
+      formId: $scope.reportconfig.donationform, 
       success: function(donations) {
         if($scope.$location.path() === '/report-donations-summary') {
           DataTableService.destroy('.report-table');
