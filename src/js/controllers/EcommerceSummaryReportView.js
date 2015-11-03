@@ -163,7 +163,7 @@ dataViewerControllers.controller('EcommerceSummaryReportViewController', ['$scop
       csvData += '\n' + 
                  '"' + this.periodFormatted + '",' + 
                  this.count + ',' + 
-                 this.amountFormatted;
+                 this.amount;
     });
     
     $('.js--report-save-as').off('change').on('change', function() {

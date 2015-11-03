@@ -103,7 +103,7 @@ dataViewerControllers.controller('EcommerceDetailReportViewController', ['$scope
       csvData += '\n' + 
                  this.TransactionId + ',' + 
                  this.StoreId + ',' + 
-                 this.Payment._AmountFormatted + ',' + 
+                 this.Payment.Amount + ',' + 
                  '"' + this.Purchaser.ConsName.FirstName.replace(/"/g, '""') + '",' + 
                  '"' + this.Purchaser.ConsName.LastName.replace(/"/g, '""') + '",' + 
                  this.Purchaser.PrimaryEmail + ',' + 

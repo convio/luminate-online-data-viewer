@@ -245,11 +245,11 @@ dataViewerControllers.controller('DonationSummaryReportViewController', ['$scope
       csvData += '\n' + 
                  '"' + this.periodFormatted + '",' + 
                  this.oneTimeCount + ',' + 
-                 this.oneTimeAmountFormatted + ',' + 
+                 this.oneTimeAmount + ',' + 
                  this.recurringCount + ',' + 
-                 this.recurringAmountFormatted + ',' + 
+                 this.recurringAmount + ',' + 
                  this.count + ',' + 
-                 this.amountFormatted;
+                 this.amount;
     });
     
     $('.js--report-save-as').off('change').on('change', function() {

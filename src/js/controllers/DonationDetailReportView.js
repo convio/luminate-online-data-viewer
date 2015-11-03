@@ -160,7 +160,7 @@ dataViewerControllers.controller('DonationDetailReportViewController', ['$scope'
                  this.TransactionId + ',' + 
                  this.CampaignId + ',' + 
                  this.FormId + ',' + 
-                 this.Payment._AmountFormatted + ',' + 
+                 this.Payment.Amount + ',' + 
                  '"' + this.Donor.ConsName.FirstName.replace(/"/g, '""') + '",' + 
                  '"' + this.Donor.ConsName.LastName.replace(/"/g, '""') + '",' + 
                  this.Donor.PrimaryEmail + ',' + 
