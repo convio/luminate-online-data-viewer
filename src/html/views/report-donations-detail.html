@@ -121,7 +121,7 @@
 <div class="modal fade" id="report-config-modal">
   <div class="modal-dialog">
     <div class="modal-content">
-      <form name="reportconfigform" id="report-config-form" ng-submit="updateReportConfig($event)">
+      <form name="reportconfigform" id="report-config-form" ng-submit="updateReportConfig($event)" novalidate autocomplete="off">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">
             <span>&times;</span>
@@ -148,42 +148,13 @@
             <label>
               Campaign:
             </label>
-            <select class="form-control" name="donationcampaign" ng-model="reportconfig.donationcampaign">
-              <option value="">All Campaigns</option>
-              <optgroup label="Active">
-                <option value="{{donationcampaign.CampaignId}}" ng-repeat="donationcampaign in donationcampaigns | filter: { IsArchived: false } | orderBy: 'Title'">
-                  {{donationcampaign.Title}} (ID: {{donationcampaign.CampaignId}})
-                </option>
-              </optgroup>
-              <optgroup label="Archived">
-                <option value="{{donationcampaign.CampaignId}}" ng-repeat="donationcampaign in donationcampaigns | filter: { IsArchived: true } | orderBy: 'Title'">
-                  {{donationcampaign.Title}} (ID: {{donationcampaign.CampaignId}})
-                </option>
-              </optgroup>
-            </select>
+            <input type="text" class="form-control" placeholder="Enter campaign name" ng-model="reportconfig.donationcampaign" uib-typeahead="donationcampaign as donationcampaign.Title for donationcampaign in donationcampaigns | filter:$viewValue | limitTo:8" typeahead-editable="false" ng-blur="blurReportConfigTypeAhead($event)">
           </div>
           <div class="form-group">
             <label>
               Form:
             </label>
-            <select class="form-control" name="donationform" ng-model="reportconfig.donationform">
-              <option value="">All Forms</option>
-              <optgroup label="Published">
-                <option value="{{donationform.FormId}}" ng-repeat="donationform in donationforms | filter: { IsPublished: true, IsArchived: false } | orderBy: 'Title'">
-                  {{donationform.Title}} (ID: {{donationform.FormId}})
-                </option>
-              </optgroup>
-              <optgroup label="Unpublished">
-                <option value="{{donationform.FormId}}" ng-repeat="donationform in donationforms | filter: { IsPublished: false, IsArchived: false } | orderBy: 'Title'">
-                  {{donationform.Title}} (ID: {{donationform.FormId}})
-                </option>
-              </optgroup>
-              <optgroup label="Archived">
-                <option value="{{donationform.FormId}}" ng-repeat="donationform in donationforms | filter: { IsArchived: true } | orderBy: 'Title'">
-                  {{donationform.Title}} (ID: {{donationform.FormId}})
-                </option>
-              </optgroup>
-            </select>
+            <input type="text" class="form-control" placeholder="Enter form name" ng-model="reportconfig.donationform" uib-typeahead="donationform as donationform.Title for donationform in donationforms | filter:$viewValue | limitTo:8" typeahead-editable="false" ng-blur="blurReportConfigTypeAhead($event)">
           </div>
         </div>
         <div class="modal-footer">
