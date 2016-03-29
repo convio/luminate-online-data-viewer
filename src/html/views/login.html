@@ -5,9 +5,9 @@
   </div>
   <div class="login-box-body">
     <form name="loginform" id="login-form" ng-submit="submit($event)" ng-controller="LoginFormController" novalidate autocomplete="off">
-      <alert ng-repeat="alert in alerts" type="{{alert.type}}">
+      <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}">
         {{alert.message}}
-      </alert>
+      </uib-alert>
       <div class="form-group has-feedback" ng-class="{ 'has-error': loginform.$submitted && loginform.url.$invalid }">
         <input type="url" class="form-control" name="url" id="login-url" ng-model="cwslogin.url" placeholder="Web Services URL" required>
         <span class="glyphicon glyphicon-globe form-control-feedback"></span>

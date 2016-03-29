@@ -9,6 +9,8 @@ dataViewerApp.directive('mainHeader', function() {
       $.AdminLTE.layout.fix();
       
       $.AdminLTE.layout.fixSidebar();
+      
+      $.AdminLTE.pushMenu.activate($.AdminLTE.options.sidebarToggleSelector);
     }
   }
 });
