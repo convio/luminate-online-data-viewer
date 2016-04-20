@@ -46,7 +46,7 @@ module.exports = function(grunt) {
   grunt.registerTask('css-dist', function(taskTarget) {
     runTargetedTask([
       'less', 
-      'autoprefixer', 
+      'postcss', 
       /* TODO: csscomb */
       'cssmin'
     ], taskTarget);
