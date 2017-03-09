@@ -3,10 +3,10 @@
 module.exports = {
   options: {
     appName: '<%= pkg.window.title %>', 
-    version: '0.12.3', 
     platforms: [
-      'win', 
-      'osx'
+      'osx64', 
+      'win32', 
+      'win64'
     ], 
     buildDir: './download', 
     buildType: function() {

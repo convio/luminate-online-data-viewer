@@ -13,8 +13,8 @@ dataViewerControllers.controller('EcommerceSummaryReportViewController', ['$scop
   
   $scope.reportconfig = $.extend({
     datelabel: 'Last 24 Hours', 
-    startdate: '', 
-    enddate: '', 
+    startdate: moment().subtract(1, 'days'), 
+    enddate: moment(), 
     summaryinterval: 'hourly'
   }, StorageService.getStoredData('reportconfig_ecommerce_summary') || {});
   
@@ -22,14 +22,20 @@ dataViewerControllers.controller('EcommerceSummaryReportViewController', ['$scop
   
   DateRangePickerService.init('#report-config-datepicker', function (start, end, label) {
     $scope.reportconfig.datelabel = label;
-    updateDateRange(label);
+    updateDateRange(start, end, label);
   });
   
-  var updateDateRange = function(label) {
-    DateRangePickerService.getDatesForRange(label, function(start, end) {
-      $scope.reportconfig.startdate = start.format('YYYY-MM-DD[T]HH:mm:ssZ');
-      $scope.reportconfig.enddate = end.format('YYYY-MM-DD[T]HH:mm:ssZ');
-    });
+  var updateDateRange = function(start, end, label) {
+    if(label === 'Custom Range') {
+      $scope.reportconfig.startdate = start;
+      $scope.reportconfig.enddate = end;
+    }
+    else {
+      DateRangePickerService.getDatesForRange(label, function(start, end) {
+        $scope.reportconfig.startdate = start;
+        $scope.reportconfig.enddate = end;
+      });
+    }
     
     if(!$scope.$$phase) {
       $scope.$apply();
@@ -42,8 +48,8 @@ dataViewerControllers.controller('EcommerceSummaryReportViewController', ['$scop
   
   var getOrderSums = function(options) {
     ProductOrderService.getProductOrders({
-      startDate: $scope.reportconfig.startdate, 
-      endDate: $scope.reportconfig.enddate, 
+      startDate: $scope.reportconfig.startdate.format('YYYY-MM-DD[T]HH:mm:ssZ'), 
+      endDate: $scope.reportconfig.enddate.format('YYYY-MM-DD[T]HH:mm:ssZ'), 
       success: function(productOrders) {
         if($scope.$location.path() === '/report-ecommerce-summary') {
           DataTableService.destroy('.report-table');
@@ -140,7 +146,7 @@ dataViewerControllers.controller('EcommerceSummaryReportViewController', ['$scop
     
     $scope.ordersums = [];
     
-    updateDateRange($scope.reportconfig.datelabel);
+    updateDateRange($scope.reportconfig.startdate, $scope.reportconfig.enddate, $scope.reportconfig.datelabel);
     
     DataTableService.destroy('.report-table');
     

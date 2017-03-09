@@ -5,6 +5,15 @@ var dataViewerApp = angular.module('dataViewerApp', [
 ]), 
 dataViewerControllers = angular.module('dataViewerControllers', []);
 
+dataViewerApp.config(['$locationProvider', function($locationProvider) {
+  $locationProvider.hashPrefix('');
+}]);
+
+dataViewerApp.config(['$compileProvider', function($compileProvider) {
+  $compileProvider.preAssignBindingsEnabled(true);
+  $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension):/);
+}]);
+
 dataViewerApp.config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/login', {
     templateUrl: 'views/login.html', 

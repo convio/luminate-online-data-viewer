@@ -45,7 +45,8 @@ dataViewerApp.factory('DateRangePickerService', [function() {
     }, 
     
     getDatesForRange: function(rangeLabel, callback) {
-      var rangeDates = this.getRanges()[rangeLabel];
+      var _this = this, 
+      rangeDates = _this.getRanges()[rangeLabel];
       callback(rangeDates[0], rangeDates[1]);
     }
   };

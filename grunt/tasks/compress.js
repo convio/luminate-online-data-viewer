@@ -1,21 +1,6 @@
 /* jshint strict:false */
 
 module.exports = {
-  "osx32": {
-    options: {
-      archive: 'download/osx32.zip'
-    }, 
-    files: [
-      {
-        expand: true, 
-        cwd: 'download/', 
-        src: [
-          'osx32/**'
-        ]
-      }
-    ]
-  }, 
-  
   "osx64": {
     options: {
       archive: 'download/osx64.zip'

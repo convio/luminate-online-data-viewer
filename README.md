@@ -1,7 +1,7 @@
 Luminate Online Data Viewer
 ===========================
 
-A desktop application for Windows and OS X providing realtime reporting for Luminate Online.
+A desktop application for Windows and Mac providing realtime reporting for Luminate Online.
 
 About
 --------
@@ -13,12 +13,11 @@ their online marketing campaigns with up-to-the-minute reporting using
 Download
 --------
 
-The Data Viewer is available for 32- and 64-bit Windows and OS X operating systems.
+The Data Viewer is available for 32- and 64-bit Windows and Mac.
 
 [Windows (32-bit)](https://github.com/convio/luminate-online-data-viewer/raw/master/download/win32.zip)  
 [Windows (64-bit)](https://github.com/convio/luminate-online-data-viewer/raw/master/download/win64.zip)  
-[OS X (32-bit)](https://github.com/convio/luminate-online-data-viewer/raw/master/download/osx32.zip)  
-[OS X (64-bit)](https://github.com/convio/luminate-online-data-viewer/raw/master/download/osx64.zip)
+[Mac](https://github.com/convio/luminate-online-data-viewer/raw/master/download/osx64.zip)
 
 Logging In
 ----------
