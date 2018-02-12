@@ -3,6 +3,7 @@
 module.exports = {
   options: {
     appName: '<%= pkg.window.title %>', 
+    version: '0.12.2', 
     platforms: [
       'osx64', 
       'win32', 
