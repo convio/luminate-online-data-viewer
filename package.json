@@ -1,5 +1,5 @@
 {
-  "version": "0.0.41",
+  "version": "0.0.42",
   "name": "luminate-online-data-viewer",
   "description": "A desktop application for Windows and Mac providing realtime reporting for Luminate Online.",
   "homepage": "http://convio.github.io/luminate-online-data-viewer/",
@@ -12,7 +12,7 @@
   "manifestUrl": "https://raw.githubusercontent.com/convio/luminate-online-data-viewer/master/package.json",
   "bugs": "https://github.com/convio/luminate-online-data-viewer/issues",
   "devDependencies": {
-    "autoprefixer": "^8.0.0",
+    "autoprefixer": "^8.1.0",
     "glob": "^7.1.2",
     "grunt": "^1.0.2",
     "grunt-cli": "^1.2.0",
