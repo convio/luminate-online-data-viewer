@@ -3,7 +3,7 @@
 module.exports = {
   options: {
     appName: '<%= pkg.window.title %>', 
-    version: '0.12.2', 
+    version: '0.21.5', 
     platforms: [
       'osx64', 
       'win32', 
@@ -13,6 +13,7 @@ module.exports = {
     buildType: function() {
       return '';
     }
+    /* TODO winIco: './dist/images/win-icon.ico' */
     /* TODO macIcns: './dist/images/osx-icon.icns' */
   }, 
   

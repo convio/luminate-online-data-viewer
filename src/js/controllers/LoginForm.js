@@ -45,7 +45,6 @@ dataViewerControllers.controller('LoginFormController', ['$scope', 'WebServicesS
             }
             
             $scope.addAlert({
-              type: 'danger', 
               message: errorMessage
             });
             
@@ -64,7 +63,6 @@ dataViewerControllers.controller('LoginFormController', ['$scope', 'WebServicesS
             
             if($faultstring.length > 0) {
               $scope.addAlert({
-                type: 'danger', 
                 message: $faultstring.text()
               });
               
