@@ -2,7 +2,7 @@ dataViewerApp.factory('DateRangePickerService', [function() {
   return {
     init: function(selector, callback) {
       var _this = this;
-
+      
       $(selector).daterangepicker({
         startDate: moment().subtract(1, 'days'), 
         endDate: moment(), 
@@ -13,8 +13,8 @@ dataViewerApp.factory('DateRangePickerService', [function() {
     
     getRanges: function() {
       return {
-        'Last 24 Hours': [
-          moment().subtract(1, 'days'), 
+        'This Hour': [
+          moment().startOf('hour'), 
           moment()
         ], 
         'Today': [
@@ -22,8 +22,8 @@ dataViewerApp.factory('DateRangePickerService', [function() {
           moment()
         ], 
         'Yesterday': [
-          moment().subtract(1, 'days').startOf('day'), 
-          moment().subtract(1, 'days').endOf('day')
+          moment().subtract(1, 'day').startOf('day'), 
+          moment().subtract(1, 'day').endOf('day')
         ], 
         'Last 7 Days': [
           moment().subtract(6, 'days').startOf('day'), 

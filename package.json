@@ -1,5 +1,5 @@
 {
-  "version": "0.0.43",
+  "version": "0.0.44",
   "name": "luminate-online-data-viewer",
   "description": "A desktop application for Windows and Mac providing realtime reporting for Luminate Online.",
   "homepage": "http://convio.github.io/luminate-online-data-viewer/",
@@ -11,20 +11,23 @@
   ],
   "manifestUrl": "https://raw.githubusercontent.com/convio/luminate-online-data-viewer/master/package.json",
   "bugs": "https://github.com/convio/luminate-online-data-viewer/issues",
+  "engines": {
+    "node": "^8.15.1"
+  },
   "devDependencies": {
-    "autoprefixer": "^9.4.0",
+    "autoprefixer": "^9.5.1",
     "glob": "^7.1.3",
-    "grunt": "^1.0.3",
+    "grunt": "^1.0.4",
     "grunt-cli": "^1.3.2",
     "grunt-contrib-clean": "^2.0.0",
     "grunt-contrib-compress": "^1.4.3",
     "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-csslint": "^2.0.0",
     "grunt-contrib-cssmin": "^3.0.0",
-    "grunt-contrib-htmlmin": "^3.0.0",
-    "grunt-contrib-jshint": "^2.0.0",
+    "grunt-contrib-htmlmin": "^3.1.0",
+    "grunt-contrib-jshint": "^2.1.0",
     "grunt-contrib-less": "^2.0.0",
-    "grunt-contrib-uglify": "^4.0.0",
+    "grunt-contrib-uglify": "^4.0.1",
     "grunt-contrib-watch": "^1.1.0",
     "grunt-nw-builder": "^3.1.0",
     "grunt-postcss": "^0.9.0"
@@ -35,7 +38,6 @@
   "main": "dist/html/index.html",
   "window": {
     "show": false,
-    "toolbar": false,
     "title": "Luminate Online Data Viewer",
     "width": 992,
     "height": 600,
