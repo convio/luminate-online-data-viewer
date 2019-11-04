@@ -10,7 +10,6 @@ dataViewerApp.config(['$locationProvider', function($locationProvider) {
 }]);
 
 dataViewerApp.config(['$compileProvider', function($compileProvider) {
-  $compileProvider.preAssignBindingsEnabled(true);
   $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension):/);
 }]);
 

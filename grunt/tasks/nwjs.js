@@ -3,13 +3,14 @@
 module.exports = {
   options: {
     appName: '<%= pkg.window.title %>', 
-    version: '0.21.5', 
+    flavor: 'normal', 
+    version: '0.42.2', 
     platforms: [
       'osx64', 
       'win32', 
       'win64'
     ], 
-    buildDir: './download', 
+    buildDir: 'download', 
     buildType: function() {
       return '';
     }
@@ -18,7 +19,7 @@ module.exports = {
   }, 
   
   src: [
-    './package.json', 
-    './dist/**/*.*'
+    'package.json', 
+    'dist/**/*.*'
   ]
 }

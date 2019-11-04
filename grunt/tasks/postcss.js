@@ -4,7 +4,7 @@ module.exports = {
   options: {
     processors: [
       require('autoprefixer')({
-        browsers: [
+        overrideBrowserslist: [
           'last 2 versions'
         ]
       })

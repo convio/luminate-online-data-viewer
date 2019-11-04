@@ -40,9 +40,9 @@ dataViewerApp.factory('DonationFormService', ['WebServicesService', function(Web
               }
               else {
                 $records.each(function() {
-                  var formId = $(this).find('FormId').text(), 
-                  campaignId = $(this).find('CampaignId').text(), 
-                  formTitle = $(this).find('Title').text();
+                  var formId = $(this).find('ens\\:FormId').text(), 
+                  campaignId = $(this).find('ens\\:CampaignId').text(), 
+                  formTitle = $(this).find('ens\\:Title').text();
                   
                   var donationForm = {
                     'FormId': formId, 
