@@ -3,12 +3,12 @@
 module.exports = {
   "osx64": {
     options: {
-      archive: 'download/osx64.zip'
+      archive: 'downloads/osx64.zip'
     }, 
     files: [
       {
         expand: true, 
-        cwd: 'download/', 
+        cwd: 'downloads/', 
         src: [
           'osx64/**'
         ]
@@ -18,12 +18,12 @@ module.exports = {
   
   "win32": {
     options: {
-      archive: 'download/win32.zip'
+      archive: 'downloads/win32.zip'
     }, 
     files: [
       {
         expand: true, 
-        cwd: 'download/', 
+        cwd: 'downloads/', 
         src: [
           'win32/**'
         ]
@@ -33,12 +33,12 @@ module.exports = {
   
   "win64": {
     options: {
-      archive: 'download/win64.zip'
+      archive: 'downloads/win64.zip'
     }, 
     files: [
       {
         expand: true, 
-        cwd: 'download/', 
+        cwd: 'downloads/', 
         src: [
           'win64/**'
         ]

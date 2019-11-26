@@ -24,7 +24,7 @@ module.exports = {
   "downloads": {
     files: [{
       expand: true, 
-      cwd: 'download/', 
+      cwd: 'downloads/', 
       src: [
         '*.zip', 
         'osx32/**/*.*', 

@@ -44,25 +44,25 @@ dataViewerApp.factory('ProductOrderService', ['WebServicesService', function(Web
             }
             else {
               $records.each(function() {
-                var transactionId = $(this).find('ens\\:TransactionId').text(), 
-                storeId = $(this).find('ens\\:StoreId').text(), 
-                $payment = $(this).find('ens\\:Payment'), 
-                paymentAmount = Number($payment.find('ens\\:Amount').text()), 
+                var transactionId = $(this).find('TransactionId').text(), 
+                storeId = $(this).find('StoreId').text(), 
+                $payment = $(this).find('Payment'), 
+                paymentAmount = Number($payment.find('Amount').text()), 
                 paymentAmountFormatted = paymentAmount.toLocaleString('en', {
                   style: 'currency', 
                   currency: 'USD', 
                   minimumFractionDigits: 2
                 }), 
-                paymentDate = $payment.find('ens\\:PaymentDate').text(), 
+                paymentDate = $payment.find('PaymentDate').text(), 
                 paymentDateFormatted = moment(paymentDate).format('MM/DD/YYYY h:mma'), 
-                $purchaser = $(this).find('ens\\:Purchaser'), 
-                $purchaserName = $purchaser.find('ens\\:ConsName'), 
-                purchaserFirstName = $purchaserName.find('ens\\:FirstName').text(), 
-                purchaserLastName = $purchaserName.find('ens\\:LastName').text(), 
-                purchaserPrimaryEmail = $purchaser.find('ens\\:PrimaryEmail').text(), 
-                $purchaserHomeAddress = $(this).find('ens\\:HomeAddress'), 
-                purchaserHomeCity = $purchaserHomeAddress.find('ens\\:City').text(), 
-                purchaserHomeState = $purchaserHomeAddress.find('ens\\:State').text();
+                $purchaser = $(this).find('Purchaser'), 
+                $purchaserName = $purchaser.find('ConsName'), 
+                purchaserFirstName = $purchaserName.find('FirstName').text(), 
+                purchaserLastName = $purchaserName.find('LastName').text(), 
+                purchaserPrimaryEmail = $purchaser.find('PrimaryEmail').text(), 
+                $purchaserHomeAddress = $(this).find('HomeAddress'), 
+                purchaserHomeCity = $purchaserHomeAddress.find('City').text(), 
+                purchaserHomeState = $purchaserHomeAddress.find('State').text();
                 
                 var productOrder = {
                   'TransactionId': transactionId, 

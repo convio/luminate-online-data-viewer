@@ -43,16 +43,16 @@ dataViewerApp.factory('ConstituentService', ['WebServicesService', function(WebS
             }
             else {
               $records.each(function() {
-                var consId = $(this).find('ens\\:ConsId').text(), 
-                $consName = $(this).find('ens\\:ConsName'), 
-                consFirstName = $consName.find('ens\\:FirstName').text(), 
-                consLastName = $consName.find('ens\\:LastName').text(), 
-                consCreationDate = $(this).find('ens\\:CreationDate').text(), 
+                var consId = $(this).find('ConsId').text(), 
+                $consName = $(this).find('ConsName'), 
+                consFirstName = $consName.find('FirstName').text(), 
+                consLastName = $consName.find('LastName').text(), 
+                consCreationDate = $(this).find('CreationDate').text(), 
                 consCreationDateFormatted = moment(consCreationDate).format('MM/DD/YYYY h:mma'), 
-                consPrimaryEmail = $(this).find('ens\\:PrimaryEmail').text(), 
-                $consHomeAddress = $(this).find('ens\\:HomeAddress'), 
-                consHomeCity = $consHomeAddress.find('ens\\:City').text(), 
-                consHomeState = $consHomeAddress.find('ens\\:State').text();
+                consPrimaryEmail = $(this).find('PrimaryEmail').text(), 
+                $consHomeAddress = $(this).find('HomeAddress'), 
+                consHomeCity = $consHomeAddress.find('City').text(), 
+                consHomeState = $consHomeAddress.find('State').text();
                 
                 var constituent = {
                   'ConsId': consId, 

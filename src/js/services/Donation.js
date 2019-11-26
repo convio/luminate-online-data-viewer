@@ -47,30 +47,30 @@ dataViewerApp.factory('DonationService', ['WebServicesService', function(WebServ
             }
             else {
               $records.each(function() {
-                var transactionId = $(this).find('ens\\:TransactionId').text(), 
-                campaignId = $(this).find('ens\\:CampaignId').text(), 
-                formId = $(this).find('ens\\:FormId').text(), 
-                $payment = $(this).find('ens\\:Payment'), 
-                paymentAmount = Number($payment.find('ens\\:Amount').text()), 
+                var transactionId = $(this).find('TransactionId').text(), 
+                campaignId = $(this).find('CampaignId').text(), 
+                formId = $(this).find('FormId').text(), 
+                $payment = $(this).find('Payment'), 
+                paymentAmount = Number($payment.find('Amount').text()), 
                 paymentAmountFormatted = paymentAmount.toLocaleString('en', {
                   style: 'currency', 
                   currency: 'USD', 
                   minimumFractionDigits: 2
                 }), 
-                paymentDate = $payment.find('ens\\:PaymentDate').text(), 
+                paymentDate = $payment.find('PaymentDate').text(), 
                 paymentDateFormatted = moment(paymentDate).format('MM/DD/YYYY h:mma'), 
-                paymentTenderType = $payment.find('ens\\:TenderType').text(), 
+                paymentTenderType = $payment.find('TenderType').text(), 
                 paymentTenderTypeFormatted = '', 
-                paymentCreditCardType = $payment.find('ens\\:CreditCardType').text(), 
-                $donor = $(this).find('ens\\:Donor'), 
-                $donorName = $donor.find('ens\\:ConsName'), 
-                donorFirstName = $donorName.find('ens\\:FirstName').text(), 
-                donorLastName = $donorName.find('ens\\:LastName').text(), 
-                donorPrimaryEmail = $donor.find('ens\\:PrimaryEmail').text(), 
-                $donorHomeAddress = $(this).find('ens\\:HomeAddress'), 
-                donorHomeCity = $donorHomeAddress.find('ens\\:City').text(), 
-                donorHomeState = $donorHomeAddress.find('ens\\:State').text(), 
-                $recurringPayment = $(this).find('ens\\:RecurringPayment'), 
+                paymentCreditCardType = $payment.find('CreditCardType').text(), 
+                $donor = $(this).find('Donor'), 
+                $donorName = $donor.find('ConsName'), 
+                donorFirstName = $donorName.find('FirstName').text(), 
+                donorLastName = $donorName.find('LastName').text(), 
+                donorPrimaryEmail = $donor.find('PrimaryEmail').text(), 
+                $donorHomeAddress = $(this).find('HomeAddress'), 
+                donorHomeCity = $donorHomeAddress.find('City').text(), 
+                donorHomeState = $donorHomeAddress.find('State').text(), 
+                $recurringPayment = $(this).find('RecurringPayment'), 
                 originalTransactionId = transactionId, 
                 donationType = 'One-Time';
                 
@@ -128,7 +128,7 @@ dataViewerApp.factory('DonationService', ['WebServicesService', function(WebServ
                 };
                 
                 if($recurringPayment.length > 0) {
-                  originalTransactionId = $recurringPayment.find('ens\\:OriginalTransactionId').text();
+                  originalTransactionId = $recurringPayment.find('OriginalTransactionId').text();
                   
                   donation.RecurringPayment = {
                     'OriginalTransactionId': originalTransactionId

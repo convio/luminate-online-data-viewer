@@ -15,9 +15,9 @@ Download
 
 The Data Viewer is available for 32- and 64-bit Windows and Mac.
 
-[Windows (32-bit)](https://github.com/convio/luminate-online-data-viewer/raw/master/download/win32.zip)  
-[Windows (64-bit)](https://github.com/convio/luminate-online-data-viewer/raw/master/download/win64.zip)  
-[Mac](https://github.com/convio/luminate-online-data-viewer/raw/master/download/osx64.zip)
+[Windows (32-bit)](https://github.com/convio/luminate-online-data-viewer/raw/master/downloads/win32.zip)  
+[Windows (64-bit)](https://github.com/convio/luminate-online-data-viewer/raw/master/downloads/win64.zip)  
+[Mac](https://github.com/convio/luminate-online-data-viewer/raw/master/downloads/osx64.zip)
 
 Logging In
 ----------

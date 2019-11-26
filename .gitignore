@@ -6,5 +6,5 @@ package-lock.json
 cache
 
 # Download files other than the packaged ZIP files
-download/*
-!download/*.zip
+downloads/*
+!downloads/*.zip

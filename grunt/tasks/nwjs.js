@@ -10,7 +10,7 @@ module.exports = {
       'win32', 
       'win64'
     ], 
-    buildDir: 'download', 
+    buildDir: 'downloads', 
     buildType: function() {
       return '';
     }
