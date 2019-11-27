@@ -7,7 +7,7 @@ module.exports = {
   
   "js": {
     src: [
-      'node_modules/admin-lte/dist/js/adminlte.js', 
+      'node_modules/admin-lte/dist/js/app.js', 
       'src/js/concat-before.js', 
       'src/js/config.js', 
       'src/js/directives/*.js', 
