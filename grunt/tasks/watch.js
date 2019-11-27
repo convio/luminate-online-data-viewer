@@ -25,7 +25,6 @@ module.exports = {
   
   "css": {
     files: [
-      'src/vendor/AdminLTE/build/**/*.*', 
       'src/bootstrap/less/*.less', 
       'src/less/*.less'
     ], 

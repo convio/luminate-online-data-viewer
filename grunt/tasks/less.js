@@ -3,8 +3,8 @@
 module.exports = {
   "css": {
     src: [
-      'src/vendor/AdminLTE/build/less/AdminLTE.less', 
-      'src/vendor/AdminLTE/build/less/skins/skin-blue.less', 
+      'node_modules/admin-lte/build/less/AdminLTE.less', 
+      'node_modules/admin-lte/build/less/skins/skin-blue.less', 
       'src/less/app.less'
     ], 
     dest: 'dist/css/app.css'
