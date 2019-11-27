@@ -42,8 +42,8 @@
     "show": false,
     "title": "Luminate Online Data Viewer",
     "width": 992,
-    "height": 600,
+    "height": 680,
     "min_width": 460,
-    "min_height": 600
+    "min_height": 644
   }
 }
