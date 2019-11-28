@@ -4,7 +4,6 @@ module.exports = {
   "config": {
     files: [
       'package.json', 
-      'Gruntfile.js', 
       'grunt/tasks/*.js', 
       'grunt/.csslintrc', 
       'grunt/.jshintrc'
@@ -16,6 +15,7 @@ module.exports = {
   
   "html": {
     files: [
+      'src/*.html', 
       'src/**/*.html'
     ], 
     tasks: [
@@ -37,11 +37,11 @@ module.exports = {
   
   "js": {
     files: [
-      'src/js/**/*.js'
+      'src/coffee/*.coffee', 
+      'src/coffee/**/*.coffee'
     ], 
     tasks: [
       'js-dist:js', 
-      'js-test:js', 
       'js-clean:js'
     ]
   }

@@ -6,8 +6,7 @@
   "es3": true, 
   "expr": true, 
   "jquery": true, 
-  "laxbreak" : true, 
-  "laxcomma": true, 
-  "sub": true, 
-  "unused": false
+  "latedef": true, 
+  "strict": true, 
+  "unused": true
 }

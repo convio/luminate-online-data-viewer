@@ -9,22 +9,10 @@ module.exports = {
     files: [{
       src: [
         'package.json', 
-        'Gruntfile.js', 
         'grunt/tasks/*.js', 
         'grunt/.csslintrc', 
         'grunt/.jshintrc'
       ]
-    }]
-  }, 
-  
-  "js": {
-    files: [{
-      expand: true, 
-      cwd: 'dist/js/', 
-      src: [
-        'app.js'
-      ], 
-      dest: 'dist/js/'
     }]
   }
 }

@@ -48,12 +48,8 @@ module.exports = (grunt) ->
     ], taskTarget
   grunt.registerTask 'js-dist', (taskTarget) ->
     runTargetedTask [
-      'concat'
+      'coffee'
       'uglify'
-    ], taskTarget
-  grunt.registerTask 'js-test', (taskTarget) ->
-    runTargetedTask [
-      'jshint'
     ], taskTarget
   grunt.registerTask 'js-clean', (taskTarget) ->
     runTargetedTask [
