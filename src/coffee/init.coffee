@@ -3,7 +3,7 @@ angular.module 'dataViewerApp', [
   'ui.bootstrap'
   'dataViewerControllers'
 ]
-dataViewerControllers = angular.module 'dataViewerControllers', []
+angular.module 'dataViewerControllers', []
 
 document.addEventListener 'contextmenu', (e) ->
   e.preventDefault()
