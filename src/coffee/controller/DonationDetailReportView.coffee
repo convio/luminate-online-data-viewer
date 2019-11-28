@@ -40,6 +40,11 @@ angular.module 'dataViewerControllers'
       
       $scope.donationcampaigns = []
       
+      addDonationCampaign = (donationCampaign) ->
+        $scope.donationcampaigns.push donationCampaign
+        if not $scope.$$phase
+          $scope.$apply()
+      
       getDonationCampaigns = ->
         DonationCampaignService.getDonationCampaigns
           success: (donationCampaigns) ->
@@ -48,16 +53,16 @@ angular.module 'dataViewerControllers'
                 addDonationCampaign this
       getDonationCampaigns()
       
-      addDonationCampaign = (donationCampaign) ->
-        $scope.donationcampaigns.push donationCampaign
-        if not $scope.$$phase
-          $scope.$apply()
-      
       $scope.$watch 'reportconfig.donationcampaign', (newValue) ->
         if newValue isnt ''
           $scope.reportconfig.donationform = ''
       
       $scope.donationforms = []
+      
+      addDonationForm = (donationForm) ->
+        $scope.donationforms.push donationForm
+        if not $scope.$$phase
+          $scope.$apply()
       
       getDonationForms = ->
         DonationFormService.getDonationForms
@@ -66,11 +71,6 @@ angular.module 'dataViewerControllers'
               $.each donationForms, ->
                 addDonationForm this
       getDonationForms()
-      
-      addDonationForm = (donationForm) ->
-        $scope.donationforms.push donationForm
-        if not $scope.$$phase
-          $scope.$apply()
       
       $scope.donations = []
       
