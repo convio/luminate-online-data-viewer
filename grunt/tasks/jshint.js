@@ -6,13 +6,15 @@ module.exports = {
   }, 
   
   "config": {
-    files: [{
-      src: [
-        'package.json', 
-        'grunt/tasks/*.js', 
-        'grunt/.csslintrc', 
-        'grunt/.jshintrc'
-      ]
-    }]
+    files: [
+      {
+        src: [
+          'package.json', 
+          'grunt/.csscomb.json', 
+          'grunt/.jshintrc', 
+          'grunt/tasks/*.js'
+        ]
+      }
+    ]
   }
 }

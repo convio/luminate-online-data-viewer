@@ -35,12 +35,8 @@ module.exports = (grunt) ->
     runTargetedTask [
       'less'
       'postcss'
-      # TODO: csscomb
+      'csscomb'
       'cssmin'
-    ], taskTarget
-  grunt.registerTask 'css-test', (taskTarget) ->
-    runTargetedTask [
-      'csslint'
     ], taskTarget
   grunt.registerTask 'css-clean', (taskTarget) ->
     runTargetedTask [

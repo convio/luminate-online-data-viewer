@@ -2,13 +2,7 @@
 
 module.exports = {
   options: {
-    processors: [
-      require('autoprefixer')({
-        overrideBrowserslist: [
-          'last 2 versions'
-        ]
-      })
-    ]
+    config: 'grunt/.csscomb.json'
   }, 
   
   "css": {

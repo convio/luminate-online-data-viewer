@@ -4,9 +4,9 @@ module.exports = {
   "config": {
     files: [
       'package.json', 
-      'grunt/tasks/*.js', 
-      'grunt/.csslintrc', 
-      'grunt/.jshintrc'
+      'grunt/.csscomb.json', 
+      'grunt/.jshintrc', 
+      'grunt/tasks/*.js'
     ], 
     tasks: [
       'jshint:config'
@@ -30,7 +30,6 @@ module.exports = {
     ], 
     tasks: [
       'css-dist:css', 
-      'css-test:css', 
       'css-clean:css'
     ]
   }, 
