@@ -109,7 +109,7 @@ angular.module 'dataViewerControllers'
         paymentHour = moment(paymentDate).format 'YYYY-MM-DD[T]HH'
         paymentPeriod = paymentHour
         paymentAmount = Number donation.Payment.Amount
-        isRecurringPayment = donation.RecurringPayment ? true : false
+        isRecurringPayment = if donation.RecurringPayment then true else false
         donationSumIndex = -1
         switch $scope.reportconfig.summaryinterval
           when 'daily'
