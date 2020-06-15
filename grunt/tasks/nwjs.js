@@ -1,5 +1,8 @@
 /* jshint strict:false */
 
+var os = require('os');
+os.tmpDir = os.tmpdir;
+
 module.exports = {
   options: {
     appName: '<%= pkg.window.title %>', 
